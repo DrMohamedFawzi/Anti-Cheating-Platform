@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aegis-X | تسجيل الدخول</title>
+
+  <!-- Tailwind CSS & DaisyUI CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts Cairo -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Custom Styling -->
+  <script src="security.js"></script>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    .login-container {
+      max-width: 440px;
+    }
+  </style>
+
+  <!-- Redirect script if already logged in -->
+  <script>
+    (function() {
+      const user = JSON.parse(sessionStorage.getItem('aegis_user') || 'null');
+      if (user && user.role) {
+        if (user.role === 'student') window.location.href = 'student_dashboard.html';
+        else if (user.role === 'teacher') window.location.href = 'teacher_dashboard.html';
+        else if (user.role === 'institution') window.location.href = 'institution_dashboard.html';
+      }
+    })();
+  </script>
+</head>
+
+<body class="glow-grid min-h-screen flex flex-col justify-between p-4" x-data="loginPage()">
+
+  <!-- Header -->
+  <header class="max-w-6xl mx-auto w-full flex items-center justify-between py-4">
+    <a href="index.html" class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-white font-black text-sm">
+        Æ
+      </div>
+      <span class="text-sm font-bold text-slate-300">Aegis-X Smart LMS</span>
+    </a>
+    <a href="register.html" class="text-xs font-semibold text-teal-400 hover:text-teal-300">إنشاء حساب جديد &larr;</a>
+  </header>
+
+  <!-- Login Form Container -->
+  <main class="w-full flex-1 flex items-center justify-center py-8">
+    <div class="login-container w-full card glass-panel rounded-3xl border border-slate-800 p-6 md:p-8 shadow-2xl relative">
+      
+      <div class="text-center mb-6">
+        <h2 class="text-xl font-bold text-slate-200">تسجيل الدخول للمنصة</h2>
+        <p class="text-xs text-slate-400 mt-1">ادخل إلى حسابك التعليمي الآمن</p>
+      </div>
+
+      <!-- Tab Buttons (Alpine JS/Standard JS) -->
+      <div class="tabs tabs-boxed bg-slate-950/60 p-1 rounded-xl mb-6 flex">
+        <button id="tab-pass" class="tab flex-1 text-xs font-semibold py-2 rounded-lg tab-active-academic" onclick="switchTab('pass')">
+          👤 اسم المستخدم
+        </button>
+        <button id="tab-qr" class="tab flex-1 text-xs font-semibold py-2 rounded-lg text-slate-400" onclick="switchTab('qr')">
+          📷 الهوية الرقمية QR
+        </button>
+      </div>
+
+      <!-- Error Warning Display -->
+      <div id="error-alert" class="hidden alert alert-error rounded-xl border border-red-800/40 p-3 text-xs mb-4">
+        <span id="error-message"></span>
+      </div>
+
+      <!-- Tab 1: Username & Password Form -->
+      <form id="pass-form" onsubmit="handlePasswordLogin(event)" class="space-y-4">
+        <div class="form-control">
+          <label class="label pt-0"><span class="label-text text-xs text-slate-400">اسم المستخدم:</span></label>
+          <input type="text" id="username" required class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="مثال: ahmad_student">
+        </div>
+        
+        <div class="form-control">
+          <label class="label"><span class="label-text text-xs text-slate-400">كلمة المرور:</span></label>
+          <input type="password" id="password" required class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="••••••••">
+        </div>
+
+        <button type="submit" id="pass-btn" class="btn btn-academic w-full rounded-xl text-xs font-bold py-3 mt-6">
+          تسجيل الدخول
+        </button>
+      </form>
+
+      <!-- Tab 2: QR Hash Form -->
+      <form id="qr-form" onsubmit="handleQrLogin(event)" class="hidden space-y-4">
+        <div class="form-control">
+          <label class="label pt-0"><span class="label-text text-xs text-slate-400">رمز الهوية الرقمية (QR Hash):</span></label>
+          <input type="text" id="qr_hash" required class="input input-bordered input-academic rounded-xl text-xs py-3 text-center tracking-widest font-mono" placeholder="qr_xxxxxxxxxxxxxxxx">
+          <p class="text-[10px] text-slate-500 mt-2 leading-relaxed">
+            * الصق الكود المشفر الخاص ببطاقة الطالب الرقمية لتسجيل الدخول السريع دون كلمة مرور.
+          </p>
+        </div>
+
+        <button type="submit" id="qr-btn" class="btn btn-academic w-full rounded-xl text-xs font-bold py-3 mt-6">
+          دخول بالهوية الرقمية
+        </button>
+      </form>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-6xl mx-auto w-full text-center py-6 text-[10px] text-slate-600">
+    محمي بواسطة درع Aegis-X للتعلم والامتحانات الآمنة • 2026
+  </footer>
+
+  <!-- Page Logic Scripts -->
+  <script>
+    let activeTab = 'pass';
+
+    // Switch between Password and QR login forms
+    function switchTab(tab) {
+      activeTab = tab;
+      
+      const tabPassBtn = document.getElementById('tab-pass');
+      const tabQrBtn = document.getElementById('tab-qr');
+      const passForm = document.getElementById('pass-form');
+      const qrForm = document.getElementById('qr-form');
+      const errorAlert = document.getElementById('error-alert');
+
+      errorAlert.classList.add('hidden');
+
+      if (tab === 'pass') {
+        tabPassBtn.className = 'tab flex-1 text-xs font-semibold py-2 rounded-lg tab-active-academic';
+        tabQrBtn.className = 'tab flex-1 text-xs font-semibold py-2 rounded-lg text-slate-400';
+        passForm.classList.remove('hidden');
+        qrForm.classList.add('hidden');
+      } else {
+        tabPassBtn.className = 'tab flex-1 text-xs font-semibold py-2 rounded-lg text-slate-400';
+        tabQrBtn.className = 'tab flex-1 text-xs font-semibold py-2 rounded-lg tab-active-academic';
+        passForm.classList.add('hidden');
+        qrForm.classList.remove('hidden');
+      }
+    }
+
+    // Show errors in UI
+    function showError(msg) {
+      const errorAlert = document.getElementById('error-alert');
+      const errorMessage = document.getElementById('error-message');
+      errorMessage.textContent = msg;
+      errorAlert.classList.remove('hidden');
+    }
+
+    // Set loading spinner state
+    function setLoading(btnId, isLoading) {
+      const btn = document.getElementById(btnId);
+      if (isLoading) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading loading-spinner loading-xs mr-2"></span> جاري التحقق...';
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = btnId === 'pass-btn' ? 'تسجيل الدخول' : 'دخول بالهوية الرقمية';
+      }
+    }
+
+    // Handle standard Username & Password form submission
+    function handlePasswordLogin(e) {
+      e.preventDefault();
+      const usernameInput = document.getElementById('username').value.trim();
+      const passwordInput = document.getElementById('password').value.trim();
+      const errorAlert = document.getElementById('error-alert');
+
+      errorAlert.classList.add('hidden');
+      setLoading('pass-btn', true);
+
+      fetch('api.php?action=login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: usernameInput, password: passwordInput })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          sessionStorage.setItem('aegis_user', JSON.stringify(data.user));
+          redirectUser(data.user.role);
+        } else {
+          showError(data.message || 'خطأ في اسم المستخدم أو كلمة المرور');
+        }
+      })
+      .catch(() => {
+        showError('فشل الاتصال بالخادم، يرجى التحقق من الشبكة.');
+      })
+      .finally(() => {
+        setLoading('pass-btn', false);
+      });
+    }
+
+    // Handle QR Hash login form submission
+    function handleQrLogin(e) {
+      e.preventDefault();
+      const qrHashInput = document.getElementById('qr_hash').value.trim();
+      const errorAlert = document.getElementById('error-alert');
+
+      errorAlert.classList.add('hidden');
+      setLoading('qr-btn', true);
+
+      fetch('api.php?action=qr_login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ qr_code_hash: qrHashInput })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          sessionStorage.setItem('aegis_user', JSON.stringify(data.user));
+          redirectUser(data.user.role);
+        } else {
+          showError(data.message || 'رمز الهوية الرقمية غير صحيح أو غير مفعل.');
+        }
+      })
+      .catch(() => {
+        showError('فشل الاتصال بالخادم، يرجى التحقق من الشبكة.');
+      })
+      .finally(() => {
+        setLoading('qr-btn', false);
+      });
+    }
+
+    // Redirect user to dashboard based on role
+    function redirectUser(role) {
+      if (role === 'student') window.location.href = 'student_dashboard.html';
+      else if (role === 'teacher') window.location.href = 'teacher_dashboard.html';
+      else if (role === 'institution') window.location.href = 'institution_dashboard.html';
+    }
+
+    // Auto load role parameter from URL if provided
+    window.addEventListener('load', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const role = urlParams.get('role');
+      if (role === 'student') {
+        switchTab('qr'); // Prefer digital ID for students
+      }
+    });
+  </script>
+
+</body>
+</html>

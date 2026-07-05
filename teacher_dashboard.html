@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aegis-X — لوحة تحكم المعلم</title>
+
+  <!-- Tailwind CSS & DaisyUI CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts Cairo -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Custom Styling -->
+  <script src="security.js"></script>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    .badge-tab {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      margin-right: 4px;
+    }
+  </style>
+
+  <!-- Session protection check -->
+  <script>
+    const user = JSON.parse(sessionStorage.getItem('aegis_user') || 'null');
+    if (!user || user.role !== 'teacher') {
+      window.location.href = 'login.html';
+    }
+  </script>
+</head>
+
+<body class="glow-grid min-h-screen flex flex-col justify-between p-4">
+
+  <!-- Top Navbar -->
+  <header class="aegis-navbar rounded-2xl border border-slate-800/60 backdrop-blur-xl max-w-6xl mx-auto w-full px-6 py-4 mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-white font-black text-lg">
+        Æ
+      </div>
+      <div>
+        <h1 class="text-sm font-bold text-slate-200 leading-tight">لوحة تحكم المعلم</h1>
+        <p class="text-[10px] text-slate-400">منصة إدارة الاختبارات ومراقبة السلوك</p>
+      </div>
+    </div>
+    
+    <div class="flex items-center gap-4">
+      <div class="hidden sm:block text-left">
+        <p class="text-xs font-bold text-slate-200" id="teacher-nav-name">المعلم</p>
+        <span class="badge badge-outline border-blue-500/30 text-blue-400 text-[9px] px-2 py-1">درع المعلم نشط</span>
+      </div>
+      <button onclick="handleLogout()" class="btn btn-outline border-red-500/30 hover:bg-red-600 text-red-500 hover:text-white btn-sm rounded-xl text-xs">
+        تسجيل الخروج
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Body Content -->
+  <main class="max-w-6xl mx-auto w-full flex-1 grid grid-cols-1 gap-6">
+
+    <!-- Welcome Banner Card -->
+    <div class="card glass-panel rounded-3xl border border-slate-800/70 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h2 class="text-xl font-extrabold text-slate-100">أهلاً بك، أ/ <span id="teacher-welcome-name">...</span> 👋</h2>
+        <p class="text-xs text-slate-400 mt-1">تتيح لك هذه اللوحة إدارة فصولك الدراسية، وقبول انضمام الطلاب، وتصميم ومراقبة امتحاناتك الأمنية.</p>
+      </div>
+      <div class="text-right sm:text-left">
+        <span class="text-slate-500 text-xs block">التاريخ اليوم:</span>
+        <span id="current-date" class="text-xs font-semibold text-slate-300">...</span>
+      </div>
+    </div>
+
+    <!-- Overview Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="card glass-panel rounded-2xl border border-slate-800/60 p-4 flex flex-row items-center justify-between">
+        <div>
+          <span class="text-[10px] text-slate-400 font-bold block mb-1">الفصول الدراسية</span>
+          <span id="stat-classes" class="text-2xl font-black text-teal-400">0</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-lg">🏫</div>
+      </div>
+      <div class="card glass-panel rounded-2xl border border-slate-800/60 p-4 flex flex-row items-center justify-between">
+        <div>
+          <span class="text-[10px] text-slate-400 font-bold block mb-1">طلبات الانضمام المعلقة</span>
+          <span id="stat-requests" class="text-2xl font-black text-blue-400">0</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-lg">⏳</div>
+      </div>
+      <div class="card glass-panel rounded-2xl border border-slate-800/60 p-4 flex flex-row items-center justify-between">
+        <div>
+          <span class="text-[10px] text-slate-400 font-bold block mb-1">إجمالي الطلاب المسجلين</span>
+          <span id="stat-students" class="text-2xl font-black text-purple-400">0</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-lg">👨‍🎓</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs tabs-boxed bg-slate-950/60 p-1 rounded-2xl flex max-w-3xl overflow-x-auto">
+      <button id="tab-btn-classes" class="tab flex-1 text-xs font-semibold py-3 rounded-xl tab-active-academic whitespace-nowrap" onclick="switchTab('classes')">🏫 فصولي</button>
+      <button id="tab-btn-requests" class="tab flex-1 text-xs font-semibold py-3 rounded-xl text-slate-400 whitespace-nowrap" onclick="switchTab('requests')">⏳ طلبات الطلاب</button>
+      <button id="tab-btn-exams" class="tab flex-1 text-xs font-semibold py-3 rounded-xl text-slate-400 whitespace-nowrap" onclick="switchTab('exams')">📝 الامتحانات</button>
+      <button id="tab-btn-monitoring" class="tab flex-1 text-xs font-semibold py-3 rounded-xl text-slate-400 whitespace-nowrap" onclick="switchTab('monitoring')">🛡️ مراقبة السلوك</button>
+      <button id="tab-btn-decode" class="tab flex-1 text-xs font-semibold py-3 rounded-xl text-slate-400 whitespace-nowrap" onclick="switchTab('decode')">🔍 فك التسريبات</button>
+    </div>
+
+    <!-- TAB 1: Classes Section -->
+    <div id="tab-content-classes" class="space-y-6">
+      
+      <!-- Create Classroom form -->
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-6">
+        <h3 class="font-bold text-slate-200 text-sm mb-4">إنشاء فصل دراسي جديد</h3>
+        
+        <form onsubmit="handleCreateClass(event)" class="flex flex-col sm:flex-row gap-3">
+          <input type="text" id="class-name-input" required class="input input-bordered input-academic rounded-xl text-xs py-3 flex-1" placeholder="مثال: مادة الرياضيات - الصف الأول الثانوي">
+          <button type="submit" id="create-class-btn" class="btn btn-academic rounded-xl text-xs px-6 font-bold">إنشاء الفصل الدراسي</button>
+        </form>
+      </div>
+
+      <!-- Classes Grid -->
+      <div class="space-y-3">
+        <h3 class="font-bold text-slate-300 text-xs">قائمة فصولي الدراسية</h3>
+        <div id="classes-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="col-span-full text-center py-8 text-slate-500 text-xs">جاري تحميل الفصول...</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 2: Student Enrollment Requests -->
+    <div id="tab-content-requests" class="hidden space-y-4">
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-5 overflow-hidden">
+        <h3 class="font-bold text-slate-200 text-sm mb-4">طلبات الانضمام المعلقة</h3>
+        
+        <div class="overflow-x-auto">
+          <table class="table w-full text-right">
+            <thead>
+              <tr class="text-slate-400 text-xs border-b border-slate-800/60">
+                <th>اسم الطالب</th>
+                <th>اسم المستخدم</th>
+                <th>الفصل المطلوب</th>
+                <th class="text-center">الإجراء</th>
+              </tr>
+            </thead>
+            <tbody id="requests-tbody" class="text-xs">
+              <tr>
+                <td colspan="4" class="text-center py-8 text-slate-500">جاري تحميل طلبات الانضمام...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Exams Section -->
+    <div id="tab-content-exams" class="hidden space-y-4">
+      
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div>
+          <h3 class="font-bold text-slate-200 text-sm">مستودع الامتحانات الآمنة</h3>
+          <p class="text-[10px] text-slate-500 mt-1">صمم امتحاناتك بمعادلات رياضية وقواعد حماية ثنائية تمنع الغش ونسخ المحتوى.</p>
+        </div>
+        <button onclick="window.location.href='creator.html'" class="btn btn-academic rounded-xl text-xs font-bold px-6">
+          📝 منشئ الاختبارات الجديد
+        </button>
+      </div>
+
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-5">
+        <div class="overflow-x-auto">
+          <table class="table w-full text-right">
+            <thead>
+              <tr class="text-slate-400 text-xs border-b border-slate-800/60">
+                <th>عنوان الامتحان</th>
+                <th>رمز الامتحان</th>
+                <th>الفصل الدراسي المرتبط</th>
+                <th>الحفاظ على الوقت (عند انقطاع الإنترنت)</th>
+              </tr>
+            </thead>
+            <tbody id="exams-tbody" class="text-xs">
+              <tr>
+                <td colspan="4" class="text-center py-8 text-slate-500">جاري تحميل الامتحانات...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 4: Behavior Monitoring Hub -->
+    <div id="tab-content-monitoring" class="hidden space-y-6">
+      
+      <!-- Real-time Alerts / Cheat Violations log -->
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-5">
+        <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+          <h3 class="font-bold text-red-400 text-sm flex items-center gap-2">⚠️ سجل رصد محاولات الغش والمخالفات</h3>
+          <span class="badge badge-error badge-xs text-[10px] px-2 py-2">مباشر • Realtime</span>
+        </div>
+        
+        <div class="overflow-x-auto max-h-80 overflow-y-auto">
+          <table class="table w-full text-right">
+            <thead>
+              <tr class="text-slate-400 text-xs border-b border-slate-800/60">
+                <th>الطالب</th>
+                <th>نوع المخالفة</th>
+                <th>التفاصيل</th>
+                <th class="text-center">الخطورة</th>
+                <th class="text-center">الوقت</th>
+              </tr>
+            </thead>
+            <tbody id="violations-tbody" class="text-xs">
+              <tr>
+                <td colspan="5" class="text-center py-8 text-slate-500">لا يوجد مخالفات مسجلة حالياً.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Active Sessions (Full Width for Detailed View) -->
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-5">
+        <h3 class="font-bold text-slate-200 text-sm mb-4 border-b border-slate-800 pb-2">📋 الجلسات الامتحانية النشطة</h3>
+        <div class="overflow-x-auto max-h-80 overflow-y-auto">
+          <table class="table w-full text-right">
+            <thead>
+              <tr class="text-slate-400 text-xs border-b border-slate-800/60">
+                <th>الطالب</th>
+                <th>رمز الاختبار</th>
+                <th>الحالة</th>
+                <th>هل غش؟ (المخالفات)</th>
+                <th class="text-center">نسبة احتمالية الغش</th>
+                <th class="text-center">نزاهة السلوك</th>
+                <th class="text-right">طرق الغش المستخدمة (العدد)</th>
+                <th class="text-center">التقرير التفصيلي</th>
+              </tr>
+            </thead>
+            <tbody id="sessions-tbody" class="text-xs">
+              <tr>
+                <td colspan="8" class="text-center py-6 text-slate-500">لا يوجد جلسات نشطة.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Heartbeats / Network Connection logs (Full Width) -->
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-5">
+        <h3 class="font-bold text-slate-200 text-sm mb-4 border-b border-slate-800 pb-2">📶 سجل الاتصال بالشبكة والنبضات</h3>
+        <div class="overflow-x-auto max-h-60 overflow-y-auto">
+          <table class="table w-full text-right">
+            <thead>
+              <tr class="text-slate-400 text-xs border-b border-slate-800/60">
+                <th>الطالب</th>
+                <th>الحالة</th>
+                <th class="text-center">الفترة</th>
+                <th class="text-center">التوقيت</th>
+              </tr>
+            </thead>
+            <tbody id="heartbeats-tbody" class="text-xs">
+              <tr>
+                <td colspan="4" class="text-center py-6 text-slate-500">لا يوجد سجلات نبض.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 5: Decode Leaks Section -->
+    <div id="tab-content-decode" class="hidden space-y-6">
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-6">
+        <h3 class="font-bold text-slate-200 text-sm mb-4">أداة فك التشفير غير المرئي (Zero-Width Steganography)</h3>
+        <p class="text-xs text-slate-400 mb-4">قم بلصق النص المسرب من وسائل التواصل الاجتماعي هنا، وسيقوم النظام باستخراج الرقم التعريفي للطالب الذي قام بنسخ السؤال.</p>
+        <textarea id="leak-text-input" rows="4" class="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl p-3 text-slate-300 text-xs mb-3" placeholder="الصق النص المسرب هنا..."></textarea>
+        <button onclick="decodeLeak()" class="btn btn-academic rounded-xl text-xs px-6 font-bold w-full sm:w-auto">استخراج رقم الطالب (Decode)</button>
+        <div id="decode-result" class="mt-4 hidden p-4 rounded-xl border text-sm"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-6xl mx-auto w-full text-center py-6 text-[10px] text-slate-600 mt-8">
+    لوحة تحكم المعلم • Aegis-X Proctored Ecosystem • 2026
+  </footer>
+
+  <!-- Page Logic JS -->
+  <script>
+    let activeTab = 'classes';
+    let teacherClasses = [];
+    let latestDashboardData = null;
+
+    // Switch between dashboard tabs
+    function switchTab(tab) {
+      activeTab = tab;
+      
+      const tabs = ['classes', 'requests', 'exams', 'monitoring', 'decode'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-content-${t}`);
+        
+        if (t === tab) {
+          btn.className = 'tab flex-1 text-xs font-semibold py-3 rounded-xl tab-active-academic';
+          content.classList.remove('hidden');
+        } else {
+          btn.className = 'tab flex-1 text-xs font-semibold py-3 rounded-xl text-slate-400';
+          content.classList.add('hidden');
+        }
+      });
+
+      if (tab === 'classes') loadClasses();
+      if (tab === 'requests') loadRequests();
+      if (tab === 'exams') loadExams();
+      if (tab === 'monitoring') loadMonitoringData();
+    }
+
+    function decodeLeak() {
+      const text = document.getElementById('leak-text-input').value;
+      const resultBox = document.getElementById('decode-result');
+      if (!text) {
+        alert('يرجى لصق النص أولاً');
+        return;
+      }
+      
+      const studentId = typeof AegisSecurityEngine !== 'undefined' ? AegisSecurityEngine.decodeZeroWidthId(text) : 'محرك الأمان غير متاح';
+      resultBox.classList.remove('hidden', 'bg-red-500/10', 'border-red-500/20', 'text-red-400', 'bg-emerald-500/10', 'border-emerald-500/20', 'text-emerald-400');
+      
+      if (studentId === 'لا يوجد شفرة مضمنة' || !studentId.trim()) {
+          resultBox.classList.add('bg-red-500/10', 'border-red-500/20', 'text-red-400');
+          resultBox.innerHTML = '<span class="font-bold">❌ لم يتم العثور على شفرة مضمنة في هذا النص.</span>';
+      } else {
+          resultBox.classList.add('bg-emerald-500/10', 'border-emerald-500/20', 'text-emerald-400');
+          resultBox.innerHTML = '<span class="font-bold">✅ تم العثور على الشفرة!</span><br>رقم الطالب / المعرف هو: <span class="font-black text-lg select-all">' + escapeHtml(studentId) + '</span>';
+      }
+    }
+
+    // Escape text helpers
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Create a new Class
+    function handleCreateClass(e) {
+      e.preventDefault();
+      
+      const input = document.getElementById('class-name-input');
+      const name = input.value.trim();
+      const btn = document.getElementById('create-class-btn');
+      
+      if (!name) return;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading loading-spinner loading-xs mr-2"></span> جاري الإنشاء...';
+
+      fetch('api.php?action=create_class', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + user.token
+        },
+        body: JSON.stringify({ class_name: name, teacher_id: user.id })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          input.value = '';
+          alert('تم إنشاء الفصل الدراسي بنجاح!');
+          loadClasses();
+        } else {
+          alert('فشل الإنشاء: ' + data.message);
+        }
+      })
+      .catch(() => alert('فشل الاتصال بالخادم.'))
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = 'إنشاء الفصل الدراسي';
+      });
+    }
+
+    // Load classes belonging to teacher
+    function loadClasses() {
+      const grid = document.getElementById('classes-grid');
+      
+      fetch('api.php?action=get_classes&teacher_id=' + user.id, {
+        headers: { 'Authorization': 'Bearer ' + user.token }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            teacherClasses = data.classes || [];
+            document.getElementById('stat-classes').textContent = teacherClasses.length;
+            
+            if (teacherClasses.length === 0) {
+              grid.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500 text-xs">لا يوجد فصول دراسية مضافة بعد. أنشئ فصلاً من النموذج أعلاه.</div>';
+            } else {
+              grid.innerHTML = teacherClasses.map(c => `
+                <div class="card glass-panel rounded-2xl p-5 border border-slate-800 flex flex-col gap-4">
+                  <div>
+                    <h4 class="text-slate-100 font-bold text-sm leading-snug">${escapeHtml(c.class_name)}</h4>
+                    <p class="text-[10px] text-slate-500 mt-1">تاريخ الإنشاء: ${new Date(c.created_at).toLocaleDateString('ar-SA')}</p>
+                  </div>
+                  <div class="bg-slate-950/60 border border-slate-900 px-3 py-2 rounded-xl flex items-center justify-between">
+                    <div>
+                      <span class="text-[9px] text-slate-500 block">رمز الفصل للمشاركة:</span>
+                      <code class="text-xs font-mono font-bold text-teal-400">${c.class_code}</code>
+                    </div>
+                    <button onclick="navigator.clipboard.writeText('${c.class_code}'); alert('تم نسخ رمز الفصل الدراسي!')" class="btn btn-ghost btn-xs rounded-lg text-slate-400">نسخ</button>
+                  </div>
+                </div>
+              `).join('');
+            }
+          }
+        });
+    }
+
+    // Load student requests
+    function loadRequests() {
+      const tbody = document.getElementById('requests-tbody');
+      
+      fetch('api.php?action=get_enrollments&teacher_id=' + user.id, {
+        headers: { 'Authorization': 'Bearer ' + user.token }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            const reqs = data.requests || [];
+            const pendingReqs = reqs.filter(r => r.status === 'pending');
+            document.getElementById('stat-requests').textContent = pendingReqs.length;
+            document.getElementById('stat-students').textContent = reqs.filter(r => r.status === 'approved').length;
+
+            if (pendingReqs.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-slate-500">لا توجد طلبات انضمام معلقة حالياً.</td></tr>';
+            } else {
+              tbody.innerHTML = pendingReqs.map(r => `
+                <tr class="border-b border-slate-900/60">
+                  <td class="font-semibold text-slate-200">${escapeHtml(r.official_name)}</td>
+                  <td class="text-slate-400 font-mono">${escapeHtml(r.username)}</td>
+                  <td>${escapeHtml(r.class_name)}</td>
+                  <td class="text-center space-x-1">
+                    <button onclick="approveRequest(${r.id}, 'approved')" class="btn btn-xs btn-success rounded-lg">قبول</button>
+                    <button onclick="approveRequest(${r.id}, 'rejected')" class="btn btn-xs btn-error rounded-lg">رفض</button>
+                  </td>
+                </tr>
+              `).join('');
+            }
+          }
+        });
+    }
+
+    // Approve/Reject enrollment request
+    function approveRequest(reqId, status) {
+      if (!confirm(status === 'approved' ? 'هل أنت متأكد من قبول انضمام الطالب؟' : 'هل أنت متأكد من رفض هذا الطلب؟')) return;
+
+      fetch('api.php?action=approve_enrollment', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + user.token
+        },
+        body: JSON.stringify({ request_id: reqId, status: status })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          alert('تم التحديث بنجاح!');
+          loadRequests();
+        }
+      });
+    }
+
+    // Load Exams
+    function loadExams() {
+      const tbody = document.getElementById('exams-tbody');
+      
+      fetch('api.php?action=get_teacher_exams&teacher_id=' + user.id, {
+        headers: { 'Authorization': 'Bearer ' + user.token }
+      })
+        .then(res => res.json())
+        .then(data => {
+          const exams = data.exams || [];
+          if (exams.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-slate-500">لا يوجد اختبارات مصممة بعد. اضغط على منشئ الاختبارات بالأعلى.</td></tr>';
+          } else {
+            tbody.innerHTML = exams.map(e => {
+              let c_name = e.class_name || '—';
+              if (c_name === '—' && teacherClasses.length > 0) {
+                let c_item = teacherClasses.find(c => c.id === e.class_id);
+                if (c_item) c_name = c_item.class_name;
+              }
+              let preservationLabel = parseInt(e.time_preservation_offline) === 1
+                ? '<span class="badge badge-success badge-sm text-[10px] rounded-lg">🛡️ تجميد العداد</span>'
+                : '<span class="badge badge-ghost badge-sm text-[10px] rounded-lg">❌ استمرار العداد</span>';
+              return `
+                <tr class="border-b border-slate-900/60">
+                  <td class="font-bold text-slate-200">${escapeHtml(e.exam_title)}</td>
+                  <td class="font-mono text-teal-400">${e.exam_code}</td>
+                  <td>${escapeHtml(c_name)}</td>
+                  <td>${preservationLabel}</td>
+                </tr>
+              `;
+            }).join('');
+          }
+        })
+        .catch(() => {
+          tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-red-500">حدث خطأ في تحميل الاختبارات.</td></tr>';
+        });
+    }
+
+    // Load Live proctoring logs (Monitoring Hub)
+    function loadMonitoringData() {
+      const vTbody = document.getElementById('violations-tbody');
+      const sTbody = document.getElementById('sessions-tbody');
+      const hTbody = document.getElementById('heartbeats-tbody');
+
+      fetch('api.php?action=get_dashboard_data', {
+        headers: { 'Authorization': 'Bearer ' + user.token }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            latestDashboardData = data;
+            
+            // 1. Violations (Grouped by student to avoid name repetition)
+            const violations = data.violations || [];
+            if (violations.length === 0) {
+              vTbody.innerHTML = '<tr><td colspan="5" class="text-center py-6 text-slate-500">لا توجد محاولات غش مرصودة.</td></tr>';
+            } else {
+              const groupedViolations = {};
+              violations.forEach(v => {
+                const key = `${v.student_id}_${v.exam_code}`;
+                if (!groupedViolations[key]) {
+                  groupedViolations[key] = {
+                    official_name: v.official_name,
+                    student_id: v.student_id,
+                    violation_type: v.violation_type,
+                    details: v.details,
+                    severity: v.severity,
+                    detected_at: v.detected_at || v.created_at || '—',
+                    count: 0
+                  };
+                }
+                groupedViolations[key].count++;
+              });
+
+              vTbody.innerHTML = Object.values(groupedViolations).map(v => {
+                let badgeClass = v.severity === 'high' ? 'badge-red' : 'badge-amber';
+                let severityLabel = v.severity === 'high' ? 'عالية الخطورة' : 'متوسطة';
+                return `
+                  <tr class="border-b border-slate-900/40">
+                    <td class="font-semibold text-slate-200">
+                      ${escapeHtml(v.official_name)}
+                      <div class="text-[9px] text-slate-500 font-mono">ID: ${escapeHtml(v.student_id)}</div>
+                    </td>
+                    <td class="font-bold text-red-400">${escapeHtml(v.violation_type)} <span class="text-[10px] text-slate-500 font-normal">(إجمالي: ${v.count})</span></td>
+                    <td class="text-slate-400">${escapeHtml(v.details || '')}</td>
+                    <td class="text-center"><span class="${badgeClass}">${severityLabel}</span></td>
+                    <td class="text-center text-slate-500" style="font-size:10px">${v.detected_at}</td>
+                  </tr>
+                `;
+              }).join('');
+            }
+
+            // 2. Active Sessions
+            const sessions = data.sessions || [];
+            if (sessions.length === 0) {
+              sTbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-slate-500">لا توجد جلسات نشطة حالياً.</td></tr>';
+            } else {
+              sTbody.innerHTML = sessions.map(s => {
+                let integrity = s.integrity_index !== undefined ? s.integrity_index : 100;
+                let cheatProb = 100 - integrity;
+                let integrityColor = integrity >= 80 ? '#10b981' : integrity >= 50 ? '#fbbf24' : '#ef4444';
+                let cheatColor = cheatProb < 20 ? '#10b981' : cheatProb < 50 ? '#fbbf24' : '#ef4444';
+                
+                let statusBadge = s.status === 'completed' 
+                  ? '<span class="badge-emerald">مكتمل</span>' 
+                  : s.status === 'lockout' 
+                    ? '<span class="badge-red">حظر / طرد</span>'
+                    : '<span class="badge-amber">نشط الآن</span>';
+
+                let escapedName = escapeHtml(s.official_name);
+                let studentId = s.student_id;
+                let examCode = s.exam_code;
+
+                // Find violations for this specific student and exam
+                const studentViolations = (data.violations || []).filter(v => v.student_id == studentId && v.exam_code === examCode);
+                const vCount = studentViolations.length;
+                
+                // Determine "Did he cheat?" status
+                let didCheatLabel = vCount > 0 
+                  ? `<span class="text-red-400 font-bold">⚠️ نعم (${vCount} مخالفة)</span>` 
+                  : `<span class="text-emerald-400 font-bold">✅ لا (نزيه)</span>`;
+
+                // Find cheating methods used and count each
+                let methodsList = [];
+                let focusCount = 0, copyCount = 0, devtoolsCount = 0, rightClickCount = 0, fpCount = 0;
+                studentViolations.forEach(v => {
+                  const type = (v.violation_type || '').toLowerCase();
+                  if (type.includes('focus') || type.includes('blur') || type.includes('tab')) focusCount++;
+                  else if (type.includes('copy') || type.includes('clipboard')) copyCount++;
+                  else if (type.includes('devtools') || type.includes('console') || type.includes('inspect')) devtoolsCount++;
+                  else if (type.includes('click') || type.includes('context')) rightClickCount++;
+                  else if (type.includes('fingerprint') || type.includes('hardware')) fpCount++;
+                });
+
+                if (focusCount > 0) methodsList.push(`تبديل تبويب (${focusCount})`);
+                if (copyCount > 0) methodsList.push(`نسخ نصوص (${copyCount})`);
+                if (devtoolsCount > 0) methodsList.push(`أدوات مطورين (${devtoolsCount})`);
+                if (rightClickCount > 0) methodsList.push(`زر فأرة أيمن (${rightClickCount})`);
+                if (fpCount > 0) methodsList.push(`تلاعب بالبصمة (${fpCount})`);
+
+                let methodsLabel = methodsList.length > 0 
+                  ? `<span class="text-[10px] text-slate-300 font-medium">${methodsList.join(' ، ')}</span>` 
+                  : '<span class="text-[10px] text-slate-500">—</span>';
+
+                return `
+                  <tr class="border-b border-slate-900/40 hover:bg-slate-900/10">
+                    <td class="font-semibold text-slate-200">${escapedName}</td>
+                    <td class="font-mono text-slate-400">${examCode}</td>
+                    <td>${statusBadge}</td>
+                    <td>${didCheatLabel}</td>
+                    <td class="text-center font-bold" style="color:${cheatColor}">${cheatProb}%</td>
+                    <td class="text-center font-bold" style="color:${integrityColor}">${integrity}%</td>
+                    <td class="text-right">${methodsLabel}</td>
+                    <td class="text-center">
+                      <button onclick="openIntegrityReport(${studentId}, '${examCode}', '${escapedName}')" class="btn btn-outline border-teal-500/20 text-teal-400 btn-xs rounded-lg px-2">🔎 تقرير</button>
+                    </td>
+                  </tr>
+                `;
+              }).join('');
+            }
+
+            // 3. Heartbeats (Only show latest connection state per student)
+            const heartbeats = data.heartbeats || [];
+            if (heartbeats.length === 0) {
+              hTbody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-slate-500">لا توجد نبضات مسجلة.</td></tr>';
+            } else {
+              const latestHeartbeats = {};
+              heartbeats.forEach(h => {
+                const key = h.student_id;
+                if (!latestHeartbeats[key]) {
+                  latestHeartbeats[key] = h;
+                } else {
+                  const currentSec = new Date(h.detected_at).getTime();
+                  const savedSec = new Date(latestHeartbeats[key].detected_at).getTime();
+                  if (currentSec > savedSec) {
+                    latestHeartbeats[key] = h;
+                  }
+                }
+              });
+
+              hTbody.innerHTML = Object.values(latestHeartbeats).map(h => {
+                let statusBadge = h.status === 'online' 
+                  ? '<span class="text-emerald-400">📶 متصل</span>' 
+                  : '<span class="text-red-400">🚫 منقطع</span>';
+                let time = h.detected_at || '—';
+                return `
+                  <tr class="border-b border-slate-900/40">
+                    <td class="font-semibold text-slate-200">${escapeHtml(h.official_name)}</td>
+                    <td>${statusBadge}</td>
+                    <td class="text-center text-slate-400 font-mono">${h.duration_seconds}ث</td>
+                    <td class="text-center text-slate-500" style="font-size:10px">${time}</td>
+                  </tr>
+                `;
+              }).join('');
+            }
+          }
+        });
+    }
+
+    // Open Integrity Report modal for a student
+    function openIntegrityReport(studentId, examCode, studentName) {
+      if (!latestDashboardData) return;
+
+      document.getElementById('rep-student-name').textContent = studentName;
+      document.getElementById('rep-exam-code').textContent = examCode;
+
+      // Find the session
+      const session = (latestDashboardData.sessions || []).find(s => s.student_id == studentId && s.exam_code === examCode);
+      const integrityIndex = session && session.integrity_index !== undefined ? parseInt(session.integrity_index) : 100;
+      const cheatProbability = 100 - integrityIndex;
+
+      // Update basic cards
+      document.getElementById('rep-integrity-index').textContent = integrityIndex + '%';
+      document.getElementById('rep-integrity-index').style.color = integrityIndex >= 80 ? '#10b981' : integrityIndex >= 50 ? '#fbbf24' : '#ef4444';
+
+      document.getElementById('rep-cheat-prob').textContent = cheatProbability + '%';
+      document.getElementById('rep-cheat-prob').style.color = cheatProbability < 20 ? '#10b981' : cheatProbability < 50 ? '#fbbf24' : '#ef4444';
+
+      // Find violations committed by this student
+      const allViolations = latestDashboardData.violations || [];
+      const studentViolations = allViolations.filter(v => v.student_id == studentId && v.exam_code === examCode);
+      
+      document.getElementById('rep-violations-count').textContent = studentViolations.length + ' مخالفة';
+      document.getElementById('rep-violations-count').style.color = studentViolations.length === 0 ? '#10b981' : studentViolations.length < 3 ? '#fbbf24' : '#ef4444';
+
+      // Counts for each proctoring check
+      let focusLossCount = 0;
+      let copyCount = 0;
+      let devtoolsCount = 0;
+      let rightclickCount = 0;
+      let fingerprintCount = 0;
+
+      studentViolations.forEach(v => {
+        const type = (v.violation_type || '').toLowerCase();
+        if (type.includes('focus') || type.includes('blur') || type.includes('tab')) {
+          focusLossCount++;
+        } else if (type.includes('copy') || type.includes('clipboard')) {
+          copyCount++;
+        } else if (type.includes('devtools') || type.includes('console') || type.includes('inspect')) {
+          devtoolsCount++;
+        } else if (type.includes('click') || type.includes('context')) {
+          rightclickCount++;
+        } else if (type.includes('fingerprint') || type.includes('hardware')) {
+          fingerprintCount++;
+        }
+      });
+
+      // Update checkpoints indicators
+      updateCheckStatus('check-focus-loss', focusLossCount);
+      updateCheckStatus('check-copy', copyCount);
+      updateCheckStatus('check-devtools', devtoolsCount);
+      updateCheckStatus('check-right-click', rightclickCount);
+      updateCheckStatus('check-fingerprint', fingerprintCount);
+
+      // Check for typing pattern dynamics
+      let typingAnomalyCount = 0;
+      let lastStats = null;
+      studentViolations.forEach(v => {
+        const type = (v.violation_type || '').toLowerCase();
+        if (type.includes('typing') || type.includes('keystroke') || type.includes('anomaly')) {
+          typingAnomalyCount++;
+        }
+        if (v.keystroke_stats) {
+          try {
+            lastStats = typeof v.keystroke_stats === 'string' ? JSON.parse(v.keystroke_stats) : v.keystroke_stats;
+          } catch(e) {}
+        }
+      });
+      
+      const typingEl = document.getElementById('check-typing-dynamics');
+      if (typingEl) {
+        if (typingAnomalyCount > 0) {
+          typingEl.textContent = `🔴 انحراف بالنمط (تنبيه: ${typingAnomalyCount} مخالفة)`;
+          typingEl.className = "font-bold text-red-400";
+        } else if (lastStats && lastStats.avg_dwell_time > 0) {
+          typingEl.textContent = `🟢 متناسق (Dwell: ${lastStats.avg_dwell_time}ث، Flight: ${lastStats.avg_flight_time}ث)`;
+          typingEl.className = "font-bold text-emerald-400";
+        } else {
+          typingEl.textContent = "🟢 نمط طبيعي (سلوك بشري)";
+          typingEl.className = "font-bold text-emerald-400";
+        }
+      }
+
+      // Populate timeline of committed violations
+      const vList = document.getElementById('rep-violations-list');
+      if (studentViolations.length === 0) {
+        vList.innerHTML = '<div class="text-center text-[10px] text-slate-500 py-6">سلوك نزيه ومستقر. لم يتم تسجيل أي مخالفات خلال الجلسة. 🟢</div>';
+      } else {
+        vList.innerHTML = studentViolations.map(v => {
+          let badgeClass = v.severity === 'high' ? 'badge-red' : 'badge-amber';
+          let severityLabel = v.severity === 'high' ? 'عالية الخطورة' : 'متوسطة';
+          let time = v.detected_at || v.created_at || '—';
+          return `
+            <div class="bg-slate-900/40 border border-slate-900 rounded-xl p-3 text-right text-[10px] space-y-1">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-red-400">${escapeHtml(v.violation_type)}</span>
+                <span class="text-slate-500 font-mono" style="font-size:8px">${time}</span>
+              </div>
+              <p class="text-slate-400">${escapeHtml(v.details || '')}</p>
+              <div class="text-left mt-1"><span class="badge ${badgeClass} text-[9px] py-0.5">${severityLabel}</span></div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('integrity_report_modal').showModal();
+    }
+
+    function updateCheckStatus(elementId, count) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      if (count > 0) {
+        el.textContent = `🔴 نعم (مخالفة: ${count} مرات)`;
+        el.className = "font-bold text-red-400";
+      } else {
+        el.textContent = "🟢 لا (سلوك نزيه)";
+        el.className = "font-bold text-emerald-400";
+      }
+    }
+
+    // Logout
+    function handleLogout() {
+      sessionStorage.removeItem('aegis_user');
+      alert('تم تسجيل الخروج بنجاح.');
+      window.location.href = 'index.html';
+    }
+
+    // On Load
+    window.addEventListener('load', () => {
+      document.getElementById('teacher-nav-name').textContent = user.official_name;
+      document.getElementById('teacher-welcome-name').textContent = user.official_name;
+      
+      const now = new Date();
+      document.getElementById('current-date').textContent = now.toLocaleDateString('ar-SA', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+
+      // Load initial tab data
+      loadClasses();
+      loadRequests(); // updates count counters too
+    });
+  </script>
+
+  <!-- Detailed Integrity Report Modal -->
+  <dialog id="integrity_report_modal" class="modal">
+    <div class="modal-box bg-slate-950 border border-slate-800 text-right rounded-3xl p-6 max-w-lg">
+      <div class="flex items-center justify-between border-b border-slate-800/60 pb-3 mb-4">
+        <h3 class="font-bold text-sm text-slate-200 flex items-center gap-2">📊 تقرير النزاهة والسلوك التفصيلي للطالب</h3>
+        <button type="button" onclick="document.getElementById('integrity_report_modal').close()" class="btn btn-ghost btn-xs text-slate-400">✕</button>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Student Identity Header -->
+        <div class="bg-slate-900/60 border border-slate-900 rounded-2xl p-4 flex justify-between items-center">
+          <div>
+            <span class="text-[10px] text-slate-500 block">الاسم الكامل للطالب:</span>
+            <p id="rep-student-name" class="text-xs font-bold text-slate-200">...</p>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-500 block">رمز الاختبار:</span>
+            <p id="rep-exam-code" class="text-xs font-mono font-bold text-teal-400">...</p>
+          </div>
+        </div>
+
+        <!-- Metrics Cards -->
+        <div class="grid grid-cols-3 gap-3">
+          <div class="stat-card rounded-xl p-3 text-center bg-slate-900/20 border border-slate-900">
+            <p id="rep-integrity-index" class="text-lg font-black text-emerald-400">—</p>
+            <p class="text-slate-500 text-[9px] mt-0.5">نزاهة السلوك</p>
+          </div>
+          <div class="stat-card rounded-xl p-3 text-center bg-slate-900/20 border border-slate-900">
+            <p id="rep-cheat-prob" class="text-lg font-black text-red-400">—</p>
+            <p class="text-slate-500 text-[9px] mt-0.5">احتمالية الغش</p>
+          </div>
+          <div class="stat-card rounded-xl p-3 text-center bg-slate-900/20 border border-slate-900">
+            <p id="rep-violations-count" class="text-lg font-black text-amber-400">—</p>
+            <p class="text-slate-500 text-[9px] mt-0.5">المخالفات المرصودة</p>
+          </div>
+        </div>
+
+        <!-- Proctoring Checklist Table -->
+        <div class="card bg-slate-950/40 border border-slate-900 rounded-2xl p-4 space-y-3">
+          <span class="text-xs text-slate-300 font-bold">🛠️ تقييم بوابات الحماية (The Security Checkpoints):</span>
+          
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between items-center border-b border-slate-900/60 pb-1.5">
+              <span class="text-slate-400">1. مغادرة الامتحان / تبديل التبويبات (Focus Loss):</span>
+              <span id="check-focus-loss" class="font-bold text-emerald-400">🟢 لا (سلوك نزيه)</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-slate-900/60 pb-1.5">
+              <span class="text-slate-400">2. محاولة نسخ الأسئلة (Illegal Copying):</span>
+              <span id="check-copy" class="font-bold text-emerald-400">🟢 لا (سلوك نزيه)</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-slate-900/60 pb-1.5">
+              <span class="text-slate-400">3. فتح أدوات المطورين (DevTools Inspect):</span>
+              <span id="check-devtools" class="font-bold text-emerald-400">🟢 لا (سلوك نزيه)</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-slate-900/60 pb-1.5">
+              <span class="text-slate-400">4. تفعيل النقر بالزر الأيمن (Right-Click block):</span>
+              <span id="check-right-click" class="font-bold text-emerald-400">🟢 لا (سلوك نزيه)</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-slate-900/60 pb-1.5">
+              <span class="text-slate-400">5. التلاعب ببصمة المتصفح وجهاز الكرت (Fingerprint bypass):</span>
+              <span id="check-fingerprint" class="font-bold text-emerald-400">🟢 لا (سلوك نزيه)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-400">6. تحليل سرعة ونمط الكتابة (Typing Pattern Anomaly):</span>
+              <span id="check-typing-dynamics" class="font-bold text-emerald-400">🟢 نمط طبيعي (سلوك بشري)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cheating details list -->
+        <div class="space-y-2">
+          <span class="text-xs text-slate-300 font-bold">🕒 تفاصيل المخالفات المرتكبة وتوقيتها:</span>
+          <div id="rep-violations-list" class="space-y-2 max-h-36 overflow-y-auto pr-1">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-action flex justify-end">
+        <button type="button" onclick="document.getElementById('integrity_report_modal').close()" class="btn btn-academic-secondary rounded-xl text-xs px-6">إغلاق التقرير</button>
+      </div>
+    </div>
+  </dialog>
+
+</body>
+</html>

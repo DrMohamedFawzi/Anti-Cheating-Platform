@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aegis-X | منشئ الاختبارات المطور</title>
+
+  <!-- Tailwind CSS & DaisyUI CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts Cairo -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Custom Styling -->
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    .creator-container {
+      max-width: 720px;
+    }
+  </style>
+
+  <!-- Session protection check -->
+  <script>
+    const user = JSON.parse(sessionStorage.getItem('aegis_user') || 'null');
+    if (!user || user.role !== 'teacher') {
+      window.location.href = 'login.html';
+    }
+  </script>
+</head>
+
+<body class="glow-grid min-h-screen flex flex-col justify-between p-4">
+
+  <!-- Top Navbar -->
+  <header class="aegis-navbar rounded-2xl border border-slate-800/60 backdrop-blur-xl max-w-6xl mx-auto w-full px-6 py-4 mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-white font-black text-lg">
+        Æ
+      </div>
+      <div>
+        <h1 class="text-sm font-bold text-slate-200 leading-tight">منشئ الاختبارات الشامل</h1>
+        <p class="text-[10px] text-slate-400">تصميم وتخصيص أسئلة الرياضيات والأسئلة الاختيارية للمواد الأخرى</p>
+      </div>
+    </div>
+    <a href="teacher_dashboard.html" class="btn btn-ghost btn-sm rounded-xl text-xs text-slate-300">
+      &rarr; العودة للوحة التحكم
+    </a>
+  </header>
+
+  <!-- Creator Core Split Layout -->
+  <main class="max-w-6xl mx-auto w-full flex-1 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start py-2">
+    
+    <!-- Right side: Editor Form -->
+    <div class="card glass-panel rounded-3xl border border-slate-800 p-6 shadow-2xl space-y-6">
+      
+      <div class="mb-4 pb-4 border-b border-slate-800/60 flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-bold text-slate-200">تصميم وتأليف أسئلة الامتحان</h2>
+          <p class="text-[10px] text-slate-400 mt-1">اختر الفصل الدراسي، وحدد نوع كل سؤال، واستخدم القوالب الجاهزة لتسريع العمل.</p>
+        </div>
+        <button type="button" onclick="generateRandomCode()" class="btn btn-outline border-teal-500/20 text-teal-400 btn-xs rounded-lg">توليد رمز عشوائي</button>
+      </div>
+
+      <form id="exam-form" onsubmit="handleCreateExam(event)" class="space-y-6">
+        
+        <!-- Metadata -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="form-control">
+            <label class="label pt-0"><span class="label-text text-xs text-slate-400">اختر الفصل الدراسي:</span></label>
+            <select id="class_id" required class="select select-bordered input-academic rounded-xl text-xs">
+              <option value="">-- تحميل الفصول الدراسية --</option>
+            </select>
+          </div>
+          
+          <div class="form-control">
+            <label class="label pt-0"><span class="label-text text-xs text-slate-400">رمز الاختبار الفريد:</span></label>
+            <input type="text" id="exam_code" required class="input input-bordered input-academic rounded-xl text-xs py-3 font-mono text-center text-teal-400 font-bold" placeholder="EXAM_MATH101">
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text text-xs text-slate-400">عنوان الاختبار:</span></label>
+          <input type="text" id="exam_title" required class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="مثال: اختبار المواد العامة والرياضيات التجريبي">
+        </div>
+
+        <!-- Time Preservation Setting -->
+        <div class="form-control bg-slate-950/40 border border-slate-900 rounded-2xl p-4 flex flex-row items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold text-slate-200 block">🛡️ الحفاظ على وقت الامتحان عند انقطاع الإنترنت</span>
+            <p class="text-[10px] text-slate-500 mt-0.5">في حال انقطاع اتصال الطالب بالشبكة، هل يتم إيقاف المؤقت مؤقتاً لحين استقرار الاتصال أم يستمر العداد بالعد التنازلي؟</p>
+          </div>
+          <input type="checkbox" id="time_preservation_offline" class="toggle toggle-success toggle-sm" checked />
+        </div>
+
+        <!-- Preset Questions Dropdown -->
+        <div class="card bg-slate-950/40 border border-slate-900 rounded-2xl p-4 space-y-3">
+          <span class="text-xs text-slate-300 font-bold">✨ مكتبة القوالب الجاهزة (اضغط للإضافة الفورية):</span>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" onclick="addPresetQuestion(1)" class="btn btn-xs btn-academic-secondary rounded-lg">📈 رياضيات: دالة تربيعية</button>
+            <button type="button" onclick="addPresetQuestion(2)" class="btn btn-xs btn-academic-secondary rounded-lg">➖ رياضيات: دالة خطية</button>
+            <button type="button" onclick="addPresetQuestion(5)" class="btn btn-xs btn-academic-secondary rounded-lg">🧪 كيمياء: اختيار عاصمة</button>
+            <button type="button" onclick="addPresetQuestion(6)" class="btn btn-xs btn-academic-secondary rounded-lg">📚 تاريخ: الحرب العالمية</button>
+            <button type="button" onclick="document.getElementById('ai_modal').showModal()" class="btn btn-xs btn-academic rounded-lg px-3">🪄 توليد بالذكاء الاصطناعي (Gemini)</button>
+          </div>
+        </div>
+
+        <div class="divider border-slate-800/30">الأسئلة المصممة</div>
+
+        <!-- Dynamic Questions List Container -->
+        <div id="questions-list" class="space-y-4">
+          <!-- Rendered by JS -->
+        </div>
+
+        <div class="flex justify-between items-center pt-2">
+          <div class="flex gap-2">
+            <button type="button" onclick="addQuestionItem('math')" class="btn btn-academic-secondary btn-sm px-4 rounded-xl">+ سؤال رياضيات</button>
+            <button type="button" onclick="addQuestionItem('mcq')" class="btn btn-academic-secondary btn-sm px-4 rounded-xl">+ سؤال اختيار من متعدد</button>
+          </div>
+          <span class="text-[10px] text-slate-500">* سيتم حماية وعرض الأسئلة والخيارات على لوحة الطالب بشكل آمن.</span>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/60 flex gap-3">
+          <button type="submit" id="submit-btn" class="btn btn-academic flex-1 rounded-xl text-xs font-bold py-3">حفظ ونشر الاختبار</button>
+          <a href="teacher_dashboard.html" class="btn btn-academic-secondary rounded-xl text-xs font-bold px-6 py-3">إلغاء</a>
+        </div>
+
+      </form>
+
+    </div>
+
+    <!-- Left side: Live Preview Sticky Panel -->
+    <div class="sticky top-4 space-y-4 w-full">
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-5 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800/60 pb-2">
+          <h3 class="font-bold text-slate-200 text-xs flex items-center gap-2">👁️ معاينة الطالب الحية (Live Preview)</h3>
+          <span class="badge badge-info badge-xs text-[9px] px-2 py-1">تحديث تلقائي</span>
+        </div>
+
+        <!-- Mock Blackboard Canvas -->
+        <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-950 border border-slate-900 shadow-inner">
+          <canvas id="preview-canvas" class="w-full h-full"></canvas>
+        </div>
+
+        <!-- Calculated answer stats -->
+        <div class="bg-slate-950/60 border border-slate-900 rounded-xl p-3 text-right space-y-2">
+          <div id="math-preview-info">
+            <span class="text-[9px] text-slate-500 block">مثال توليدي للطلاب (بفرض Seed = 1000):</span>
+            <p id="preview-sample-equation" class="text-xs font-mono font-bold text-teal-400 mt-1">y = ...</p>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-900">
+            <div>
+              <span class="text-[9px] text-slate-500" id="preview-info-label-x">متغير x / نوع السؤال:</span>
+              <p id="preview-info-val-x" class="text-xs font-bold text-slate-300">رياضيات (x=2)</p>
+            </div>
+            <div>
+              <span class="text-[9px] text-slate-500">الإجابة النموذجية:</span>
+              <p id="preview-expected-answer" class="text-xs font-bold text-emerald-400">...</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-[10px] text-slate-500 leading-relaxed">
+          * يتم تشفير خيارات الأسئلة ورسمها داخل الـ Canvas لضمان عدم إمكانية نسخها برمجياً من قبل الطلاب أو حلها بالذكاء الاصطناعي الخارجي.
+        </p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-6xl mx-auto w-full text-center py-6 text-[10px] text-slate-600">
+    Aegis-X LMS Core Ecosystem • 2026
+  </footer>
+
+  <!-- Page Logic Scripts -->
+  <script src="security.js"></script>
+  <script>
+    let questionCounter = 0;
+    let activeQuestionId = null;
+
+    // Load classes managed by this teacher
+    function loadTeacherClasses() {
+      const select = document.getElementById('class_id');
+      
+      fetch('api.php?action=get_classes&teacher_id=' + user.id, {
+        headers: { 'Authorization': 'Bearer ' + user.token }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            const classes = data.classes || [];
+            if (classes.length === 0) {
+              select.innerHTML = '<option value="">لا يوجد فصول دراسية نشطة، أنشئ فصلاً أولاً!</option>';
+            } else {
+              select.innerHTML = '<option value="">-- اختر الفصل الدراسي --</option>' +
+                classes.map(c => `<option value="${c.id}">${escapeHtml(c.class_name)} (${c.class_code})</option>`).join('');
+            }
+          } else {
+            select.innerHTML = '<option value="">فشل تحميل الفصول الدراسية</option>';
+          }
+        })
+        .catch(() => {
+          select.innerHTML = '<option value="">خطأ في الاتصال بالخادم</option>';
+        });
+    }
+
+    // Helper text escaping
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Auto-generate random exam code
+    function generateRandomCode() {
+      const random = 'EXAM_' + Math.random().toString(36).substring(2, 8).toUpperCase();
+      document.getElementById('exam_code').value = random;
+    }
+
+    // Predefined templates dictionary (Math and MCQ presets)
+    const presets = {
+      1: {
+        type: 'math',
+        text: "أوجد قيمة المتغير y بناءً على دالة المدخلات الرياضية التالية بفرض أن القيمة المعطاة للمتغير x هي 2:",
+        formula: "y = {x_coeff}x² + {x_linear}x + {const_val}"
+      },
+      2: {
+        type: 'math',
+        text: "بفرض أن قيمة x هي 2، أوجد الحل المناسب للمعادلة الخطية المذكورة في الأسفل:",
+        formula: "y = {x_linear}x + {const_val}"
+      },
+      5: {
+        type: 'mcq',
+        text: "ما هي عاصمة جمهورية مصر العربية؟",
+        options: ["الاسكندرية", "القاهرة", "الجيزة", "بورسعيد"],
+        correct_option: 1
+      },
+      6: {
+        type: 'mcq',
+        text: "في أي عام اندلعت الحرب العالمية الأولى؟",
+        options: ["1914م", "1939م", "1918م", "1945م"],
+        correct_option: 0
+      }
+    };
+
+    // Add pre-filled question preset
+    function addPresetQuestion(presetId) {
+      const q = presets[presetId];
+      if (q) {
+        if (q.type === 'mcq') {
+          addQuestionItem('mcq', q.text, '', q.options, q.correct_option);
+        } else {
+          addQuestionItem('math', q.text, q.formula);
+        }
+      }
+    }
+
+    // Insert variable tag into active question formula input
+    function insertVariable(qId, tag) {
+      const input = document.getElementById(`formula-input-${qId}`);
+      if (!input) return;
+
+      const start = input.selectionStart || 0;
+      const end = input.selectionEnd || 0;
+      const text = input.value;
+      
+      input.value = text.substring(0, start) + tag + text.substring(end);
+      input.focus();
+      input.setSelectionRange(start + tag.length, start + tag.length);
+      
+      updatePreview(qId);
+    }
+
+    // Toggle showing math vs mcq input blocks on select change
+    function toggleQuestionType(qId) {
+      const type = document.getElementById(`type-select-${qId}`).value;
+      const mathWrap = document.getElementById(`math-wrap-${qId}`);
+      const mcqWrap = document.getElementById(`mcq-wrap-${qId}`);
+
+      if (type === 'math') {
+        mathWrap.classList.remove('hidden');
+        mcqWrap.classList.add('hidden');
+      } else {
+        mathWrap.classList.add('hidden');
+        mcqWrap.classList.remove('hidden');
+      }
+      updatePreview(qId);
+    }
+
+    // Add a new question item block dynamically
+    function addQuestionItem(type = 'math', text = '', formula = '', options = ['', '', '', ''], correct_option = 0) {
+      questionCounter++;
+      const container = document.getElementById('questions-list');
+      
+      const qBlock = document.createElement('div');
+      qBlock.className = 'card bg-slate-950/50 border border-slate-900 rounded-2xl p-4 space-y-3 relative transition';
+      qBlock.id = `q-block-${questionCounter}`;
+      qBlock.setAttribute('onclick', `setActiveQuestion(${questionCounter})`);
+
+      qBlock.innerHTML = `
+        <div class="flex justify-between items-center">
+          <span class="badge badge-outline border-teal-500/20 text-teal-400 text-[10px] font-bold px-2 py-2">السؤال #${questionCounter}</span>
+          
+          <div class="flex items-center gap-2">
+            <select id="type-select-${questionCounter}" onchange="toggleQuestionType(${questionCounter})" class="select select-bordered select-xs input-academic rounded-lg text-[10px] py-0 px-2 h-7">
+              <option value="math" ${type === 'math' ? 'selected' : ''}>📈 رياضيات ديناميكي</option>
+              <option value="mcq" ${type === 'mcq' ? 'selected' : ''}>❓ اختيار من متعدد (MCQ)</option>
+            </select>
+            <button type="button" onclick="removeQuestionItem(${questionCounter}, event)" class="btn btn-ghost btn-xs text-red-400 hover:bg-red-500/10 rounded-lg">إزالة</button>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">نص السؤال:</span></label>
+          <textarea id="text-input-${questionCounter}" required onkeyup="updatePreview(${questionCounter})" class="textarea textarea-bordered input-academic rounded-xl text-xs h-16 w-full" placeholder="اكتب نص السؤال هنا...">${escapeHtml(text)}</textarea>
+        </div>
+
+        <!-- MATH FIELD WRAPPER -->
+        <div id="math-wrap-${questionCounter}" class="${type === 'math' ? '' : 'hidden'} space-y-3">
+          <div class="form-control">
+            <div class="flex items-center justify-between mb-1">
+              <label class="label py-0"><span class="label-text text-[10px] text-slate-500">المعادلة الرياضية المتغيرة:</span></label>
+              <div class="flex gap-1">
+                <button type="button" onclick="insertVariable(${questionCounter}, '{x_coeff}')" class="btn btn-[9px] btn-outline border-teal-500/20 text-teal-400 btn-xs rounded">معامل x²</button>
+                <button type="button" onclick="insertVariable(${questionCounter}, '{x_linear}')" class="btn btn-[9px] btn-outline border-teal-500/20 text-teal-400 btn-xs rounded">خطي x</button>
+                <button type="button" onclick="insertVariable(${questionCounter}, '{const_val}')" class="btn btn-[9px] btn-outline border-teal-500/20 text-teal-400 btn-xs rounded">ثابت</button>
+              </div>
+            </div>
+            <input type="text" id="formula-input-${questionCounter}" class="input input-bordered input-academic rounded-xl text-xs py-2 font-mono text-center text-teal-300" placeholder="y = {x_coeff}x² + {x_linear}x + {const_val}" value="${escapeHtml(formula)}">
+          </div>
+        </div>
+
+        <!-- MCQ FIELD WRAPPER -->
+        <div id="mcq-wrap-${questionCounter}" class="${type === 'mcq' ? '' : 'hidden'} space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="form-control">
+              <input type="text" id="opt-a-${questionCounter}" onkeyup="updatePreview(${questionCounter})" class="input input-bordered input-academic rounded-xl text-xs" placeholder="الخيار أ" value="${escapeHtml(options[0])}">
+            </div>
+            <div class="form-control">
+              <input type="text" id="opt-b-${questionCounter}" onkeyup="updatePreview(${questionCounter})" class="input input-bordered input-academic rounded-xl text-xs" placeholder="الخيار ب" value="${escapeHtml(options[1])}">
+            </div>
+            <div class="form-control">
+              <input type="text" id="opt-c-${questionCounter}" onkeyup="updatePreview(${questionCounter})" class="input input-bordered input-academic rounded-xl text-xs" placeholder="الخيار ج" value="${escapeHtml(options[2])}">
+            </div>
+            <div class="form-control">
+              <input type="text" id="opt-d-${questionCounter}" onkeyup="updatePreview(${questionCounter})" class="input input-bordered input-academic rounded-xl text-xs" placeholder="الخيار د" value="${escapeHtml(options[3])}">
+            </div>
+          </div>
+
+          <div class="form-control w-full sm:max-w-xs">
+            <label class="label"><span class="label-text text-[10px] text-slate-500">الخيار الصحيح (الإجابة النموذجية):</span></label>
+            <select id="correct-opt-${questionCounter}" onchange="updatePreview(${questionCounter})" class="select select-bordered input-academic rounded-xl text-xs">
+              <option value="0" ${correct_option === 0 ? 'selected' : ''}>أ (الخيار الأول)</option>
+              <option value="1" ${correct_option === 1 ? 'selected' : ''}>ب (الخيار الثاني)</option>
+              <option value="2" ${correct_option === 2 ? 'selected' : ''}>ج (الخيار الثالث)</option>
+              <option value="3" ${correct_option === 3 ? 'selected' : ''}>د (الخيار الرابع)</option>
+            </select>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(qBlock);
+      setActiveQuestion(questionCounter);
+    }
+
+    // Remove question item block
+    function removeQuestionItem(id, event) {
+      if (event) event.stopPropagation();
+      const qBlock = document.getElementById(`q-block-${id}`);
+      if (qBlock) qBlock.remove();
+      
+      // Reset preview to another question if active was deleted
+      if (activeQuestionId === id) {
+        activeQuestionId = null;
+        const remaining = document.getElementById('questions-list').children;
+        if (remaining.length > 0) {
+          const nextId = parseInt(remaining[0].id.replace('q-block-', ''));
+          setActiveQuestion(nextId);
+        } else {
+          clearPreviewCanvas();
+        }
+      }
+    }
+
+    // Highlight focused question block and sync preview
+    function setActiveQuestion(id) {
+      activeQuestionId = id;
+      
+      const container = document.getElementById('questions-list');
+      for (let i = 0; i < container.children.length; i++) {
+        container.children[i].classList.remove('border-teal-500/30', 'bg-slate-900/30');
+      }
+      
+      const activeBlock = document.getElementById(`q-block-${id}`);
+      if (activeBlock) {
+        activeBlock.classList.add('border-teal-500/30', 'bg-slate-900/30');
+      }
+      
+      updatePreview(id);
+    }
+
+    // Dynamic Live Preview renderer
+    function updatePreview(id) {
+      if (!id || id !== activeQuestionId) return;
+
+      const type = document.getElementById(`type-select-${id}`).value;
+      const textVal = document.getElementById(`text-input-${id}`).value || 'معاينة نص السؤال...';
+      const previewCanvas = document.getElementById('preview-canvas');
+
+      const mathInfo = document.getElementById('math-preview-info');
+      const labelX = document.getElementById('preview-info-label-x');
+      const valX = document.getElementById('preview-info-val-x');
+      const expectedAnsLabel = document.getElementById('preview-expected-answer');
+
+      if (type === 'math') {
+        mathInfo.classList.remove('hidden');
+        labelX.textContent = 'نوع السؤال:';
+        valX.textContent = 'رياضيات (x=2)';
+
+        const formulaVal = document.getElementById(`formula-input-${id}`).value;
+
+        // Generate a mock mutation based on seed = 1000
+        const mockSeed = 1000;
+        const x_coeff = Math.floor(pseudoRandom(mockSeed + 17) * 4) + 2;   // 2 to 5
+        const x_linear = Math.floor(pseudoRandom(mockSeed + 31) * 5) + 1;  // 1 to 5
+        const const_val = Math.floor(pseudoRandom(mockSeed + 73) * 9) + 1; // 1 to 9
+
+        const mockEquation = formulaVal
+          .replace(/{x_coeff}/g, x_coeff)
+          .replace(/{x_linear}/g, x_linear)
+          .replace(/{const_val}/g, const_val);
+
+        document.getElementById('preview-sample-equation').textContent = mockEquation || 'y = ...';
+
+        // Calculate expected answer
+        let expectedAns = 'صيغة غير مكتملة';
+        try {
+          let mathString = mockEquation
+            .replace(/x²/g, '*4')
+            .replace(/x/g, '*2')
+            .replace(/y\s*=\s*/g, '')
+            .replace(/²/g, '*4'); 
+            
+          if (/^[0-9\+\-\*\/\(\)\s\.]+$/.test(mathString)) {
+            expectedAns = Function(`"use strict"; return (${mathString})`)();
+          } else {
+            expectedAns = 'صيغة معقدة للمحاكاة';
+          }
+        } catch(e) {
+          expectedAns = 'صيغة غير صحيحة';
+        }
+        expectedAnsLabel.textContent = expectedAns;
+
+        // Render Math Canvas
+        AegisX.initExamProtection = function(){}; // dummy
+        AegisSecurityEngine.drawOnCanvas('preview-canvas', textVal, mockEquation, 'PREVIEW SHIELD', false);
+
+      } else {
+        // MCQ type
+        mathInfo.classList.add('hidden');
+        labelX.textContent = 'نوع السؤال:';
+        valX.textContent = 'اختيار من متعدد';
+
+        // Gather Options
+        const optA = document.getElementById(`opt-a-${id}`).value || 'الخيار الأول أ';
+        const optB = document.getElementById(`opt-b-${id}`).value || 'الخيار الثاني ب';
+        const optC = document.getElementById(`opt-c-${id}`).value || 'الخيار الثالث ج';
+        const optD = document.getElementById(`opt-d-${id}`).value || 'الخيار الرابع د';
+
+        const correctIdx = parseInt(document.getElementById(`correct-opt-${id}`).value || '0');
+        const optLabels = ['أ', 'ب', 'ج', 'د'];
+        expectedAnsLabel.textContent = `الخيار (${optLabels[correctIdx]})`;
+
+        // Render MCQ Canvas
+        AegisSecurityEngine.drawOnCanvas('preview-canvas', textVal, [optA, optB, optC, optD], 'PREVIEW SHIELD', true);
+      }
+    }
+
+    function clearPreviewCanvas() {
+      const canvas = document.getElementById('preview-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('preview-sample-equation').textContent = 'y = ...';
+      document.getElementById('preview-expected-answer').textContent = '...';
+    }
+
+    // Submit form handler
+    function handleCreateExam(e) {
+      e.preventDefault();
+      
+      const classId = document.getElementById('class_id').value;
+      const examCode = document.getElementById('exam_code').value.trim().toUpperCase();
+      const examTitle = document.getElementById('exam_title').value.trim();
+      const submitBtn = document.getElementById('submit-btn');
+
+      // Gather Questions
+      const questionsList = document.getElementById('questions-list');
+      const qBlocks = questionsList.children;
+      
+      if (qBlocks.length === 0) {
+        alert('يرجى إضافة سؤال واحد على الأقل للاختبار.');
+        return;
+      }
+
+      const questions = [];
+      for (let i = 0; i < qBlocks.length; i++) {
+        const id = parseInt(qBlocks[i].id.replace('q-block-', ''));
+        const type = document.getElementById(`type-select-${id}`).value;
+        const text = document.getElementById(`text-input-${id}`).value.trim();
+        
+        if (type === 'math') {
+          const formula = document.getElementById(`formula-input-${id}`).value.trim();
+          questions.push({
+            type: 'math',
+            text: text,
+            formula: formula
+          });
+        } else {
+          const optA = document.getElementById(`opt-a-${id}`).value.trim();
+          const optB = document.getElementById(`opt-b-${id}`).value.trim();
+          const optC = document.getElementById(`opt-c-${id}`).value.trim();
+          const optD = document.getElementById(`opt-d-${id}`).value.trim();
+          const correctOpt = parseInt(document.getElementById(`correct-opt-${id}`).value);
+
+          questions.push({
+            type: 'mcq',
+            text: text,
+            options: [optA, optB, optC, optD],
+            correct_option: correctOpt
+          });
+        }
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="loading loading-spinner loading-xs mr-2"></span> جاري النشر...';
+
+      const timePreservation = document.getElementById('time_preservation_offline').checked ? 1 : 0;
+      const payload = {
+        exam_code: examCode,
+        exam_title: examTitle,
+        class_id: parseInt(classId),
+        questions: questions,
+        time_preservation_offline: timePreservation
+      };
+
+      fetch('api.php?action=create_exam', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + user.token
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          alert('تم إنشاء ونشر الاختبار بنجاح!');
+          window.location.href = 'teacher_dashboard.html';
+        } else {
+          alert('فشل حفظ الاختبار: ' + data.message);
+        }
+      })
+      .catch(() => alert('فشل الاتصال بالخادم، يرجى المحاولة لاحقاً.'))
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'حفظ ونشر الاختبار';
+      });
+    }
+
+    // Generate questions using Gemini API
+    function generateAIExam() {
+      const passage = document.getElementById('ai-passage').value.trim();
+      const numQuestions = document.getElementById('ai-num-questions').value;
+      const btn = document.getElementById('ai-generate-btn');
+
+      if (!passage) {
+        alert('الرجاء إدخال النص الدراسي أو موضوع الاختبار أولاً!');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading loading-spinner loading-xs mr-2"></span> جاري التوليد...';
+
+      fetch('api.php?action=generate_ai_exam', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + user.token
+        },
+        body: JSON.stringify({
+          passage: passage,
+          num_questions: parseInt(numQuestions)
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          const questions = data.questions || [];
+          if (questions.length === 0) {
+            alert('لم يتم استخراج أي أسئلة، يرجى تقديم نص أطول أو محاولة موضوع آخر.');
+            return;
+          }
+
+          // Set exam title
+          const titleInput = document.getElementById('exam_title');
+          if (titleInput) {
+            titleInput.value = data.exam_title || titleInput.value || 'اختبار مولد بالذكاء الاصطناعي';
+          }
+
+          // Clear default questions list if empty or only template question exists
+          const list = document.getElementById('questions-list');
+          if (list.children.length === 1) {
+            const firstId = list.children[0].id.replace('q-block-', '');
+            const txtArea = document.getElementById(`text-input-${firstId}`);
+            if (txtArea && (txtArea.value.trim() === '' || txtArea.value.trim() === presets[1].text.trim())) {
+              list.innerHTML = '';
+            }
+          }
+
+          // Add questions dynamically
+          questions.forEach(q => {
+            if (q.type === 'mcq') {
+              addQuestionItem('mcq', q.text, '', q.options, q.correct_option);
+            } else {
+              addQuestionItem('math', q.text, q.formula || '');
+            }
+          });
+
+          alert('تم توليد الأسئلة وإضافتها بنجاح! يمكنك الآن مراجعتها وتعديلها وحفظ الاختبار.');
+          document.getElementById('ai_modal').close();
+        } else {
+          alert('فشل توليد الاختبار: ' + data.message);
+        }
+      })
+      .catch(() => alert('حدث خطأ في الاتصال بالخادم أثناء التوليد.'))
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = 'ابدأ التوليد الحين';
+      });
+    }
+
+    // Redraw preview hook on theme switch
+    window.__aegisCharts = {
+      redraw: function() {
+        if (activeQuestionId) updatePreview(activeQuestionId);
+      }
+    };
+
+    // Load initial values on mount
+    window.addEventListener('load', () => {
+      loadTeacherClasses();
+      generateRandomCode();
+      
+      // Inject one default question preset
+      addPresetQuestion(1);
+    });
+  </script>
+
+  <!-- AI Generator Modal -->
+  <dialog id="ai_modal" class="modal">
+    <div class="modal-box bg-slate-950 border border-slate-800 text-right rounded-3xl p-6">
+      <h3 class="font-bold text-sm text-slate-200 mb-2 flex items-center gap-2">🪄 توليد اختبار ذكي بالذكاء الاصطناعي (Gemini)</h3>
+      <p class="text-[10px] text-slate-400 mb-4">انسخ فقرة من كتابك الدراسي، أو اكتب موضوعاً عاماً، وسيقوم الذكاء الاصطناعي بصياغة الأسئلة والخيارات والحلول وإضافتها فوراً!</p>
+      
+      <div class="form-control mb-4">
+        <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">موضوع الاختبار أو النص الدراسي:</span></label>
+        <textarea id="ai-passage" class="textarea textarea-bordered input-academic rounded-xl text-xs h-28 w-full" placeholder="مثال: علم الكيمياء يدرس المادة والتفاعلات الكيميائية..."></textarea>
+      </div>
+
+      <div class="form-control mb-6">
+        <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">عدد الأسئلة المطلوبة:</span></label>
+        <select id="ai-num-questions" class="select select-bordered input-academic rounded-xl text-xs">
+          <option value="3">3 أسئلة</option>
+          <option value="5" selected>5 أسئلة</option>
+          <option value="10">10 أسئلة</option>
+        </select>
+      </div>
+
+      <div class="modal-action flex gap-2 justify-end">
+        <button type="button" id="ai-generate-btn" onclick="generateAIExam()" class="btn btn-academic rounded-xl text-xs px-6">ابدأ التوليد الحين</button>
+        <button type="button" onclick="document.getElementById('ai_modal').close()" class="btn btn-academic-secondary rounded-xl text-xs">إلغاء</button>
+      </div>
+    </div>
+  </dialog>
+
+</body>
+</html>

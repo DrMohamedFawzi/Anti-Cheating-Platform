@@ -1,0 +1,54 @@
+[
+    {
+        "student_id": "STUDENT_962943",
+        "student_name": "Ahmad Al-Harbi",
+        "seed": "1000",
+        "detected_at": "2026-06-24 16:17:23"
+    },
+    {
+        "student_id": "STUDENT_249604",
+        "student_name": "Ahmad Al-Harbi",
+        "seed": "1000",
+        "detected_at": "2026-06-24 16:18:52"
+    },
+    {
+        "student_id": "STUDENT_539839",
+        "student_name": "Ahmad Al-Harbi",
+        "seed": "1000",
+        "detected_at": "2026-06-24 16:21:27"
+    },
+    {
+        "student_id": 12,
+        "exam_code": "EXAM_537QIW",
+        "seed": "1000",
+        "status": "completed",
+        "id": 4,
+        "detected_at": "2026-07-01 14:36:04",
+        "score": 0,
+        "integrity_index": 85
+    },
+    {
+        "student_id": 12,
+        "exam_code": "EXAM_537QIW",
+        "seed": "1000",
+        "status": "active",
+        "id": 5,
+        "detected_at": "2026-07-01 14:36:08"
+    },
+    {
+        "student_id": 12,
+        "exam_code": "EXAM_537QIW",
+        "seed": "1000",
+        "status": "active",
+        "id": 6,
+        "detected_at": "2026-07-01 14:36:11"
+    },
+    {
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "score": 50,
+        "integrity_index": 0,
+        "status": "completed",
+        "updated_at": "2026-07-05 12:50:35"
+    }
+]

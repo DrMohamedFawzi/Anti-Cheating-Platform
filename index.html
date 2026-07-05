@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aegis-X | نظام إدارة التعلم الذكي الآمن</title>
+
+  <!-- Tailwind CSS & DaisyUI CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts Cairo -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Custom CSS variables & grids -->
+  <script src="security.js"></script>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+  </style>
+
+  <!-- Redirection script if logged in -->
+  <script>
+    (function() {
+      const user = JSON.parse(sessionStorage.getItem('aegis_user') || 'null');
+      if (user && user.role) {
+        if (user.role === 'student') window.location.href = 'student_dashboard.html';
+        else if (user.role === 'teacher') window.location.href = 'teacher_dashboard.html';
+        else if (user.role === 'institution') window.location.href = 'institution_dashboard.html';
+      }
+    })();
+  </script>
+</head>
+
+<body class="glow-grid min-h-screen flex flex-col p-4 md:p-6 lg:p-8">
+
+  <!-- Top Navbar -->
+  <header class="aegis-navbar rounded-2xl border border-slate-800/60 backdrop-blur-xl max-w-6xl mx-auto w-full px-6 py-4 mb-8 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-white font-black text-lg shadow-lg relative overflow-hidden group">
+        <span class="relative z-10">Æ</span>
+        <div class="absolute inset-0 bg-gradient-to-tr from-blue-600 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </div>
+      <div>
+        <h1 class="text-md font-bold text-slate-200 leading-tight">Aegis-X Smart LMS</h1>
+        <p class="text-[10px] text-slate-400">نظام إدارة التعلم الذكي والامتحانات الآمنة</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="login.html" class="btn btn-ghost btn-sm rounded-xl text-xs font-semibold text-slate-300">تسجيل الدخول</a>
+      <a href="register.html" class="btn btn-academic btn-sm rounded-xl text-xs px-4">إنشاء حساب</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="max-w-6xl mx-auto w-full flex-1 flex flex-col items-center justify-center text-center my-6">
+    <div class="badge badge-outline border-teal-500/30 text-teal-400 text-xs px-4 py-3 mb-6 pulse-glow">
+      🔒 حماية ذكية ثنائية • Zero-Trust Proctored LMS
+    </div>
+    
+    <h2 class="text-3xl md:text-6xl font-black text-slate-100 mb-6 leading-tight max-w-3xl">
+      نظام التعلم والامتحانات الذكية ببيئة <span class="text-gradient-academic font-black">آمنة ونزيهة</span>
+    </h2>
+    
+    <p class="text-slate-400 text-sm md:text-lg leading-relaxed max-w-2xl mb-10">
+      منصة تعليمية متكاملة تقدم أحدث تقنيات مكافحة الغش باستخدام محرك البصمة الرقمية ومكافحة استجابة الذكاء الاصطناعي مع تحليلات فورية لأداء الطلاب.
+    </p>
+
+    <!-- Call to Actions -->
+    <div class="flex flex-col sm:flex-row gap-4 mb-16 justify-center">
+      <a href="login.html" class="btn btn-academic px-10 py-3 rounded-2xl text-sm shadow-xl font-bold min-w-[200px]">
+        ابدأ الآن بالدخول للمنصة
+      </a>
+      <a href="register.html" class="btn btn-academic-secondary px-10 py-3 rounded-2xl text-sm font-bold min-w-[200px]">
+        انضم كمعلم أو مؤسسة
+      </a>
+    </div>
+
+    <!-- Quick Stats Grid -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full mb-16 text-center">
+      <div class="glass-panel p-6 rounded-2xl border border-slate-800/40 relative overflow-hidden group hover:border-teal-500/20 transition-all duration-300">
+        <div class="text-2xl md:text-3xl font-black text-gradient-academic">+99.9%</div>
+        <div class="text-[11px] text-slate-400 mt-1">معدل ثبات واستقرار النظام</div>
+      </div>
+      <div class="glass-panel p-6 rounded-2xl border border-slate-800/40 relative overflow-hidden group hover:border-teal-500/20 transition-all duration-300">
+        <div class="text-2xl md:text-3xl font-black text-gradient-academic">+50K</div>
+        <div class="text-[11px] text-slate-400 mt-1">اختبار تم إجراؤه بنجاح</div>
+      </div>
+      <div class="glass-panel p-6 rounded-2xl border border-slate-800/40 relative overflow-hidden group hover:border-teal-500/20 transition-all duration-300">
+        <div class="text-2xl md:text-3xl font-black text-gradient-academic">100%</div>
+        <div class="text-[11px] text-slate-400 mt-1">حماية خصوصية وبصمة رقمية</div>
+      </div>
+      <div class="glass-panel p-6 rounded-2xl border border-slate-800/40 relative overflow-hidden group hover:border-teal-500/20 transition-all duration-300">
+        <div class="text-2xl md:text-3xl font-black text-gradient-academic">Zero</div>
+        <div class="text-[11px] text-slate-400 mt-1">تسريب للأسئلة أو غش تقني</div>
+      </div>
+    </section>
+
+    <!-- Features Portals Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full text-right mb-16">
+      
+      <!-- Student Card -->
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-6 flex flex-col justify-between hover:border-teal-500/30 hover:-translate-y-1 transition duration-300">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-xl mb-4">
+            🎓
+          </div>
+          <h3 class="text-lg font-bold text-slate-200 mb-2">بوابة الطلاب</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-6">
+            انضم إلى فصولك الدراسية، واعرض بطاقتك الرقمية المشفرة، وأدِّ امتحاناتك ببيئة تفاعلية آمنة وسهلة الاستخدام.
+          </p>
+        </div>
+        <a href="login.html?role=student" class="text-xs font-semibold text-teal-400 hover:text-teal-300 flex items-center gap-1">
+          دخول بوابة الطالب &larr;
+        </a>
+      </div>
+
+      <!-- Teacher Card -->
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-6 flex flex-col justify-between hover:border-blue-500/30 hover:-translate-y-1 transition duration-300">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-xl mb-4">
+            👨‍🏫
+          </div>
+          <h3 class="text-lg font-bold text-slate-200 mb-2">منصة المعلمين</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-6">
+            أنشئ الفصول الدراسية، واقبل الطلاب، وصمم اختباراتك بمعادلات ديناميكية متغيرة، وراقب مؤشرات نزاهة السلوك فورياً.
+          </p>
+        </div>
+        <a href="login.html?role=teacher" class="text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1">
+          دخول بوابة المعلم &larr;
+        </a>
+      </div>
+
+      <!-- Institution Card -->
+      <div class="card glass-panel rounded-3xl border border-slate-800 p-6 flex flex-col justify-between hover:border-purple-500/30 hover:-translate-y-1 transition duration-300">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-xl mb-4">
+            🏛️
+          </div>
+          <h3 class="text-lg font-bold text-slate-200 mb-2">إدارة المؤسسة</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-6">
+            قم بتفعيل المعلمين الجدد، وإدارة الفروع، والاطلاع على الإحصائيات العامة للنظام، ومؤشرات ثبات الاتصال ونزاهة الأداء.
+          </p>
+        </div>
+        <a href="login.html?role=institution" class="text-xs font-semibold text-purple-400 hover:text-purple-300 flex items-center gap-1">
+          دخول لوحة المؤسسة &larr;
+        </a>
+      </div>
+
+    </section>
+
+    <!-- Security & Protection System -->
+    <section class="glass-panel rounded-3xl border border-slate-800 p-8 w-full text-right mb-16 relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-32 h-32 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="md:w-2/3">
+          <div class="badge badge-sm border-teal-500/30 text-teal-400 mb-3">🛡️ تقنيات الأمن السيبراني المتقدمة</div>
+          <h3 class="text-xl md:text-2xl font-bold text-slate-200 mb-4">كيف تضمن منصة Aegis-X نزاهة الامتحانات بنسبة 100%؟</h3>
+          <p class="text-xs md:text-sm text-slate-400 leading-relaxed mb-6">
+            نحن نعتمد نموذج <span class="text-teal-400 font-semibold">Zero-Trust</span> للتحقق من هوية الطالب وسلامة بيئة الاختبار من خلال بصمة المتصفح الفريدة، منع النسخ واللصق، وحماية التنقل بين التبويبات مع إصدار تنبيهات فورية للمعلم في حال رصد أي سلوك مشبوه.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex items-start gap-2">
+              <span class="text-teal-400">✔️</span>
+              <div>
+                <h4 class="text-xs font-bold text-slate-200">البصمة الرقمية للمتصفح</h4>
+                <p class="text-[11px] text-slate-500">منع انتحال الشخصية أو تشغيل حسابات متعددة.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-teal-400">✔️</span>
+              <div>
+                <h4 class="text-xs font-bold text-slate-200">نظام حظر التبويبات الذكي</h4>
+                <p class="text-[11px] text-slate-500">رصد وحظر محاولات الخروج من صفحة الاختبار.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="md:w-1/3 flex justify-center">
+          <div class="w-48 h-48 rounded-full border border-teal-500/20 bg-teal-500/5 flex items-center justify-center pulse-glow relative">
+            <span class="text-6xl">🔒</span>
+            <div class="absolute inset-0 border border-dashed border-teal-500/10 rounded-full animate-spin" style="animation-duration: 20s;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full border-t border-slate-800/60 bg-slate-950/20 backdrop-blur-md mt-16 pt-12 pb-6">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-right mb-12">
+      <!-- Col 1: About Platform -->
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-white font-black text-sm shadow">
+            Æ
+          </div>
+          <h4 class="text-sm font-bold text-slate-200">Aegis-X Smart LMS</h4>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+          الجيل القادم من منصات إدارة التعلم والامتحانات الذكية الآمنة. نجمع بين سهولة الاستخدام والقوة الأمنية والخصوصية الفائقة في بيئة تعليمية واحدة.
+        </p>
+      </div>
+
+      <!-- Col 2: Quick Links -->
+      <div>
+        <h4 class="text-sm font-bold text-slate-200 mb-4 border-r-2 border-teal-500 pr-2">بوابات النظام السريعة</h4>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li><a href="login.html?role=student" class="hover:text-teal-400 transition-colors duration-200">🎓 بوابة الطلاب الرقمية</a></li>
+          <li><a href="login.html?role=teacher" class="hover:text-teal-400 transition-colors duration-200">👨‍🏫 لوحة تحكم المعلم</a></li>
+          <li><a href="login.html?role=institution" class="hover:text-teal-400 transition-colors duration-200">🏛️ إدارة المؤسسات التعليمية</a></li>
+          <li><a href="register.html" class="hover:text-teal-400 transition-colors duration-200">✨ تسجيل حساب جديد</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Developer Info -->
+      <div class="glass-panel p-5 rounded-2xl border border-slate-800/40 hover:border-teal-500/20 transition-all duration-300">
+        <h4 class="text-sm font-bold text-slate-200 mb-3 flex items-center gap-2">
+          <span>🚀 التطوير والتشغيل</span>
+          <span class="badge badge-xs badge-success text-[9px] font-semibold text-white px-2 py-1">رسمي</span>
+        </h4>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-lg">
+              💼
+            </div>
+            <div>
+              <p class="text-[10px] text-slate-400">الشركة المطورة</p>
+              <h5 class="text-xs font-extrabold text-slate-100">شركة SWAT-IT لحلول البرمجة</h5>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 border-t border-slate-800/50 pt-2">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-lg">
+              👨‍💻
+            </div>
+            <div>
+              <p class="text-[10px] text-slate-400">رئيس البنية البرمجية والمطور</p>
+              <h5 class="text-xs font-extrabold text-slate-100">المهندس محمد فوزي أبو نحلة</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom copyrights -->
+    <div class="max-w-6xl mx-auto px-6 border-t border-slate-900/60 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-slate-500">
+      <div>
+        جميع الحقوق محفوظة © 2026 Aegis-X. تم التطوير والبرمجة بواسطة <span class="text-teal-400 font-semibold">شركة SWAT-IT</span> بإشراف <span class="text-blue-400 font-semibold">المهندس محمد فوزي أبو نحلة</span>.
+      </div>
+      <div class="flex gap-4">
+        <a href="#" class="hover:underline">سياسة الخصوصية</a>
+        <span>•</span>
+        <a href="#" class="hover:underline">شروط الاستخدام</a>
+        <span>•</span>
+        <a href="#" class="hover:underline">الدعم الفني</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
