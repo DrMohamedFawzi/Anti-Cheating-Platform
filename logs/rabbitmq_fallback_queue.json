@@ -10231,5 +10231,41 @@
             "detected_at": "2026-07-05 18:21:26"
         },
         "timestamp": "2026-07-05 18:21:26"
+    },
+    {
+        "queue": "proctoring_queue",
+        "payload": {
+            "action": "log_heartbeat",
+            "student_id": 18,
+            "exam_code": "EXAM_IMF04F",
+            "status": "online",
+            "duration_seconds": 5,
+            "detected_at": "2026-07-05 18:21:31"
+        },
+        "timestamp": "2026-07-05 18:21:31"
+    },
+    {
+        "queue": "proctoring_queue",
+        "payload": {
+            "action": "log_heartbeat",
+            "student_id": 18,
+            "exam_code": "EXAM_IMF04F",
+            "status": "online",
+            "duration_seconds": 5,
+            "detected_at": "2026-07-05 18:21:36"
+        },
+        "timestamp": "2026-07-05 18:21:36"
+    },
+    {
+        "queue": "proctoring_queue",
+        "payload": {
+            "action": "log_heartbeat",
+            "student_id": 18,
+            "exam_code": "EXAM_IMF04F",
+            "status": "online",
+            "duration_seconds": 5,
+            "detected_at": "2026-07-05 18:22:02"
+        },
+        "timestamp": "2026-07-05 18:22:02"
     }
 ]

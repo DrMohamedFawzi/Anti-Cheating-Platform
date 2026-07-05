@@ -8705,5 +8705,32 @@
         "duration_seconds": 5,
         "detected_at": "2026-07-05 18:21:26",
         "id": 968
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:21:31",
+        "id": 969
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:21:36",
+        "id": 970
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:22:02",
+        "id": 971
     }
 ]
