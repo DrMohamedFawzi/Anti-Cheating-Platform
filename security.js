@@ -162,6 +162,133 @@
   var _mouseY = 0;
 
   /* ──────────────────────────────────────────────────────────
+   *  AUDIO & HARDWARE MONITORS
+   * ────────────────────────────────────────────────────────── */
+    var AudioHardwareMonitor = {
+    audioContext: null,
+    analyser: null,
+    microphone: null,
+    isMonitoring: false,
+    audioViolationTriggered: false,
+    zeroNoiseFrames: 0,
+    initialDevicesCount: -1,
+
+    init: function(violationCallback) {
+      var self = this;
+      
+      // 1. Enumerate devices to check for forbidden hardware (initial check)
+      if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+        navigator.mediaDevices.enumerateDevices().then(function(devices) {
+          self.initialDevicesCount = devices.length;
+          self.checkDevices(devices, violationCallback);
+        });
+
+        // 2. Listen for hardware changes (Strict Device Change)
+        navigator.mediaDevices.addEventListener('devicechange', function() {
+          navigator.mediaDevices.enumerateDevices().then(function(newDevices) {
+            if (self.isMonitoring && self.initialDevicesCount !== -1 && newDevices.length !== self.initialDevicesCount) {
+               if (violationCallback) {
+                 violationCallback('DEVICE_CHANGED', 'تم تغيير أجهزة الصوت أثناء الامتحان', 'high');
+               }
+            }
+            self.checkDevices(newDevices, violationCallback);
+          });
+        });
+      }
+
+      // 3. Request Microphone access and monitor audio
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+          .then(function(stream) {
+            self.startAudioMonitoring(stream, violationCallback);
+          })
+          .catch(function(err) {
+            if (violationCallback) {
+               violationCallback('MIC_DENIED', 'لم يتم إعطاء صلاحية الميكروفون أو لا يوجد ميكروفون', 'high');
+            }
+          });
+      } else {
+        if (violationCallback) {
+           violationCallback('MIC_UNSUPPORTED', 'المتصفح لا يدعم الوصول للميكروفون', 'high');
+        }
+      }
+    },
+
+    checkDevices: function(devices, violationCallback) {
+      var forbiddenKeywords = ['headset', 'bluetooth', 'airpods', 'buds', 'wireless', 'usb', 'headphone'];
+      devices.forEach(function(device) {
+        if (device.kind === 'audiooutput' || device.kind === 'audioinput') {
+          var label = device.label.toLowerCase();
+          for (var i = 0; i < forbiddenKeywords.length; i++) {
+            if (label.indexOf(forbiddenKeywords[i]) !== -1) {
+              if (violationCallback) {
+                violationCallback('FORBIDDEN_DEVICE', 'تم اكتشاف جهاز صوتي غير مسموح به: ' + device.label, 'high');
+              }
+              break;
+            }
+          }
+        }
+      });
+    },
+
+    startAudioMonitoring: function(stream, violationCallback) {
+      this.isMonitoring = true;
+      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      this.analyser = this.audioContext.createAnalyser();
+      this.microphone = this.audioContext.createMediaStreamSource(stream);
+      this.microphone.connect(this.analyser);
+      this.analyser.fftSize = 256;
+      
+      var bufferLength = this.analyser.frequencyBinCount;
+      var dataArray = new Uint8Array(bufferLength);
+      var self = this;
+
+      function monitor() {
+        if (!self.isMonitoring) return;
+        requestAnimationFrame(monitor);
+        
+        self.analyser.getByteFrequencyData(dataArray);
+        var sum = 0;
+        for (var i = 0; i < bufferLength; i++) {
+          sum += dataArray[i];
+        }
+        var average = sum / bufferLength;
+
+        // Strict 0 dB ambient noise check (hardware mute / virtual cable tampering)
+        if (average === 0) {
+          self.zeroNoiseFrames++;
+          if (self.zeroNoiseFrames > 300 && !self.audioViolationTriggered) { // Approx 5 seconds at 60fps
+            self.audioViolationTriggered = true;
+            if (violationCallback) {
+              violationCallback('AUDIO_ZERO_TAMPER', 'تم كتم الميكروفون عتادياً أو استخدام ميكروفون وهمي', 'high');
+            }
+          }
+        } else {
+          self.zeroNoiseFrames = 0;
+        }
+
+        // Threshold for audio level (Increased to 40 to only catch nearby/loud voices)
+        if (average > 40 && !self.audioViolationTriggered) {
+          self.audioViolationTriggered = true;
+          if (violationCallback) {
+            violationCallback('AUDIO_DETECTED', 'تم اكتشاف صوت أو حديث في المحيط (المتوسط: ' + Math.round(average) + ')', 'high');
+          }
+          // Reset trigger after 1 second to avoid giving them room to cheat
+          setTimeout(function() { self.audioViolationTriggered = false; }, 1000);
+        }
+      }
+      monitor();
+    },
+
+    stop: function() {
+      this.isMonitoring = false;
+      if (this.audioContext && this.audioContext.state !== 'closed') {
+        this.audioContext.close();
+      }
+    }
+  };
+
+  /* ──────────────────────────────────────────────────────────
    *  AEGIS SECURITY ENGINE — FOR EXAM PLAYER
    * ────────────────────────────────────────────────────────── */
   global.AegisSecurityEngine = {
@@ -447,16 +574,36 @@
       window.addEventListener('online', handleOnline);
 
       // Scheduled fetch every 5 seconds
-      _heartbeatInterval = setInterval(function() {
+      _heartbeatInterval = setInterval(async function() {
+        var token = '';
+        try {
+          var userObj = JSON.parse(sessionStorage.getItem('aegis_user') || localStorage.getItem('aegis_user') || '{}');
+          token = userObj.token || '';
+        } catch(e) {}
+
+        // Cryptographic Handshake Hash
+        var payloadStr = userId + ":" + examCode + ":" + _violationCount + ":" + token;
+        var hashHex = '';
+        if (crypto && crypto.subtle) {
+           var buffer = new TextEncoder().encode(payloadStr);
+           var hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+           var hashArray = Array.from(new Uint8Array(hashBuffer));
+           hashHex = hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+        }
+
         fetch('api.php?action=heartbeat', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+          },
           body: JSON.stringify({
             student_id: userId,
             exam_code: examCode,
             status: navigator.onLine ? 'online' : 'offline',
             duration_seconds: 5,
-            violations: _violationCount
+            violations: _violationCount,
+            signature: hashHex
           })
         }).catch(function() {});
       }, 5000);
@@ -478,6 +625,11 @@
     // 7. Initialize security traps (blocking shortcuts, key bindings, devtools open)
     initSecurityTraps: function(violationCallback) {
       _protectionActive = true;
+      
+      // Initialize Audio and Hardware monitoring
+      if (typeof AudioHardwareMonitor !== 'undefined') {
+        AudioHardwareMonitor.init(violationCallback);
+      }
 
       // Copy/Cut/Paste block
       document.addEventListener('copy', function(e) {
@@ -556,6 +708,18 @@
       };
       window.addEventListener('resize', devtoolsDetector);
       setInterval(devtoolsDetector, 2000);
+
+      // Multi-Monitor Detection
+      var checkExtendedScreen = function() {
+        if (window.screen && window.screen.isExtended) {
+          _violationCount++;
+          if (violationCallback) {
+            violationCallback('MULTI_MONITOR', 'تم اكتشاف شاشات متعددة متصلة بالجهاز', 'high');
+          }
+        }
+      };
+      checkExtendedScreen();
+      setInterval(checkExtendedScreen, 5000);
     },
 
     // 8. Generate Screen & GPU Fingerprint
@@ -682,7 +846,8 @@
       _protectionActive = true;
       KeystrokeDynamicsTracker.init();
       global.AegisSecurityEngine.startHeartbeat(studentId, examCode, null);
-      global.AegisSecurityEngine.initSecurityTraps(function(type, details, severity) {
+      
+      var mainViolationCallback = function(type, details, severity) {
         var token = '';
         try {
           var userObj = JSON.parse(sessionStorage.getItem('aegis_user') || '{}');
@@ -704,12 +869,16 @@
             keystroke_stats: KeystrokeDynamicsTracker.getStats()
           })
         }).catch(function() {});
-      });
+      };
+
+      global.AegisSecurityEngine.initSecurityTraps(mainViolationCallback);
+      AudioHardwareMonitor.init(mainViolationCallback);
     },
     stopProtection: function() {
       _protectionActive = false;
       if (_heartbeatInterval) clearInterval(_heartbeatInterval);
       KeystrokeDynamicsTracker.clear();
+      AudioHardwareMonitor.stop();
     },
     getViolationCount: function() {
       return _violationCount;

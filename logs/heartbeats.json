@@ -8786,5 +8786,1949 @@
         "duration_seconds": 5,
         "detected_at": "2026-07-05 18:28:02",
         "id": 977
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:29:02",
+        "id": 978
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:30:02",
+        "id": 979
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:31:02",
+        "id": 980
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:32:02",
+        "id": 981
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:33:02",
+        "id": 982
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:34:02",
+        "id": 983
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:35:02",
+        "id": 984
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:36:02",
+        "id": 985
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-05 18:37:02",
+        "id": 986
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:39:46",
+        "id": 987
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:40:01",
+        "id": 988
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:41:00",
+        "id": 989
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:42:00",
+        "id": 990
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:46:45",
+        "id": 991
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:46:58",
+        "id": 992
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:47:58",
+        "id": 993
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:04",
+        "id": 994
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:06",
+        "id": 995
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:11",
+        "id": 996
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:16",
+        "id": 997
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:21",
+        "id": 998
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:26",
+        "id": 999
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:31",
+        "id": 1000
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:37",
+        "id": 1001
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:41",
+        "id": 1002
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:46",
+        "id": 1003
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:55",
+        "id": 1004
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:48:56",
+        "id": 1005
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:01",
+        "id": 1006
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "offline",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:07",
+        "id": 1007
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:12",
+        "id": 1008
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:21",
+        "id": 1009
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:22",
+        "id": 1010
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:27",
+        "id": 1011
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "offline",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:32",
+        "id": 1012
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:37",
+        "id": 1013
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:42",
+        "id": 1014
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:47",
+        "id": 1015
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:52",
+        "id": 1016
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:49:57",
+        "id": 1017
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:50:02",
+        "id": 1018
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:50:07",
+        "id": 1019
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:50:12",
+        "id": 1020
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:50:58",
+        "id": 1021
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:51:58",
+        "id": 1022
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:52:58",
+        "id": 1023
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:53:58",
+        "id": 1024
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:54:58",
+        "id": 1025
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:55:58",
+        "id": 1026
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:56:45",
+        "id": 1027
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:56:46",
+        "id": 1028
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:56:51",
+        "id": 1029
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:56:56",
+        "id": 1030
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:01",
+        "id": 1031
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:06",
+        "id": 1032
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:12",
+        "id": 1033
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:17",
+        "id": 1034
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:22",
+        "id": 1035
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:27",
+        "id": 1036
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:32",
+        "id": 1037
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:37",
+        "id": 1038
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:42",
+        "id": 1039
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:47",
+        "id": 1040
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:52",
+        "id": 1041
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:57:57",
+        "id": 1042
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:58:02",
+        "id": 1043
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:58:40",
+        "id": 1044
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:58:41",
+        "id": 1045
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 17:58:48",
+        "id": 1046
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:12:49",
+        "id": 1047
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:12:54",
+        "id": 1048
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:12:59",
+        "id": 1049
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:04",
+        "id": 1050
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:09",
+        "id": 1051
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:14",
+        "id": 1052
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:19",
+        "id": 1053
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:24",
+        "id": 1054
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:29",
+        "id": 1055
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:34",
+        "id": 1056
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:39",
+        "id": 1057
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:44",
+        "id": 1058
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:49",
+        "id": 1059
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:54",
+        "id": 1060
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:13:59",
+        "id": 1061
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:04",
+        "id": 1062
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:09",
+        "id": 1063
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:14",
+        "id": 1064
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:19",
+        "id": 1065
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:24",
+        "id": 1066
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:29",
+        "id": 1067
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:34",
+        "id": 1068
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:39",
+        "id": 1069
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:44",
+        "id": 1070
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:49",
+        "id": 1071
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:54",
+        "id": 1072
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:14:59",
+        "id": 1073
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:04",
+        "id": 1074
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:09",
+        "id": 1075
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:14",
+        "id": 1076
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:19",
+        "id": 1077
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:24",
+        "id": 1078
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:29",
+        "id": 1079
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:34",
+        "id": 1080
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:39",
+        "id": 1081
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:44",
+        "id": 1082
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:49",
+        "id": 1083
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:54",
+        "id": 1084
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:15:59",
+        "id": 1085
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:16:04",
+        "id": 1086
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:16:59",
+        "id": 1087
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:17:11",
+        "id": 1088
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:17:20",
+        "id": 1089
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:17:25",
+        "id": 1090
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:17:32",
+        "id": 1091
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:17:37",
+        "id": 1092
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:17:42",
+        "id": 1093
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:17:47",
+        "id": 1094
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:17:52",
+        "id": 1095
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:17:57",
+        "id": 1096
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:02",
+        "id": 1097
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:07",
+        "id": 1098
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:12",
+        "id": 1099
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:17",
+        "id": 1100
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:22",
+        "id": 1101
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:27",
+        "id": 1102
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:32",
+        "id": 1103
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:37",
+        "id": 1104
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:42",
+        "id": 1105
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:47",
+        "id": 1106
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:52",
+        "id": 1107
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:18:57",
+        "id": 1108
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:02",
+        "id": 1109
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:07",
+        "id": 1110
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:12",
+        "id": 1111
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:17",
+        "id": 1112
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:22",
+        "id": 1113
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:27",
+        "id": 1114
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:32",
+        "id": 1115
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:37",
+        "id": 1116
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:42",
+        "id": 1117
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:47",
+        "id": 1118
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:52",
+        "id": 1119
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:19:57",
+        "id": 1120
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:02",
+        "id": 1121
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:07",
+        "id": 1122
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:12",
+        "id": 1123
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:17",
+        "id": 1124
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:22",
+        "id": 1125
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:27",
+        "id": 1126
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:32",
+        "id": 1127
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:37",
+        "id": 1128
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:42",
+        "id": 1129
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:47",
+        "id": 1130
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:52",
+        "id": 1131
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:20:57",
+        "id": 1132
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:02",
+        "id": 1133
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:07",
+        "id": 1134
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:12",
+        "id": 1135
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:17",
+        "id": 1136
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:22",
+        "id": 1137
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:27",
+        "id": 1138
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:32",
+        "id": 1139
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:37",
+        "id": 1140
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:42",
+        "id": 1141
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:47",
+        "id": 1142
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:52",
+        "id": 1143
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:21:57",
+        "id": 1144
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:02",
+        "id": 1145
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:07",
+        "id": 1146
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:12",
+        "id": 1147
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:17",
+        "id": 1148
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:22",
+        "id": 1149
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:27",
+        "id": 1150
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:32",
+        "id": 1151
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:37",
+        "id": 1152
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:42",
+        "id": 1153
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:47",
+        "id": 1154
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:52",
+        "id": 1155
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:22:57",
+        "id": 1156
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:02",
+        "id": 1157
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:07",
+        "id": 1158
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:12",
+        "id": 1159
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:17",
+        "id": 1160
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:22",
+        "id": 1161
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:27",
+        "id": 1162
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:32",
+        "id": 1163
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:37",
+        "id": 1164
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:42",
+        "id": 1165
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:47",
+        "id": 1166
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:52",
+        "id": 1167
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:23:57",
+        "id": 1168
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:02",
+        "id": 1169
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:07",
+        "id": 1170
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:12",
+        "id": 1171
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:17",
+        "id": 1172
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:22",
+        "id": 1173
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:27",
+        "id": 1174
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:32",
+        "id": 1175
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:37",
+        "id": 1176
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:42",
+        "id": 1177
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:47",
+        "id": 1178
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:52",
+        "id": 1179
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:24:57",
+        "id": 1180
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:25:02",
+        "id": 1181
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:25:07",
+        "id": 1182
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:40:35",
+        "id": 1183
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:43:00",
+        "id": 1184
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:44:21",
+        "id": 1185
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:46:06",
+        "id": 1186
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:46:11",
+        "id": 1187
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:46:16",
+        "id": 1188
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:46:21",
+        "id": 1189
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:46:26",
+        "id": 1190
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:46:31",
+        "id": 1191
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_IMF04F",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:48:13",
+        "id": 1192
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "AI_PRACTICE",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-07 18:56:20",
+        "id": 1193
     }
 ]

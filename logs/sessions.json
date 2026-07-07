@@ -46,9 +46,9 @@
     {
         "student_id": 18,
         "exam_code": "EXAM_IMF04F",
-        "score": 50,
+        "score": 0,
         "integrity_index": 0,
         "status": "completed",
-        "updated_at": "2026-07-05 12:50:35"
+        "updated_at": "2026-07-07 18:48:19"
     }
 ]

@@ -515,13 +515,13 @@ try {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
 
-    $conn->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS institution_id INT DEFAULT NULL");
-    $conn->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS is_approved TINYINT DEFAULT 1");
-    $conn->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS official_name VARCHAR(150) NOT NULL DEFAULT ''");
-    $conn->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS qr_code_hash VARCHAR(128) DEFAULT NULL");
-    $conn->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_login_ip VARCHAR(45) DEFAULT NULL");
-    $conn->query("ALTER TABLE exams ADD COLUMN IF NOT EXISTS class_id INT DEFAULT NULL");
-    $conn->query("ALTER TABLE exams ADD COLUMN IF NOT EXISTS time_preservation_offline TINYINT DEFAULT 0");
+    try { $conn->query("ALTER TABLE users ADD COLUMN institution_id INT DEFAULT NULL"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE users ADD COLUMN is_approved TINYINT DEFAULT 1"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE users ADD COLUMN official_name VARCHAR(150) NOT NULL DEFAULT ''"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE users ADD COLUMN qr_code_hash VARCHAR(128) DEFAULT NULL"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE users ADD COLUMN last_login_ip VARCHAR(45) DEFAULT NULL"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE exams ADD COLUMN class_id INT DEFAULT NULL"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE exams ADD COLUMN time_preservation_offline TINYINT DEFAULT 0"); } catch (Exception $e) {}
 
 } catch (Exception $e) {
     error_log("Database initialization fallback: " . $e->getMessage());
@@ -1061,6 +1061,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $exam_code = $input['exam_code'] ?? 'DEFAULT';
         $status = $input['status'] ?? 'online';
         $duration = (int)($input['duration_seconds'] ?? 0);
+        $violations = (int)($input['violations'] ?? 0);
+        $client_signature = $input['signature'] ?? '';
+
+        // Extract token
+        $headers = array_change_key_case(getallheaders(), CASE_LOWER);
+        $token = '';
+        if (isset($headers['authorization']) && preg_match('/bearer\s(\S+)/i', $headers['authorization'], $matches)) {
+            $token = $matches[1];
+        }
+
+        // Verify Cryptographic Signature
+        $payloadStr = $student_id . ":" . $exam_code . ":" . $violations . ":" . $token;
+        $expected_hash = hash('sha256', $payloadStr);
+
+        if ($client_signature !== $expected_hash) {
+             $tamper_payload = [
+                 'action' => 'log_violation',
+                 'student_id' => $student_id,
+                 'exam_code' => $exam_code,
+                 'violation_type' => 'HEARTBEAT_TAMPER',
+                 'details' => 'تم رصد محاولة تزييف للنبضة الأمنية (توقيع غير مطابق)',
+                 'severity' => 'high',
+                 'detected_at' => date('Y-m-d H:i:s')
+             ];
+             AntigravityQueue::enqueue('proctoring_queue', $tamper_payload);
+             if (!$db_fallback && $conn) {
+                 $stmt = $conn->prepare("INSERT INTO violations (student_id, exam_code, violation_type, details, severity, detected_at) VALUES (?, ?, ?, ?, ?, ?)");
+                 if ($stmt) {
+                     $stmt->bind_param("isssss", $student_id, $exam_code, $tamper_payload['violation_type'], $tamper_payload['details'], $tamper_payload['severity'], $tamper_payload['detected_at']);
+                     $stmt->execute();
+                 }
+             } else {
+                 log_to_file('violations', $tamper_payload);
+             }
+             echo json_encode(['status' => 'error', 'message' => 'Heartbeat Tampering Detected']);
+             exit;
+        }
 
         $payload = [
             'action' => 'log_heartbeat',
@@ -1448,6 +1485,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($http_code === 200) {
             $res_data = json_decode($response, true);
             $raw_json = $res_data['candidates'][0]['content']['parts'][0]['text'] ?? '';
+            
+            // Strip markdown json block if Gemini includes it
+            $raw_json = preg_replace('/```json/i', '', $raw_json);
+            $raw_json = preg_replace('/```/', '', $raw_json);
+            $raw_json = trim($raw_json);
+            
             $exam_object = json_decode($raw_json, true);
             if ($exam_object && isset($exam_object['questions'])) {
                 echo json_encode([
@@ -1456,12 +1499,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'questions' => $exam_object['questions']
                 ]);
                 exit;
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'فشل تحليل الاستجابة من الذكاء الاصطناعي (JSON غير متوافق).',
+                    'debug_raw' => $raw_json
+                ]);
+                exit;
             }
+        }
+
+        $error_details = 'استجابة غير متوافقة.';
+        $res_data = json_decode($response, true);
+        if (isset($res_data['error']['message'])) {
+            $error_details = $res_data['error']['message'];
         }
 
         echo json_encode([
             'status' => 'error',
-            'message' => 'فشل التخاطب مع بوابة Gemini API أو أن الاستجابة غير متوافقة.',
+            'message' => 'فشل التخاطب مع بوابة Gemini API: ' . $error_details,
             'debug_code' => $http_code
         ]);
         exit;

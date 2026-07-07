@@ -27,6 +27,7 @@ const currentExamCode = examAuth.examCode;
         let totalExamTimeLimit = 2700; // 45 minutes
         let offlineTimerInterval = null;
         let isExamFinished = false;
+        let audioViolationsCount = 0; // Track audio violations
 
         // Save exam state locally to prevent data loss on refresh
         function saveExamState() {
@@ -37,6 +38,7 @@ const currentExamCode = examAuth.examCode;
                     currentQuestionIdx,
                     studentAnswers,
                     totalQuestionsSolved,
+                    audioViolationsCount,
                     seed: (typeof AegisSecurityEngine !== 'undefined') ? AegisSecurityEngine.getCurrentSeed() : 1000, violationCount: violationCount
                 };
                 localStorage.setItem(`exam_state_${currentExamCode}`, JSON.stringify(state));
@@ -497,8 +499,11 @@ const currentExamCode = examAuth.examCode;
             }
         }
 
-        // Setup onload
-        window.addEventListener('load', async () => {
+        // Start Exam Engine after pre-flight
+        async function startExamEngine() {
+            document.getElementById('pre-flight-check').classList.add('hidden');
+            document.getElementById('exam-main-container').classList.remove('hidden');
+
             document.getElementById('student-name-label').innerText = `الطالب: ${currentUser.official_name} | رمز التعريف: ${currentUser.id}`;
             
             // Initialize system
@@ -520,6 +525,7 @@ const currentExamCode = examAuth.examCode;
                                 currentQuestionIdx = parseInt(state.currentQuestionIdx) || 0;
                                 studentAnswers = state.studentAnswers || [];
                                 totalQuestionsSolved = parseInt(state.totalQuestionsSolved) || 0;
+                                audioViolationsCount = parseInt(state.audioViolationsCount) || 0;
                             }
                             violationCount = parseInt(state.violationCount) || 0;
                             if (state.seed && typeof AegisSecurityEngine !== 'undefined') AegisSecurityEngine.setSeed(state.seed);
@@ -568,6 +574,7 @@ const currentExamCode = examAuth.examCode;
                             currentQuestionIdx = parseInt(state.currentQuestionIdx) || 0;
                             studentAnswers = state.studentAnswers || [];
                             totalQuestionsSolved = parseInt(state.totalQuestionsSolved) || 0;
+                            audioViolationsCount = parseInt(state.audioViolationsCount) || 0;
                         }
                         violationCount = parseInt(state.violationCount) || 0;
                         if (state.seed && typeof AegisSecurityEngine !== 'undefined') AegisSecurityEngine.setSeed(state.seed);
@@ -585,6 +592,31 @@ const currentExamCode = examAuth.examCode;
             AegisSecurityEngine.initSecurityTraps((type, desc, severity) => {
                 violationCount++;
                 logViolation(type, desc, severity);
+                
+                if (type === 'AUDIO_DETECTED') {
+                    audioViolationsCount++;
+                    saveExamState();
+                    if (audioViolationsCount >= 3) {
+                        alert('تم اكتشاف صوت غير مسموح به للمرة الثالثة. سيتم إنهاء الامتحان فوراً لحماية النزاهة.');
+                        submitAnswer(true); // Force finish exam
+                    } else {
+                        // Use a custom DOM warning instead of alert() to prevent browser from exiting Fullscreen
+                        let warnDiv = document.createElement('div');
+                        warnDiv.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-xl shadow-2xl z-50 animate-bounce font-bold text-sm text-center border-2 border-white';
+                        warnDiv.innerHTML = `⚠️ تحذير (${audioViolationsCount}/3): تم اكتشاف صوت أو حديث حولك.<br>احذر، بعد التحذير الثالث سيتم إغلاق الامتحان نهائياً!`;
+                        document.body.appendChild(warnDiv);
+                        
+                        // Play alert sound if available
+                        let audio = document.getElementById('alert-sound');
+                        if (audio) audio.play().catch(e => {});
+
+                        setTimeout(() => {
+                            if (warnDiv && warnDiv.parentNode) {
+                                warnDiv.parentNode.removeChild(warnDiv);
+                            }
+                        }, 5000);
+                    }
+                }
             });
 
             // Run Anti-Camera Shield
@@ -606,5 +638,54 @@ const currentExamCode = examAuth.examCode;
             }
 
             syncOfflineAnswers();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('btn-start-preflight');
+            if (!btn) {
+                console.error("زر بدء الفحص غير موجود في الصفحة!");
+                return;
+            }
+
+            btn.addEventListener('click', async () => {
+                console.log("تم النقر على زر بدء الامتحان");
+                try {
+                    // Request Fullscreen
+                    if (document.documentElement.requestFullscreen) {
+                        await document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        await document.documentElement.webkitRequestFullscreen();
+                    }
+
+                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                        alert('المتصفح لا يدعم الوصول للميكروفون أو أنك تستخدم اتصالاً غير آمن (HTTP). يرجى التحقق من إعدادات المتصفح.');
+                        return;
+                    }
+
+                    // Check microphone
+                    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                        console.log("تم الحصول على صلاحية الميكروفون");
+                        // Release the test stream
+                        stream.getTracks().forEach(track => track.stop());
+                        
+                        // Add fullscreen change listener
+                        document.addEventListener('fullscreenchange', () => {
+                            if (!document.fullscreenElement) {
+                                alert("تم الخروج من وضع ملء الشاشة. سيتم إنهاء الامتحان فوراً لحماية النزاهة.");
+                                if (typeof submitAnswer === 'function') submitAnswer(true);
+                            }
+                        });
+
+                        // Start engine
+                        startExamEngine();
+                    }).catch(err => {
+                        console.error("خطأ الميكروفون:", err);
+                        alert('يجب السماح بالوصول إلى الميكروفون لبدء الامتحان.');
+                    });
+
+                } catch (e) {
+                    console.error("خطأ ملء الشاشة:", e);
+                    alert('حدث خطأ في محاولة الدخول لوضع ملء الشاشة. ' + e.message);
+                }
+            });
         });
-    
