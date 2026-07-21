@@ -19,44 +19,7 @@ if (preg_match('/(iPhone|iPad|iPod)/i', $user_agent)) {
     exit;
 }
 
-// ─── ANTI-DDOS & RATE LIMITING ──────────────────────────────────────────────
 $ip_address = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
-$rate_limit_file = __DIR__ . '/db/rate_limit_' . md5($ip_address) . '.json';
-$banned_ips_file = __DIR__ . '/db/banned_ips_system.json';
-
-// Check if banned
-if (file_exists($banned_ips_file)) {
-    $banned = json_decode(file_get_contents($banned_ips_file), true) ?: [];
-    if (isset($banned[$ip_address]) && $banned[$ip_address] > time()) {
-        http_response_code(429);
-        echo json_encode(['status' => 'error', 'message' => 'Too Many Requests - IP Banned for 24 hours.']);
-        exit;
-    }
-}
-
-// Check rate limit
-$current_time = time();
-$requests = [];
-if (file_exists($rate_limit_file)) {
-    $requests = json_decode(file_get_contents($rate_limit_file), true) ?: [];
-}
-// Filter out requests older than 60 seconds
-$requests = array_filter($requests, function($timestamp) use ($current_time) {
-    return $timestamp > ($current_time - 60);
-});
-$requests[] = $current_time;
-
-if (count($requests) > 100000) { // 100,000 requests per minute
-    // Ban for 24 hours
-    $banned = file_exists($banned_ips_file) ? json_decode(file_get_contents($banned_ips_file), true) ?: [] : [];
-    $banned[$ip_address] = $current_time + 86400; // 24 hours
-    file_put_contents($banned_ips_file, json_encode($banned));
-    
-    http_response_code(429);
-    echo json_encode(['status' => 'error', 'message' => 'Too Many Requests - IP Banned for 24 hours.']);
-    exit;
-}
-file_put_contents($rate_limit_file, json_encode($requests));
 
 // Database configuration
 $config_file = __DIR__ . '/config.json';
@@ -113,11 +76,13 @@ function jwt_decode($token, $secret) {
 }
 
 // JWT Secret Key
-$jwt_secret = 'antigravity_secret_1620240320';
+$jwt_secret = $config['JWT_SECRET'] ?? 'antigravity_secret_1620240320';
+
 
 function verify_auth() {
     global $jwt_secret;
-    $headers = array_change_key_case(getallheaders(), CASE_LOWER);
+    $raw_headers = function_exists('getallheaders') ? getallheaders() : [];
+    $headers = array_change_key_case($raw_headers, CASE_LOWER);
     $token = '';
     if (isset($headers['authorization'])) {
         if (preg_match('/bearer\s(\S+)/i', $headers['authorization'], $matches)) {
@@ -125,8 +90,14 @@ function verify_auth() {
         }
     }
     if (empty($token)) {
+        $auth_env = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+        if (!empty($auth_env) && preg_match('/bearer\s(\S+)/i', $auth_env, $matches)) {
+            $token = $matches[1];
+        }
+    }
+    if (empty($token)) {
         $input = json_decode(file_get_contents('php://input'), true);
-        $token = $_GET['token'] ?? $input['token'] ?? '';
+        $token = $_GET['token'] ?? $input['token'] ?? $_POST['token'] ?? '';
     }
     
     if (empty($token)) {
@@ -142,6 +113,158 @@ function verify_auth() {
         exit;
     }
     return $payload;
+}
+
+function verify_role($allowed_roles) {
+    global $user;
+    if (empty($user) || empty($user['role']) || !in_array($user['role'], $allowed_roles)) {
+        http_response_code(403);
+        echo json_encode(['status' => 'error', 'message' => 'Forbidden: Access Denied']);
+        exit;
+    }
+}
+
+// verify_and_bind_device: Verifies the student device count and binds the new device if allowed.
+function verify_and_bind_device($student_id, &$device_id, $device_label) {
+    global $conn, $db_fallback;
+    $student_id = (int)$student_id;
+
+    if (empty($device_label)) {
+        $device_label = 'جهاز غير معروف';
+    }
+
+    if (!$db_fallback) {
+        $stmt = $conn->prepare("SELECT * FROM user_devices WHERE student_id = ? AND status = 'active'");
+        $stmt->bind_param("i", $student_id);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $devices = [];
+        while ($row = $res->fetch_assoc()) {
+            $devices[] = $row;
+        }
+        $stmt->close();
+
+        if (!empty($device_id)) {
+            $found = false;
+            $revoked = false;
+            
+            $check_stmt = $conn->prepare("SELECT * FROM user_devices WHERE student_id = ? AND device_id = ?");
+            $check_stmt->bind_param("is", $student_id, $device_id);
+            $check_stmt->execute();
+            $check_res = $check_stmt->get_result();
+            if ($check_row = $check_res->fetch_assoc()) {
+                $found = true;
+                if ($check_row['status'] === 'revoked') {
+                    $revoked = true;
+                }
+            }
+            $check_stmt->close();
+
+            if ($found) {
+                if ($revoked) {
+                    return [
+                        'status' => 'error',
+                        'message' => 'هذا الجهاز قد تم إلغاء تنشيطه سابقاً. يرجى الدخول من جهاز نشط أو تفعيل جهاز آخر.'
+                    ];
+                }
+                $up_stmt = $conn->prepare("UPDATE user_devices SET last_used = CURRENT_TIMESTAMP WHERE student_id = ? AND device_id = ?");
+                $up_stmt->bind_param("is", $student_id, $device_id);
+                $up_stmt->execute();
+                $up_stmt->close();
+                return ['status' => 'success'];
+            }
+        }
+
+        if (count($devices) >= 3) {
+            return [
+                'status' => 'device_limit_exceeded',
+                'message' => 'تنبيه أمني: لقد تجاوزت الحد الأقصى للأجهزة المسموح بها (3 أجهزة). يرجى تسجيل الدخول من أحد أجهزتك الحالية، أو إزالة جهاز غير مستخدم من حسابك لتنشيط هذا الجهاز.'
+            ];
+        }
+
+        if (empty($device_id)) {
+            $device_id = 'dev_' . bin2hex(random_bytes(16));
+        }
+
+        $ins_stmt = $conn->prepare("INSERT INTO user_devices (student_id, device_id, device_label, status) VALUES (?, ?, ?, 'active') ON DUPLICATE KEY UPDATE status = 'active', last_used = CURRENT_TIMESTAMP");
+        $ins_stmt->bind_param("iss", $student_id, $device_id, $device_label);
+        $ins_stmt->execute();
+        $ins_stmt->close();
+
+        return ['status' => 'success', 'new_device_id' => $device_id];
+
+    } else {
+        $devices = read_from_file('user_devices');
+        $student_devices = [];
+        foreach ($devices as $d) {
+            if ((int)$d['student_id'] === $student_id && $d['status'] === 'active') {
+                $student_devices[] = $d;
+            }
+        }
+
+        if (!empty($device_id)) {
+            $found_idx = -1;
+            foreach ($devices as $idx => $d) {
+                if ((int)$d['student_id'] === $student_id && $d['device_id'] === $device_id) {
+                    $found_idx = $idx;
+                    break;
+                }
+            }
+
+            if ($found_idx !== -1) {
+                if ($devices[$found_idx]['status'] === 'revoked') {
+                    return [
+                        'status' => 'error',
+                        'message' => 'هذا الجهاز قد تم إلغاء تنشيطه سابقاً. يرجى الدخول من جهاز نشط أو تفعيل جهاز آخر.'
+                    ];
+                }
+                $devices[$found_idx]['last_used'] = date('Y-m-d H:i:s');
+                update_file_logs('user_devices', $devices);
+                return ['status' => 'success'];
+            }
+        }
+
+        if (count($student_devices) >= 3) {
+            return [
+                'status' => 'device_limit_exceeded',
+                'message' => 'تنبيه أمني: لقد تجاوزت الحد الأقصى للأجهزة المسموح بها (3 أجهزة). يرجى تسجيل الدخول من أحد أجهزتك الحالية، أو إزالة جهاز غير مستخدم من حسابك لتنشيط هذا الجهاز.'
+            ];
+        }
+
+        if (empty($device_id)) {
+            $device_id = 'dev_' . bin2hex(random_bytes(16));
+        }
+
+        $reactivated = false;
+        foreach ($devices as &$d) {
+            if ((int)$d['student_id'] === $student_id && $d['device_id'] === $device_id) {
+                $d['status'] = 'active';
+                $d['last_used'] = date('Y-m-d H:i:s');
+                $d['device_label'] = $device_label;
+                $reactivated = true;
+                break;
+            }
+        }
+
+        if (!$reactivated) {
+            $devices[] = [
+                'student_id' => $student_id,
+                'device_id' => $device_id,
+                'device_label' => $device_label,
+                'status' => 'active',
+                'last_used' => date('Y-m-d H:i:s')
+            ];
+        }
+
+        update_file_logs('user_devices', $devices);
+        return ['status' => 'success', 'new_device_id' => $device_id];
+    }
+}
+
+
+function pseudo_random($seed) {
+    $x = sin($seed) * 10000;
+    return $x - floor($x);
 }
 
 // ─── REDIS CACHE ENGINE ──────────────────────────────────────────────────────
@@ -402,6 +525,41 @@ class PgSQLConnWrapper {
     }
 }
 
+// Helper function to save file-based logs
+function log_to_file($type, $data) {
+    $dir = __DIR__ . '/logs';
+    if (!is_dir($dir)) {
+        mkdir($dir, 0777, true);
+    }
+    $file = $dir . '/' . $type . '.json';
+    $current = [];
+    if (file_exists($file)) {
+        $current = json_decode(file_get_contents($file), true) ?: [];
+    }
+    if (!isset($data['id'])) {
+        $data['id'] = count($current) + 1;
+    }
+    if (!isset($data['detected_at']) && !isset($data['created_at'])) {
+        $data['detected_at'] = date('Y-m-d H:i:s');
+    }
+    $current[] = $data;
+    file_put_contents($file, json_encode($current, JSON_PRETTY_PRINT));
+    return $data;
+}
+
+function read_from_file($type) {
+    $file = __DIR__ . '/logs/' . $type . '.json';
+    if (file_exists($file)) {
+        return json_decode(file_get_contents($file), true) ?: [];
+    }
+    return [];
+}
+
+function update_file_logs($type, $updated_list) {
+    $file = __DIR__ . '/logs/' . $type . '.json';
+    file_put_contents($file, json_encode($updated_list, JSON_PRETTY_PRINT));
+}
+
 // ─── INITIALIZE DATABASE CONNECTION ──────────────────────────────────────────
 try {
     if ($db_driver === 'pgsql') {
@@ -469,6 +627,11 @@ try {
         class_id INT DEFAULT NULL,
         questions_json TEXT NOT NULL,
         time_preservation_offline TINYINT DEFAULT 0,
+        duration_minutes INT DEFAULT 60,
+        question_count INT DEFAULT NULL,
+        security_level VARCHAR(20) DEFAULT 'strict',
+        exam_mode VARCHAR(20) DEFAULT 'official',
+        created_by INT DEFAULT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
     
@@ -515,13 +678,47 @@ try {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
 
+    $conn->query("CREATE TABLE IF NOT EXISTS banned_ips (
+        ip_address VARCHAR(45) PRIMARY KEY,
+        banned_until DATETIME NOT NULL
+    )");
+
+    $conn->query("CREATE TABLE IF NOT EXISTS threats (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        ip_address VARCHAR(45) NOT NULL,
+        user_id INT NULL,
+        official_name VARCHAR(150) NULL,
+        attack_type VARCHAR(50) NOT NULL,
+        payload TEXT NULL,
+        user_agent TEXT NULL,
+        created_at DATETIME NOT NULL
+    )");
+
+    // Aegis-X: user_devices table
+    $conn->query("CREATE TABLE IF NOT EXISTS user_devices (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        student_id INT NOT NULL,
+        device_id VARCHAR(255) NOT NULL,
+        device_label VARCHAR(255) DEFAULT 'جهاز غير معروف',
+        status VARCHAR(20) DEFAULT 'active',
+        last_used TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        UNIQUE KEY unique_student_device (student_id, device_id)
+    )");
+
+
     try { $conn->query("ALTER TABLE users ADD COLUMN institution_id INT DEFAULT NULL"); } catch (Exception $e) {}
     try { $conn->query("ALTER TABLE users ADD COLUMN is_approved TINYINT DEFAULT 1"); } catch (Exception $e) {}
     try { $conn->query("ALTER TABLE users ADD COLUMN official_name VARCHAR(150) NOT NULL DEFAULT ''"); } catch (Exception $e) {}
     try { $conn->query("ALTER TABLE users ADD COLUMN qr_code_hash VARCHAR(128) DEFAULT NULL"); } catch (Exception $e) {}
     try { $conn->query("ALTER TABLE users ADD COLUMN last_login_ip VARCHAR(45) DEFAULT NULL"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE users ADD COLUMN profile_picture VARCHAR(255) DEFAULT NULL"); } catch (Exception $e) {}
     try { $conn->query("ALTER TABLE exams ADD COLUMN class_id INT DEFAULT NULL"); } catch (Exception $e) {}
     try { $conn->query("ALTER TABLE exams ADD COLUMN time_preservation_offline TINYINT DEFAULT 0"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE exams ADD COLUMN duration_minutes INT DEFAULT 60"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE exams ADD COLUMN question_count INT DEFAULT NULL"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE exams ADD COLUMN security_level VARCHAR(20) DEFAULT 'strict'"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE exams ADD COLUMN exam_mode VARCHAR(20) DEFAULT 'official'"); } catch (Exception $e) {}
+    try { $conn->query("ALTER TABLE exams ADD COLUMN created_by INT DEFAULT NULL"); } catch (Exception $e) {}
 
 } catch (Exception $e) {
     error_log("Database initialization fallback: " . $e->getMessage());
@@ -539,7 +736,8 @@ $protected_actions = [
     'create_class', 'submit_enrollment', 'create_exam', 'log_heartbeat', 'log_violation',
     'update_seed', 'finish_exam', 'get_classes', 'get_enrollments', 'get_student_dashboard',
     'get_teacher_exams', 'get_dashboard_data', 'get_student_classes', 'get_class_exams',
-    'get_student_results', 'get_threats', 'unban_ip', 'get_exam', 'register_fingerprint'
+    'get_student_results', 'get_threats', 'unban_ip', 'get_exam', 'register_fingerprint',
+    'get_student_devices', 'remove_student_device', 'upload_profile_photo'
 ];
 
 if (in_array($action, $protected_actions)) {
@@ -547,40 +745,7 @@ if (in_array($action, $protected_actions)) {
     $user = $current_user; // Alias for backward compatibility
 }
 
-// Helper function to save file-based logs
-function log_to_file($type, $data) {
-    $dir = __DIR__ . '/logs';
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777, true);
-    }
-    $file = $dir . '/' . $type . '.json';
-    $current = [];
-    if (file_exists($file)) {
-        $current = json_decode(file_get_contents($file), true) ?: [];
-    }
-    if (!isset($data['id'])) {
-        $data['id'] = count($current) + 1;
-    }
-    if (!isset($data['detected_at']) && !isset($data['created_at'])) {
-        $data['detected_at'] = date('Y-m-d H:i:s');
-    }
-    $current[] = $data;
-    file_put_contents($file, json_encode($current, JSON_PRETTY_PRINT));
-    return $data;
-}
 
-function read_from_file($type) {
-    $file = __DIR__ . '/logs/' . $type . '.json';
-    if (file_exists($file)) {
-        return json_decode(file_get_contents($file), true) ?: [];
-    }
-    return [];
-}
-
-function update_file_logs($type, $updated_list) {
-    $file = __DIR__ . '/logs/' . $type . '.json';
-    file_put_contents($file, json_encode($updated_list, JSON_PRETTY_PRINT));
-}
 
 $input = json_decode(file_get_contents('php://input'), true);
 
@@ -591,6 +756,98 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'fingerprint') { $action = 'register_fingerprint'; }
     if ($action === 'heartbeat') { $action = 'log_heartbeat'; }
     if ($action === 'exam_ended') { $action = 'finish_exam'; }
+
+    // REMOVE STUDENT DEVICE
+    if ($action === 'remove_student_device') {
+        verify_role(['student']);
+        $student_id = (int)$user['id'];
+        $device_id_to_remove = $input['device_id'] ?? '';
+
+        if (empty($device_id_to_remove)) {
+            echo json_encode(['status' => 'error', 'message' => 'لم يتم توفير معرف الجهاز.']);
+            exit;
+        }
+
+        if (!$db_fallback) {
+            $stmt = $conn->prepare("UPDATE user_devices SET status = 'revoked' WHERE student_id = ? AND device_id = ?");
+            $stmt->bind_param("is", $student_id, $device_id_to_remove);
+            if ($stmt->execute()) {
+                $stmt->close();
+                echo json_encode(['status' => 'success', 'message' => 'تم إلغاء تنشيط الجهاز بنجاح.']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'فشل إلغاء تنشيط الجهاز.']);
+            }
+        } else {
+            $devices = read_from_file('user_devices');
+            $updated = false;
+            foreach ($devices as &$d) {
+                if ((int)$d['student_id'] === $student_id && $d['device_id'] === $device_id_to_remove) {
+                    $d['status'] = 'revoked';
+                    $d['last_used'] = date('Y-m-d H:i:s');
+                    $updated = true;
+                    break;
+                }
+            }
+            if ($updated) {
+                update_file_logs('user_devices', $devices);
+                echo json_encode(['status' => 'success', 'message' => 'تم إلغاء تنشيط الجهاز بنجاح.']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'الجهاز غير موجود.']);
+            }
+        }
+        exit;
+    }
+
+    // UPLOAD PROFILE PHOTO
+    if ($action === 'upload_profile_photo') {
+        verify_role(['student']);
+        $student_id = (int)$user['id'];
+        $image_data = $input['image'] ?? '';
+
+        if (empty($image_data)) {
+            echo json_encode(['status' => 'error', 'message' => 'لم يتم توفير بيانات الصورة.']);
+            exit;
+        }
+
+        $image_data = preg_replace('#^data:image/\w+;base64,#i', '', $image_data);
+        $image_data = str_replace(' ', '+', $image_data);
+        $decoded_image = base64_decode($image_data);
+
+        $uploads_dir = __DIR__ . '/uploads/profile_photos';
+        if (!is_dir($uploads_dir)) {
+            mkdir($uploads_dir, 0777, true);
+        }
+
+        $file_name = 'profile_' . $student_id . '_' . time() . '.jpg';
+        $file_path = 'uploads/profile_photos/' . $file_name;
+
+        if (file_put_contents($uploads_dir . '/' . $file_name, $decoded_image)) {
+            if (!$db_fallback) {
+                $stmt = $conn->prepare("UPDATE users SET profile_picture = ? WHERE id = ?");
+                $stmt->bind_param("si", $file_path, $student_id);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                $users = read_from_file('users');
+                foreach ($users as &$u) {
+                    if ((int)$u['id'] === $student_id) {
+                        $u['profile_picture'] = $file_path;
+                        break;
+                    }
+                }
+                update_file_logs('users', $users);
+            }
+
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'تم حفظ الصورة الشخصية بنجاح',
+                'profile_picture' => $file_path
+            ]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'فشل حفظ ملف الصورة على الخادم.']);
+        }
+        exit;
+    }
 
     // LOCKOUT HANDLER
     if ($action === 'lockout') {
@@ -755,6 +1012,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         echo json_encode(['status' => 'error', 'message' => 'بانتظار موافقة مدير المؤسسة على تفعيل حسابك كمعلم.']);
                         exit;
                     }
+
+                    // Validate device for students
+                    if ($row['role'] === 'student') {
+                        $device_id = $input['device_id'] ?? '';
+                        $device_label = $input['device_label'] ?? '';
+                        $dev_res = verify_and_bind_device($row['id'], $device_id, $device_label);
+                        if ($dev_res['status'] !== 'success') {
+                            echo json_encode($dev_res);
+                            exit;
+                        }
+                        if (isset($dev_res['new_device_id'])) {
+                            $device_id = $dev_res['new_device_id'];
+                        }
+                    }
+
                     // Overwatch: Record IP
                     $ip = $_SERVER['REMOTE_ADDR'] ?? '';
                     $up_stmt = $conn->prepare("UPDATE users SET last_login_ip = ? WHERE id = ?");
@@ -780,7 +1052,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             'official_name' => $row['official_name'], 
                             'qr_code' => $row['qr_code_hash'], 
                             'institution_id' => $row['institution_id'],
-                            'token' => $token
+                            'token' => $token,
+                            'device_id' => $device_id ?? null,
+                            'profile_picture' => $row['profile_picture'] ?? null
                         ]
                     ]);
                     exit;
@@ -789,12 +1063,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['status' => 'error', 'message' => 'اسم المستخدم أو كلمة المرور غير صحيحة.']);
         } else {
             $users = read_from_file('users');
-            foreach ($users as $u) {
+            foreach ($users as &$u) {
                 if ($u['username'] === $username && password_verify($password, $u['password'])) {
                     if ((int)$u['is_approved'] === 0) {
                         echo json_encode(['status' => 'error', 'message' => 'بانتظار موافقة مدير المؤسسة على تفعيل حسابك كمعلم.']);
                         exit;
                     }
+
+                    // Validate device for students
+                    if ($u['role'] === 'student') {
+                        $device_id = $input['device_id'] ?? '';
+                        $device_label = $input['device_label'] ?? '';
+                        $dev_res = verify_and_bind_device($u['id'], $device_id, $device_label);
+                        if ($dev_res['status'] !== 'success') {
+                            echo json_encode($dev_res);
+                            exit;
+                        }
+                        if (isset($dev_res['new_device_id'])) {
+                            $device_id = $dev_res['new_device_id'];
+                        }
+                    }
+
                     // Overwatch: Record IP
                     $u['last_login_ip'] = $_SERVER['REMOTE_ADDR'] ?? '';
                     write_to_file('users', $users);
@@ -816,7 +1105,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             'official_name' => $u['official_name'], 
                             'qr_code' => $u['qr_code_hash'], 
                             'institution_id' => $u['institution_id'],
-                            'token' => $token
+                            'token' => $token,
+                            'device_id' => $device_id ?? null,
+                            'profile_picture' => $u['profile_picture'] ?? null
                         ]
                     ]);
                     exit;
@@ -841,6 +1132,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo json_encode(['status' => 'error', 'message' => 'بانتظار موافقة مدير المؤسسة على تفعيل حسابك.']);
                     exit;
                 }
+
+                // Validate device for students
+                if ($row['role'] === 'student') {
+                    $device_id = $input['device_id'] ?? '';
+                    $device_label = $input['device_label'] ?? '';
+                    $dev_res = verify_and_bind_device($row['id'], $device_id, $device_label);
+                    if ($dev_res['status'] !== 'success') {
+                        echo json_encode($dev_res);
+                        exit;
+                    }
+                    if (isset($dev_res['new_device_id'])) {
+                        $device_id = $dev_res['new_device_id'];
+                    }
+                }
+
+                // Overwatch: Record IP
+                $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+                $up_stmt = $conn->prepare("UPDATE users SET last_login_ip = ? WHERE id = ?");
+                if ($up_stmt) {
+                    $up_stmt->bind_param("si", $ip, $row['id']);
+                    $up_stmt->execute();
+                }
+
                 $payload = [
                     'id' => $row['id'],
                     'username' => $row['username'],
@@ -858,7 +1172,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'official_name' => $row['official_name'], 
                         'qr_code' => $row['qr_code_hash'], 
                         'institution_id' => $row['institution_id'],
-                        'token' => $token
+                        'token' => $token,
+                        'device_id' => $device_id ?? null,
+                        'profile_picture' => $row['profile_picture'] ?? null
                     ]
                 ]);
                 exit;
@@ -866,12 +1182,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['status' => 'error', 'message' => 'رمز QR غير صالح.']);
         } else {
             $users = read_from_file('users');
-            foreach ($users as $u) {
+            foreach ($users as &$u) {
                 if ($u['qr_code_hash'] === $qr_hash) {
                     if ((int)$u['is_approved'] === 0) {
                         echo json_encode(['status' => 'error', 'message' => 'بانتظار موافقة مدير المؤسسة على تفعيل حسابك.']);
                         exit;
                     }
+
+                    // Validate device for students
+                    if ($u['role'] === 'student') {
+                        $device_id = $input['device_id'] ?? '';
+                        $device_label = $input['device_label'] ?? '';
+                        $dev_res = verify_and_bind_device($u['id'], $device_id, $device_label);
+                        if ($dev_res['status'] !== 'success') {
+                            echo json_encode($dev_res);
+                            exit;
+                        }
+                        if (isset($dev_res['new_device_id'])) {
+                            $device_id = $dev_res['new_device_id'];
+                        }
+                    }
+
+                    // Overwatch: Record IP
+                    $u['last_login_ip'] = $_SERVER['REMOTE_ADDR'] ?? '';
+                    write_to_file('users', $users);
+
                     $payload = [
                         'id' => $u['id'],
                         'username' => $u['username'],
@@ -889,7 +1224,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             'official_name' => $u['official_name'], 
                             'qr_code' => $u['qr_code_hash'], 
                             'institution_id' => $u['institution_id'],
-                            'token' => $token
+                            'token' => $token,
+                            'device_id' => $device_id ?? null,
+                            'profile_picture' => $u['profile_picture'] ?? null
                         ]
                     ]);
                     exit;
@@ -902,14 +1239,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // APPROVE TEACHER (INSTITUTION ADMIN ACTION)
     if ($action === 'approve_teacher') {
+        verify_role(['institution']);
         $teacher_id = (int)($input['teacher_id'] ?? 0);
         $status = (int)($input['status'] ?? 1); // 1 = approved, 0 = rejected/blocked
 
         if (!$db_fallback) {
+            // Anti-IDOR: check if the teacher belongs to this institution
+            $check_stmt = $conn->prepare("SELECT institution_id FROM users WHERE id = ? AND role = 'teacher'");
+            if ($check_stmt) {
+                $check_stmt->bind_param("i", $teacher_id);
+                $check_stmt->execute();
+                $check_res = $check_stmt->get_result();
+                if ($row = $check_res->fetch_assoc()) {
+                    if ((int)$row['institution_id'] !== (int)$user['id']) {
+                        http_response_code(403);
+                        echo json_encode(['status' => 'error', 'message' => 'Forbidden: This teacher belongs to another institution']);
+                        exit;
+                    }
+                } else {
+                    http_response_code(404);
+                    echo json_encode(['status' => 'error', 'message' => 'Teacher not found']);
+                    exit;
+                }
+                $check_stmt->close();
+            }
+
             $stmt = $conn->prepare("UPDATE users SET is_approved = ? WHERE id = ? AND role = 'teacher'");
             $stmt->bind_param("ii", $status, $teacher_id);
             $stmt->execute();
             $stmt->close();
+        } else {
+            $users = read_from_file('users');
+            $found_teacher = false;
+            foreach ($users as $u) {
+                if ((int)$u['id'] === $teacher_id && $u['role'] === 'teacher') {
+                    if ((int)($u['institution_id'] ?? 0) !== (int)$user['id']) {
+                        http_response_code(403);
+                        echo json_encode(['status' => 'error', 'message' => 'Forbidden: This teacher belongs to another institution']);
+                        exit;
+                    }
+                    $found_teacher = true;
+                    break;
+                }
+            }
+            if (!$found_teacher) {
+                http_response_code(404);
+                echo json_encode(['status' => 'error', 'message' => 'Teacher not found']);
+                exit;
+            }
         }
         
         $users = read_from_file('users');
@@ -927,8 +1304,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // CREATE CLASS
     if ($action === 'create_class') {
+        verify_role(['teacher', 'institution']);
         $class_name = $input['class_name'] ?? 'Classroom';
         $teacher_id = (int)($input['teacher_id'] ?? 0);
+
+        if ($teacher_id !== (int)$user['id']) {
+            http_response_code(403);
+            echo json_encode(['status' => 'error', 'message' => 'Forbidden: Cannot create class for another teacher']);
+            exit;
+        }
+
         $class_code = 'CLS_' . substr(md5($class_name . time()), 0, 6);
 
         if (!$db_fallback) {
@@ -951,6 +1336,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // SUBMIT ENROLLMENT TO A SPECIFIC CLASS
     if ($action === 'submit_enrollment') {
         $student_id = (int)($input['student_id'] ?? 0);
+        if ($user['role'] === 'student' && $student_id !== (int)$user['id']) {
+            http_response_code(403);
+            echo json_encode(['status' => 'error', 'message' => 'Forbidden: Cannot enroll another student']);
+            exit;
+        }
         $class_code = $input['class_code'] ?? '';
         $class_id = 0;
 
@@ -998,10 +1388,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // APPROVE/REJECT ENROLLMENT
     if ($action === 'approve_enrollment') {
+        verify_role(['teacher', 'institution']);
         $request_id = (int)($input['request_id'] ?? 0);
         $status = $input['status'] ?? 'approved'; // 'approved', 'rejected'
 
         if (!$db_fallback) {
+            // Anti-IDOR: Check class owner
+            $check_stmt = $conn->prepare("SELECT c.teacher_id FROM enrollment_requests r JOIN classes c ON r.class_id = c.id WHERE r.id = ?");
+            if ($check_stmt) {
+                $check_stmt->bind_param("i", $request_id);
+                $check_stmt->execute();
+                $check_res = $check_stmt->get_result();
+                if ($row = $check_res->fetch_assoc()) {
+                    if ((int)$row['teacher_id'] !== (int)$user['id']) {
+                        http_response_code(403);
+                        echo json_encode(['status' => 'error', 'message' => 'Forbidden: This class belongs to another teacher']);
+                        exit;
+                    }
+                } else {
+                    http_response_code(404);
+                    echo json_encode(['status' => 'error', 'message' => 'Enrollment request not found']);
+                    exit;
+                }
+                $check_stmt->close();
+            }
+
             $stmt = $conn->prepare("UPDATE enrollment_requests SET status = ? WHERE id = ?");
             $stmt->bind_param("si", $status, $request_id);
             $stmt->execute();
@@ -1023,19 +1434,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // CREATE EXAM LINKED TO CLASS
     if ($action === 'create_exam') {
+        verify_role(['student', 'teacher', 'institution']); // Allowed student for mock exams
         $exam_code = $input['exam_code'] ?? '';
         $exam_title = $input['exam_title'] ?? 'General Exam';
         $class_id = isset($input['class_id']) ? (int)$input['class_id'] : null;
         $questions_json = json_encode($input['questions'] ?? []);
         $time_preservation = isset($input['time_preservation_offline']) ? (int)$input['time_preservation_offline'] : 0;
+        $duration_minutes = isset($input['duration_minutes']) ? (int)$input['duration_minutes'] : 60;
+        $question_count = !empty($input['question_count']) ? (int)$input['question_count'] : null;
+        $security_level = $input['security_level'] ?? 'strict';
+        $exam_mode = $input['exam_mode'] ?? 'official';
+
+        // Role validations
+        if ($user['role'] === 'student' && $exam_mode !== 'mock_student') {
+            http_response_code(403);
+            echo json_encode(['status' => 'error', 'message' => 'Forbidden: Students can only create mock_student exams']);
+            exit;
+        }
+
+        if ($class_id !== null && !$db_fallback && in_array($user['role'], ['teacher', 'institution'])) {
+            // Anti-IDOR: Check class owner
+            $check_stmt = $conn->prepare("SELECT teacher_id FROM classes WHERE id = ?");
+            if ($check_stmt) {
+                $check_stmt->bind_param("i", $class_id);
+                $check_stmt->execute();
+                $check_res = $check_stmt->get_result();
+                if ($row = $check_res->fetch_assoc()) {
+                    if ((int)$row['teacher_id'] !== (int)$user['id']) {
+                        http_response_code(403);
+                        echo json_encode(['status' => 'error', 'message' => 'Forbidden: This class belongs to another teacher']);
+                        exit;
+                    }
+                } else {
+                    http_response_code(404);
+                    echo json_encode(['status' => 'error', 'message' => 'Class not found']);
+                    exit;
+                }
+                $check_stmt->close();
+            }
+        }
 
         if (empty($exam_code)) {
-            $exam_code = 'EXAM_' . substr(md5(time()), 0, 6);
+            $exam_code = 'EXAM_' . substr(md5(time() . rand(0, 1000)), 0, 8);
         }
 
         if (!$db_fallback) {
-            $stmt = $conn->prepare("INSERT INTO exams (exam_code, exam_title, class_id, questions_json, time_preservation_offline) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE exam_title = ?, class_id = ?, questions_json = ?, time_preservation_offline = ?");
-            $stmt->bind_param("ssisissis", $exam_code, $exam_title, $class_id, $questions_json, $time_preservation, $exam_title, $class_id, $questions_json, $time_preservation);
+            $stmt = $conn->prepare("INSERT INTO exams (exam_code, exam_title, class_id, questions_json, time_preservation_offline, duration_minutes, question_count, security_level, exam_mode, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE exam_title = ?, class_id = ?, questions_json = ?, time_preservation_offline = ?, duration_minutes = ?, question_count = ?, security_level = ?, exam_mode = ?, created_by = ?");
+            $creator_id = $user['id'];
+            $stmt->bind_param("ssisiiisssisiiisssi", $exam_code, $exam_title, $class_id, $questions_json, $time_preservation, $duration_minutes, $question_count, $security_level, $exam_mode, $creator_id, $exam_title, $class_id, $questions_json, $time_preservation, $duration_minutes, $question_count, $security_level, $exam_mode, $creator_id);
             $stmt->execute();
             $stmt->close();
         }
@@ -1045,7 +1491,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'exam_title' => $exam_title,
             'class_id' => $class_id,
             'questions' => $input['questions'] ?? [],
-            'time_preservation_offline' => $time_preservation
+            'time_preservation_offline' => $time_preservation,
+            'duration_minutes' => $duration_minutes,
+            'question_count' => $question_count,
+            'security_level' => $security_level,
+            'exam_mode' => $exam_mode,
+            'created_by' => $user['id'] // for tracking who created it in file-fallback
         ]);
 
         // Invalidate Redis cache
@@ -1217,6 +1668,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 2. Server-Side Grading
         $score = 0.00;
+        
+        $student_seed = 1000;
+        if (!$db_fallback) {
+            $seed_stmt = $conn->prepare("SELECT current_seed FROM exam_sessions WHERE student_id = ? AND exam_code = ?");
+            if ($seed_stmt) {
+                $seed_stmt->bind_param("is", $student_id, $exam_code);
+                $seed_stmt->execute();
+                $seed_res = $seed_stmt->get_result();
+                if ($seed_row = $seed_res->fetch_assoc()) {
+                    $student_seed = (int)$seed_row['current_seed'];
+                }
+                $seed_stmt->close();
+            }
+        } else {
+            $sessions = read_from_file('sessions');
+            foreach ($sessions as $s) {
+                if ((int)$s['student_id'] === $student_id && $s['exam_code'] === $exam_code) {
+                    $student_seed = (int)($s['seed'] ?? 1000);
+                    break;
+                }
+            }
+        }
+
         if (!$db_fallback) {
             $stmt = $conn->prepare("SELECT questions_json FROM exams WHERE exam_code = ?");
             if ($stmt) {
@@ -1236,8 +1710,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     $scoreEarned += 100;
                                 }
                             } else {
-                                $correctAns = $q['computedAnswer'] ?? '';
-                                if ($ans !== '' && ((float)$ans === (float)$correctAns || strpos($ans, (string)$correctAns) !== false)) {
+                                // Math type: calculate correct answer dynamically using the seed
+                                $x_coeff = floor(pseudo_random($student_seed + 17) * 4) + 2;
+                                $x_linear = floor(pseudo_random($student_seed + 31) * 5) + 1;
+                                $const_val = floor(pseudo_random($student_seed + 73) * 9) + 1;
+                                $correctAns = $x_coeff * 4 + $x_linear * 2 + $const_val;
+                                
+                                if ($ans !== '' && abs((float)$ans - (float)$correctAns) < 0.0001) {
                                     $scoreEarned += 100;
                                 }
                             }
@@ -1246,6 +1725,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
                 $stmt->close();
+            }
+        } else {
+            $exams_list = read_from_file('exams');
+            foreach ($exams_list as $ex) {
+                if ($ex['exam_code'] === $exam_code) {
+                    $questions = $ex['questions'] ?? [];
+                    $totalQuestions = count($questions);
+                    $scoreEarned = 0;
+                    if ($totalQuestions > 0) {
+                        foreach ($questions as $idx => $q) {
+                            $ans = $answers[$idx] ?? '';
+                            if ($q['type'] === 'mcq') {
+                                if ($ans !== '' && (int)$ans === (int)($q['correct_option'] ?? -1)) {
+                                    $scoreEarned += 100;
+                                }
+                            } else {
+                                $x_coeff = floor(pseudo_random($student_seed + 17) * 4) + 2;
+                                $x_linear = floor(pseudo_random($student_seed + 31) * 5) + 1;
+                                $const_val = floor(pseudo_random($student_seed + 73) * 9) + 1;
+                                $correctAns = $x_coeff * 4 + $x_linear * 2 + $const_val;
+                                
+                                if ($ans !== '' && abs((float)$ans - (float)$correctAns) < 0.0001) {
+                                    $scoreEarned += 100;
+                                }
+                            }
+                        }
+                        $score = round($scoreEarned / $totalQuestions);
+                    }
+                    break;
+                }
             }
         }
 
@@ -1308,6 +1817,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // GENERATE EXAM USING GEMINI API
     if ($action === 'generate_ai_exam') {
+        verify_role(['student', 'teacher', 'institution']);
         $passage = $input['passage'] ?? '';
         $num_questions = (int)($input['num_questions'] ?? 5);
         if ($num_questions < 1) $num_questions = 5;
@@ -1532,6 +2042,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $webgl_vendor = $input['webgl_vendor'] ?? '';
         $webgl_renderer = $input['webgl_renderer'] ?? '';
         $is_headless = isset($input['is_headless']) ? (int)$input['is_headless'] : 0;
+        $exam_code = $input['exam_code'] ?? 'DEFAULT';
+
+        // 1. Headless Automation Detection
+        if ($is_headless === 1) {
+            $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+            $user_agent_full = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
+            require_once __DIR__ . '/core/model/ThreatLoggerModel.php';
+            ThreatLoggerModel::logThreat($ip, 'Headless Automation Attempt', 'Blocked automated headless browser taking exam', $user_agent_full, $conn, $db_fallback);
+            
+            if (!$db_fallback) {
+                $v_stmt = $conn->prepare("INSERT INTO violations (student_id, exam_code, violation_type, details, severity) VALUES (?, ?, 'Headless Browser Automation', 'Automated headless browser automation detected.', 'high')");
+                if ($v_stmt) {
+                    $v_stmt->bind_param("is", $student_id, $exam_code);
+                    $v_stmt->execute();
+                    $v_stmt->close();
+                }
+            } else {
+                $v_data = read_from_file('violations');
+                $v_data[] = [
+                    'student_id' => $student_id,
+                    'exam_code' => $exam_code,
+                    'violation_type' => 'Headless Browser Automation',
+                    'details' => 'Automated headless browser automation detected.',
+                    'severity' => 'high',
+                    'detected_at' => date('Y-m-d H:i:s')
+                ];
+                update_file_logs('violations', $v_data);
+            }
+        }
+
+        // 2. Identity Anomaly (Device Swap / Signature Mismatch)
+        if (!$db_fallback) {
+            $fp_stmt = $conn->prepare("SELECT canvas_hash FROM fingerprints WHERE student_id = ? ORDER BY created_at ASC LIMIT 1");
+            if ($fp_stmt) {
+                $fp_stmt->bind_param("i", $student_id);
+                $fp_stmt->execute();
+                $fp_res = $fp_stmt->get_result();
+                if ($fp_row = $fp_res->fetch_assoc()) {
+                    $original_hash = $fp_row['canvas_hash'];
+                    if (!empty($original_hash) && $original_hash !== $canvas_hash) {
+                        $v_stmt = $conn->prepare("INSERT INTO violations (student_id, exam_code, violation_type, details, severity) VALUES (?, ?, 'Identity/Device Anomaly', 'Detected browser/device signature mismatch during exam session.', 'high')");
+                        if ($v_stmt) {
+                            $v_stmt->bind_param("is", $student_id, $exam_code);
+                            $v_stmt->execute();
+                            $v_stmt->close();
+                        }
+                    }
+                }
+                $fp_stmt->close();
+            }
+        } else {
+            $fps = read_from_file('fingerprints');
+            $original_hash = '';
+            foreach ($fps as $f) {
+                if ((int)$f['student_id'] === $student_id) {
+                    $original_hash = $f['canvas_hash'];
+                    break;
+                }
+            }
+            if (!empty($original_hash) && $original_hash !== $canvas_hash) {
+                $v_data = read_from_file('violations');
+                $v_data[] = [
+                    'student_id' => $student_id,
+                    'exam_code' => $exam_code,
+                    'violation_type' => 'Identity/Device Anomaly',
+                    'details' => 'Detected browser/device signature mismatch during exam session.',
+                    'severity' => 'high',
+                    'detected_at' => date('Y-m-d H:i:s')
+                ];
+                update_file_logs('violations', $v_data);
+            }
+        }
 
         if (!$db_fallback) {
             $stmt = $conn->prepare("INSERT INTO fingerprints (student_id, user_agent, screen_resolution, canvas_hash, webgl_vendor, webgl_renderer, is_headless) VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -1557,6 +2139,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     
+    // GET STUDENT DEVICES
+    if ($action === 'get_student_devices') {
+        verify_role(['student']);
+        $student_id = (int)$user['id'];
+
+        $devices = [];
+        if (!$db_fallback) {
+            $stmt = $conn->prepare("SELECT id, device_id, device_label, status, last_used FROM user_devices WHERE student_id = ? ORDER BY last_used DESC");
+            $stmt->bind_param("i", $student_id);
+            $stmt->execute();
+            $res = $stmt->get_result();
+            while ($row = $res->fetch_assoc()) {
+                $devices[] = $row;
+            }
+            $stmt->close();
+        } else {
+            $all_devices = read_from_file('user_devices');
+            foreach ($all_devices as $d) {
+                if ((int)$d['student_id'] === $student_id) {
+                    $devices[] = $d;
+                }
+            }
+            usort($devices, function($a, $b) {
+                return strcmp($b['last_used'], $a['last_used']);
+            });
+        }
+
+        echo json_encode(['status' => 'success', 'devices' => $devices]);
+        exit;
+    }
+
     // GET INSTITUTIONS
     if ($action === 'get_institutions') {
         $institutions = [];
@@ -1579,7 +2192,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // GET TEACHERS PENDING APPROVAL (FOR INSTITUTION ADMIN)
     if ($action === 'get_teachers_pending') {
+        verify_role(['institution']);
         $inst_id = (int)($_GET['institution_id'] ?? 0);
+        if ($inst_id !== (int)$user['id']) {
+            http_response_code(403);
+            echo json_encode(['status' => 'error', 'message' => 'Forbidden: Cannot access another institution data']);
+            exit;
+        }
         $teachers = [];
 
         if (!$db_fallback) {
@@ -1612,7 +2231,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // GET CLASSES BY TEACHER
     if ($action === 'get_classes') {
+        verify_role(['teacher', 'institution']);
         $teacher_id = (int)($_GET['teacher_id'] ?? 0);
+        if ($teacher_id !== (int)$user['id']) {
+            http_response_code(403);
+            echo json_encode(['status' => 'error', 'message' => 'Forbidden: Access Denied']);
+            exit;
+        }
         $classes = [];
 
         if (!$db_fallback) {
@@ -1639,7 +2264,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // GET ENROLLMENTS QUEUE FOR TEACHER'S CLASSES
     if ($action === 'get_enrollments') {
+        verify_role(['teacher', 'institution']);
         $teacher_id = (int)($_GET['teacher_id'] ?? 0);
+        if ($teacher_id !== (int)$user['id']) {
+            http_response_code(403);
+            echo json_encode(['status' => 'error', 'message' => 'Forbidden: Access Denied']);
+            exit;
+        }
         $requests = [];
 
         if (!$db_fallback) {
@@ -1702,6 +2333,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         
         $classes = [];
         $exams = [];
+        $mock_teacher_exams = [];
 
         if (!$db_fallback) {
             // Get student classes (where status is approved)
@@ -1722,10 +2354,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             if (count($classes) > 0) {
                 $class_ids = array_map(function($c) { return $c['id']; }, $classes);
                 $ids_placeholder = implode(',', $class_ids);
-                $q_res = $conn->query("SELECT exam_code, exam_title, class_id FROM exams WHERE class_id IN ($ids_placeholder)");
+                $q_res = $conn->query("SELECT exam_code, exam_title, class_id FROM exams WHERE class_id IN ($ids_placeholder) AND exam_mode = 'official'");
                 while ($row = $q_res->fetch_assoc()) {
                     $exams[] = $row;
                 }
+            }
+
+            // Get all mock_teacher exams
+            $mock_res = $conn->query("SELECT exam_code, exam_title, class_id FROM exams WHERE exam_mode = 'mock_teacher'");
+            while ($row = $mock_res->fetch_assoc()) {
+                $mock_teacher_exams[] = $row;
             }
         } else {
             $reqs = read_from_file('enrollment_requests');
@@ -1762,8 +2400,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             // Filter exams
             foreach ($ex_list as $ex) {
-                if (in_array((int)$ex['class_id'], $approved_class_ids)) {
+                $mode = $ex['exam_mode'] ?? 'official';
+                if ($mode === 'official' && in_array((int)$ex['class_id'], $approved_class_ids)) {
                     $exams[] = [
+                        'exam_code' => $ex['exam_code'],
+                        'exam_title' => $ex['exam_title'],
+                        'class_id' => $ex['class_id']
+                    ];
+                } else if ($mode === 'mock_teacher') {
+                    $mock_teacher_exams[] = [
                         'exam_code' => $ex['exam_code'],
                         'exam_title' => $ex['exam_title'],
                         'class_id' => $ex['class_id']
@@ -1775,14 +2420,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         echo json_encode([
             'status' => 'success',
             'classes' => $classes,
-            'exams' => $exams
+            'exams' => $exams,
+            'mock_teacher_exams' => $mock_teacher_exams
         ]);
+        exit;
+    }
+
+    // GET STUDENT MOCK EXAMS
+    if ($action === 'get_student_mock_exams') {
+        $student_id = (int)($_GET['student_id'] ?? 0);
+        $exams = [];
+
+        if (!$db_fallback) {
+            $stmt = $conn->prepare("SELECT exam_code, exam_title, duration_minutes, question_count FROM exams WHERE created_by = ? AND exam_mode = 'mock_student'");
+            if ($stmt) {
+                $stmt->bind_param("i", $student_id);
+                $stmt->execute();
+                $res = $stmt->get_result();
+                while ($row = $res->fetch_assoc()) {
+                    $exams[] = $row;
+                }
+                $stmt->close();
+            }
+        } else {
+            $ex_list = read_from_file('exams');
+            foreach ($ex_list as $ex) {
+                if ((int)($ex['created_by'] ?? 0) === $student_id && ($ex['exam_mode'] ?? 'official') === 'mock_student') {
+                    $exams[] = [
+                        'exam_code' => $ex['exam_code'],
+                        'exam_title' => $ex['exam_title'],
+                        'duration_minutes' => $ex['duration_minutes'] ?? 60,
+                        'question_count' => $ex['question_count'] ?? null
+                    ];
+                }
+            }
+        }
+
+        echo json_encode(['status' => 'success', 'exams' => $exams]);
         exit;
     }
 
     // GET TEACHER EXAMS
     if ($action === 'get_teacher_exams') {
+        verify_role(['teacher', 'institution']);
         $teacher_id = (int)($_GET['teacher_id'] ?? 0);
+        if ($teacher_id !== (int)$user['id']) {
+            http_response_code(403);
+            echo json_encode(['status' => 'error', 'message' => 'Forbidden: Access Denied']);
+            exit;
+        }
         $exams = [];
         
         if (!$db_fallback) {
@@ -1828,37 +2514,121 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // GET SYSTEM DATA (TEACHER PORTAL)
     if ($action === 'get_dashboard_data') {
+        verify_role(['teacher', 'institution']);
         $violations = [];
         $heartbeats = [];
         $sessions = [];
+
+        $is_teacher = ($user['role'] === 'teacher');
+        $teacher_id = (int)$user['id'];
         
         if (!$db_fallback) {
-            $v_res = $conn->query("SELECT v.*, u.official_name FROM violations v JOIN users u ON v.student_id = u.id ORDER BY v.detected_at DESC");
-            while ($row = $v_res->fetch_assoc()) { $violations[] = $row; }
+            if ($is_teacher) {
+                // Filter by teacher classes
+                $v_stmt = $conn->prepare("
+                    SELECT v.*, u.official_name 
+                    FROM violations v 
+                    JOIN users u ON v.student_id = u.id 
+                    JOIN exams e ON v.exam_code = e.exam_code
+                    JOIN classes c ON e.class_id = c.id
+                    WHERE c.teacher_id = ?
+                    ORDER BY v.detected_at DESC
+                ");
+                if ($v_stmt) {
+                    $v_stmt->bind_param("i", $teacher_id);
+                    $v_stmt->execute();
+                    $v_res = $v_stmt->get_result();
+                    while ($row = $v_res->fetch_assoc()) { $violations[] = $row; }
+                    $v_stmt->close();
+                }
 
-            $h_res = $conn->query("SELECT h.*, u.official_name FROM heartbeats h JOIN users u ON h.student_id = u.id ORDER BY h.detected_at DESC");
-            while ($row = $h_res->fetch_assoc()) { $heartbeats[] = $row; }
+                $h_stmt = $conn->prepare("
+                    SELECT h.*, u.official_name 
+                    FROM heartbeats h 
+                    JOIN users u ON h.student_id = u.id 
+                    JOIN exams e ON h.exam_code = e.exam_code
+                    JOIN classes c ON e.class_id = c.id
+                    WHERE c.teacher_id = ?
+                    ORDER BY h.detected_at DESC
+                ");
+                if ($h_stmt) {
+                    $h_stmt->bind_param("i", $teacher_id);
+                    $h_stmt->execute();
+                    $h_res = $h_stmt->get_result();
+                    while ($row = $h_res->fetch_assoc()) { $heartbeats[] = $row; }
+                    $h_stmt->close();
+                }
 
-            $s_res = $conn->query("SELECT s.*, u.official_name FROM exam_sessions s JOIN users u ON s.student_id = u.id ORDER BY s.updated_at DESC");
-            while ($row = $s_res->fetch_assoc()) { $sessions[] = $row; }
+                $s_stmt = $conn->prepare("
+                    SELECT s.*, u.official_name 
+                    FROM exam_sessions s 
+                    JOIN users u ON s.student_id = u.id 
+                    JOIN exams e ON s.exam_code = e.exam_code
+                    JOIN classes c ON e.class_id = c.id
+                    WHERE c.teacher_id = ?
+                    ORDER BY s.updated_at DESC
+                ");
+                if ($s_stmt) {
+                    $s_stmt->bind_param("i", $teacher_id);
+                    $s_stmt->execute();
+                    $s_res = $s_stmt->get_result();
+                    while ($row = $s_res->fetch_assoc()) { $sessions[] = $row; }
+                    $s_stmt->close();
+                }
+            } else {
+                $v_res = $conn->query("SELECT v.*, u.official_name FROM violations v JOIN users u ON v.student_id = u.id ORDER BY v.detected_at DESC");
+                while ($row = $v_res->fetch_assoc()) { $violations[] = $row; }
+
+                $h_res = $conn->query("SELECT h.*, u.official_name FROM heartbeats h JOIN users u ON h.student_id = u.id ORDER BY h.detected_at DESC");
+                while ($row = $h_res->fetch_assoc()) { $heartbeats[] = $row; }
+
+                $s_res = $conn->query("SELECT s.*, u.official_name FROM exam_sessions s JOIN users u ON s.student_id = u.id ORDER BY s.updated_at DESC");
+                while ($row = $s_res->fetch_assoc()) { $sessions[] = $row; }
+            }
         } else {
             $v_data = read_from_file('violations');
             $h_data = read_from_file('heartbeats');
             $s_data = read_from_file('sessions');
             $users = read_from_file('users');
+            $cls = read_from_file('classes');
+            $exs = read_from_file('exams');
 
             $users_map = [];
             foreach ($users as $u) { $users_map[$u['id']] = $u['official_name']; }
 
+            $teacher_exam_codes = [];
+            if ($is_teacher) {
+                $teacher_class_ids = [];
+                foreach ($cls as $c) {
+                    if ((int)$c['teacher_id'] === $teacher_id) {
+                        $teacher_class_ids[] = (int)$c['id'];
+                    }
+                }
+                foreach ($exs as $e) {
+                    if (in_array((int)$e['class_id'], $teacher_class_ids)) {
+                        $teacher_exam_codes[] = $e['exam_code'];
+                    }
+                }
+            }
+
             foreach ($v_data as $v) {
+                if ($is_teacher && !in_array($v['exam_code'], $teacher_exam_codes)) {
+                    continue;
+                }
                 $v['official_name'] = $users_map[$v['student_id']] ?? 'طالب تجريبي';
                 $violations[] = $v;
             }
             foreach ($h_data as $h) {
+                if ($is_teacher && !in_array($h['exam_code'], $teacher_exam_codes)) {
+                    continue;
+                }
                 $h['official_name'] = $users_map[$h['student_id']] ?? 'طالب تجريبي';
                 $heartbeats[] = $h;
             }
             foreach ($s_data as $s) {
+                if ($is_teacher && !in_array($s['exam_code'], $teacher_exam_codes)) {
+                    continue;
+                }
                 $s['official_name'] = $users_map[$s['student_id']] ?? 'طالب تجريبي';
                 $sessions[] = $s;
             }
@@ -1991,6 +2761,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // GET STUDENT RESULTS
     if ($action === 'get_student_results') {
         $student_id = (int)($_GET['student_id'] ?? 0);
+        if ($user['role'] === 'student' && $student_id !== (int)$user['id']) {
+            http_response_code(403);
+            echo json_encode(['status' => 'error', 'message' => 'Forbidden: Cannot view another student results']);
+            exit;
+        }
         $results = [];
 
         if (!$db_fallback) {
@@ -2055,6 +2830,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         require_once __DIR__ . '/core/middleware/EnrollmentMiddleware.php';
         verify_exam_enrollment($user, $exam_code, $conn, $db_fallback);
 
+        // Prevent entering completed exams
+        if (!$db_fallback) {
+            $check_stmt = $conn->prepare("SELECT status FROM exam_sessions WHERE student_id = ? AND exam_code = ?");
+            if ($check_stmt) {
+                $check_stmt->bind_param("is", $user['id'], $exam_code);
+                $check_stmt->execute();
+                $check_res = $check_stmt->get_result();
+                if ($check_row = $check_res->fetch_assoc()) {
+                    if ($check_row['status'] === 'completed') {
+                        echo json_encode(['status' => 'error', 'message' => 'لقد قمت بتسليم هذا الامتحان مسبقاً ولا يمكنك الدخول إليه مرة أخرى.']);
+                        $check_stmt->close();
+                        exit;
+                    }
+                }
+                $check_stmt->close();
+            }
+        }
+
 
         if (!$db_fallback) {
             $stmt = $conn->prepare("SELECT * FROM exams WHERE exam_code = ?");
@@ -2063,8 +2856,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $stmt->execute();
                 $res = $stmt->get_result();
                 if ($row = $res->fetch_assoc()) {
-                    $questions = json_decode($row['questions_json'], true);
+                    $questions = json_decode($row['questions_json'], true) ?: json_decode($row['questions'], true);
                     if (is_array($questions)) {
+                        if (!empty($row['question_count']) && $row['question_count'] > 0 && count($questions) > $row['question_count']) {
+                            shuffle($questions);
+                            $questions = array_slice($questions, 0, $row['question_count']);
+                        }
                         foreach ($questions as &$q) {
                             unset($q['correct_option']);
                             unset($q['computedAnswer']);
@@ -2090,8 +2887,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 }
             }
             if ($found) {
-                $questions = json_decode($found['questions_json'], true);
+                $questions = json_decode($found['questions_json'] ?? '', true) ?: ($found['questions'] ?? []);
                 if (is_array($questions)) {
+                    if (!empty($found['question_count']) && $found['question_count'] > 0 && count($questions) > $found['question_count']) {
+                        shuffle($questions);
+                        $questions = array_slice($questions, 0, $found['question_count']);
+                    }
                     foreach ($questions as &$q) {
                         unset($q['correct_option']);
                         unset($q['computedAnswer']);
@@ -2109,7 +2910,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     
     // OVERWATCH: GET THREATS
     if ($action === 'get_threats') {
-        if ($user['role'] === 'student') {
+        if ($user['role'] !== 'institution') {
             http_response_code(403);
             echo json_encode(['status' => 'error', 'message' => 'ACCESS DENIED']);
             exit;
@@ -2136,7 +2937,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // OVERWATCH: UNBAN IP
     if ($action === 'unban_ip') {
-        if ($user['role'] === 'student') {
+        if ($user['role'] !== 'institution') {
             http_response_code(403);
             exit;
         }

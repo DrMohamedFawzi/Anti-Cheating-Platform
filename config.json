@@ -1,3 +1,5 @@
 {
-  "GEMINI_API_KEY": "AQ.Ab8RN6JQlDGj_imTuvM4VwkqrvuktJBNOsaa1dMsK4_xIZyrKw"
+  "GEMINI_API_KEY": "AQ.Ab8RN6JQlDGj_imTuvM4VwkqrvuktJBNOsaa1dMsK4_xIZyrKw",
+  "JWT_SECRET": "antigravity_secret_1620240320",
+  "DB_HOST": "127.0.0.1"
 }

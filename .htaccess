@@ -1,0 +1,20 @@
+# Aegis-X Apache Security and Authentication Configuration
+# Ensure Authorization headers are passed to PHP under CGI/FPM wrappers
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+# Fallback environment mapping for stripped Authorization headers
+<IfModule mod_env.c>
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+</IfModule>
+
+# Enable CGIPassAuth for CGI/FastCGI implementations
+<IfModule mod_cgi.c>
+    CGIPassAuth On
+</IfModule>
+<IfModule mod_cgid.c>
+    CGIPassAuth On
+</IfModule>

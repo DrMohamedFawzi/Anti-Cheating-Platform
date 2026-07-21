@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,8 +14,9 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <!-- Google Fonts Cairo -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
   <!-- Custom Styling -->
   <script src="security.js"></script>
   <script src="theme.js"></script>
@@ -24,6 +26,7 @@
     body {
       font-family: 'Cairo', sans-serif;
     }
+
     .chart-tooltip {
       background: rgba(2, 6, 23, 0.92) !important;
       border: 1px solid rgba(59, 130, 246, 0.35) !important;
@@ -48,9 +51,11 @@
 <body class="glow-grid min-h-screen flex flex-col justify-between p-4">
 
   <!-- Top Navbar -->
-  <header class="aegis-navbar rounded-2xl border border-slate-800/60 backdrop-blur-xl max-w-6xl mx-auto w-full px-6 py-4 mb-6 flex items-center justify-between">
+  <header
+    class="aegis-navbar rounded-2xl border border-slate-800/60 backdrop-blur-xl max-w-6xl mx-auto w-full px-6 py-4 mb-6 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-white font-black text-lg">
+      <div
+        class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-white font-black text-lg">
         Æ
       </div>
       <div>
@@ -58,13 +63,14 @@
         <p class="text-[10px] text-slate-400">لوحة المراقبة والإشراف على المعلمين والنزاهة</p>
       </div>
     </div>
-    
+
     <div class="flex items-center gap-4">
       <div class="hidden sm:block text-left">
         <p class="text-xs font-bold text-slate-200" id="inst-nav-name">المؤسسة</p>
         <span class="badge badge-outline border-teal-500/30 text-teal-400 text-[9px] px-2 py-1">حساب مؤسسي</span>
       </div>
-      <button onclick="handleLogout()" class="btn btn-outline border-red-500/30 hover:bg-red-600 text-red-500 hover:text-white btn-sm rounded-xl text-xs">
+      <button onclick="handleLogout()"
+        class="btn btn-outline border-red-500/30 hover:bg-red-600 text-red-500 hover:text-white btn-sm rounded-xl text-xs">
         تسجيل الخروج
       </button>
     </div>
@@ -74,56 +80,67 @@
   <main class="max-w-6xl mx-auto w-full flex-1 grid grid-cols-1 gap-6">
 
     <!-- Welcome Banner Card -->
-    <div class="card glass-panel rounded-3xl border border-slate-800/70 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div
+      class="card glass-panel rounded-3xl border border-slate-800/70 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
       <div>
-        <h2 class="text-xl font-extrabold text-slate-100">لوحة إشراف: <span id="inst-welcome-name" class="text-gradient-academic font-black">...</span> 🏛️</h2>
-        <p class="text-xs text-slate-400 mt-1">تتيح لك هذه اللوحة إدارة تفعيل حسابات المعلمين الجدد، ومراقبة أداء الامتحانات ومؤشرات النزاهة وسلوك الطلاب في نظام LMS.</p>
+        <h2 class="text-xl font-extrabold text-slate-100">لوحة إشراف: <span id="inst-welcome-name"
+            class="text-gradient-academic font-black">...</span> 🏛️</h2>
+        <p class="text-xs text-slate-400 mt-1">تتيح لك هذه اللوحة إدارة تفعيل حسابات المعلمين الجدد، ومراقبة أداء
+          الامتحانات ومؤشرات النزاهة وسلوك الطلاب في نظام LMS.</p>
       </div>
     </div>
 
     <!-- Navigation Tabs -->
     <div class="tabs tabs-boxed bg-slate-950/60 p-1 rounded-2xl flex max-w-sm">
-      <button id="tab-btn-teachers" class="tab flex-1 text-xs font-semibold py-3 rounded-xl tab-active-academic" onclick="switchTab('teachers')">👨‍🏫 تفعيل المعلمين</button>
-      <button id="tab-btn-analytics" class="tab flex-1 text-xs font-semibold py-3 rounded-xl text-slate-400" onclick="switchTab('analytics')">📊 تحليلات النزاهة</button>
+      <button id="tab-btn-teachers" class="tab flex-1 text-xs font-semibold py-3 rounded-xl tab-active-academic"
+        onclick="switchTab('teachers')">👨‍🏫 تفعيل المعلمين</button>
+      <button id="tab-btn-analytics" class="tab flex-1 text-xs font-semibold py-3 rounded-xl text-slate-400"
+        onclick="switchTab('analytics')">📊 تحليلات النزاهة</button>
     </div>
 
     <!-- TAB 1: Teachers Approval Panel -->
     <div id="tab-content-teachers" class="space-y-4">
-      
+
       <!-- Direct Add Teacher Card -->
       <div class="card glass-panel rounded-3xl border border-slate-800 p-5">
         <h3 class="font-bold text-slate-200 text-sm mb-4 font-bold">إضافة معلم أو أستاذ جديد مباشرة</h3>
-        
+
         <form onsubmit="handleDirectAddTeacher(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
           <div class="form-control">
             <label class="label pt-0"><span class="label-text text-[10px] text-slate-400">الاسم الكامل:</span></label>
-            <input type="text" id="add-teacher-name" required class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="أحمد محمد علي">
+            <input type="text" id="add-teacher-name" required
+              class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="أحمد محمد علي">
           </div>
-          
+
           <div class="form-control">
             <label class="label pt-0"><span class="label-text text-[10px] text-slate-400">اسم المستخدم:</span></label>
-            <input type="text" id="add-teacher-username" required class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="ahmad_prof">
+            <input type="text" id="add-teacher-username" required
+              class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="ahmad_prof">
           </div>
-          
+
           <div class="form-control">
-            <label class="label pt-0"><span class="label-text text-[10px] text-slate-400">البريد الإلكتروني:</span></label>
-            <input type="email" id="add-teacher-email" required class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="ahmad@school.com">
+            <label class="label pt-0"><span class="label-text text-[10px] text-slate-400">البريد
+                الإلكتروني:</span></label>
+            <input type="email" id="add-teacher-email" required
+              class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="ahmad@school.com">
           </div>
 
           <div class="form-control">
             <label class="label pt-0"><span class="label-text text-[10px] text-slate-400">كلمة المرور:</span></label>
-            <input type="password" id="add-teacher-password" required class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="••••••••">
+            <input type="password" id="add-teacher-password" required
+              class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="••••••••">
           </div>
 
           <div class="col-span-full flex justify-end">
-            <button type="submit" id="add-teacher-btn" class="btn btn-academic rounded-xl text-xs px-6 font-bold">إضافة وتفعيل الحساب فوراً</button>
+            <button type="submit" id="add-teacher-btn" class="btn btn-academic rounded-xl text-xs px-6 font-bold">إضافة
+              وتفعيل الحساب فوراً</button>
           </div>
         </form>
       </div>
 
       <div class="card glass-panel rounded-3xl border border-slate-800 p-5">
         <h3 class="font-bold text-slate-200 text-sm mb-4">طلبات تسجيل المعلمين المعلقة</h3>
-        
+
         <div class="overflow-x-auto">
           <table class="table w-full text-right">
             <thead>
@@ -147,7 +164,7 @@
 
     <!-- TAB 2: Live Analytics (Moved from old index.html) -->
     <div id="tab-content-analytics" class="hidden space-y-6">
-      
+
       <!-- Stats cards -->
       <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <div class="card glass-panel rounded-2xl border border-slate-800 p-4">
@@ -156,7 +173,9 @@
               <p class="text-[10px] text-slate-400 font-bold block">ثبات الاتصال</p>
               <p class="text-2xl font-black text-emerald-300" id="metric-stability">94%</p>
             </div>
-            <div class="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center">📶</div>
+            <div
+              class="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center">
+              📶</div>
           </div>
         </div>
 
@@ -166,7 +185,8 @@
               <p class="text-[10px] text-slate-400 font-bold block">نزاهة الأداء</p>
               <p class="text-2xl font-black text-cyan-300" id="metric-integrity">92%</p>
             </div>
-            <div class="w-10 h-10 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center">🛡️</div>
+            <div class="w-10 h-10 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center">
+              🛡️</div>
           </div>
         </div>
 
@@ -176,7 +196,9 @@
               <p class="text-[10px] text-slate-400 font-bold block">سرعة الاستجابة</p>
               <p class="text-2xl font-black text-purple-300" id="metric-latency">180ms</p>
             </div>
-            <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">⏱️</div>
+            <div
+              class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+              ⏱️</div>
           </div>
         </div>
 
@@ -186,14 +208,16 @@
               <p class="text-[10px] text-slate-400 font-bold block">أحداث النظام اليوم</p>
               <p class="text-2xl font-black text-amber-200" id="metric-events">17</p>
             </div>
-            <div class="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center">📡</div>
+            <div
+              class="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center">
+              📡</div>
           </div>
         </div>
       </section>
 
       <!-- Charts grid -->
       <section class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        
+
         <!-- Bar Chart -->
         <div class="card glass-panel rounded-3xl border border-slate-800 p-5">
           <div class="mb-3">
@@ -246,7 +270,7 @@
 
     function switchTab(tab) {
       activeTab = tab;
-      
+
       const tabTeachersBtn = document.getElementById('tab-btn-teachers');
       const tabAnalyticsBtn = document.getElementById('tab-btn-analytics');
       const teachersContent = document.getElementById('tab-content-teachers');
@@ -263,7 +287,7 @@
         tabAnalyticsBtn.className = 'tab flex-1 text-xs font-semibold py-3 rounded-xl tab-active-academic';
         teachersContent.classList.add('hidden');
         analyticsContent.classList.remove('hidden');
-        
+
         // Render charts once layout becomes visible
         setTimeout(initAnalyticsCharts, 100);
       }
@@ -282,7 +306,7 @@
     // Direct Add Teacher Action
     function handleDirectAddTeacher(e) {
       e.preventDefault();
-      
+
       const nameInput = document.getElementById('add-teacher-name');
       const usernameInput = document.getElementById('add-teacher-username');
       const emailInput = document.getElementById('add-teacher-email');
@@ -309,38 +333,38 @@
 
       fetch('api.php?action=register', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + user.token
         },
         body: JSON.stringify(payload)
       })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success') {
-          alert('تم إضافة المعلم وتفعيل حسابه بنجاح!');
-          nameInput.value = '';
-          usernameInput.value = '';
-          emailInput.value = '';
-          passwordInput.value = '';
-          loadTeachers();
-        } else {
-          alert('فشل إضافة المعلم: ' + data.message);
-        }
-      })
-      .catch(() => {
-        alert('حدث خطأ في الاتصال بالخادم، يرجى المحاولة مجدداً.');
-      })
-      .finally(() => {
-        btn.disabled = false;
-        btn.innerHTML = 'إضافة وتفعيل الحساب فوراً';
-      });
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert('تم إضافة المعلم وتفعيل حسابه بنجاح!');
+            nameInput.value = '';
+            usernameInput.value = '';
+            emailInput.value = '';
+            passwordInput.value = '';
+            loadTeachers();
+          } else {
+            alert('فشل إضافة المعلم: ' + data.message);
+          }
+        })
+        .catch(() => {
+          alert('حدث خطأ في الاتصال بالخادم، يرجى المحاولة مجدداً.');
+        })
+        .finally(() => {
+          btn.disabled = false;
+          btn.innerHTML = 'إضافة وتفعيل الحساب فوراً';
+        });
     }
 
     // Load registered teachers belonging to this institution
     function loadTeachers() {
       const tbody = document.getElementById('teachers-tbody');
-      
+
       fetch(`api.php?action=get_teachers_pending&institution_id=${user.id}`, {
         headers: { 'Authorization': 'Bearer ' + user.token }
       })
@@ -353,10 +377,10 @@
             } else {
               tbody.innerHTML = teachersList.map(t => {
                 const isApproved = parseInt(t.is_approved) === 1;
-                const statusBadge = isApproved 
-                  ? '<span class="badge-emerald">حساب نشط</span>' 
+                const statusBadge = isApproved
+                  ? '<span class="badge-emerald">حساب نشط</span>'
                   : '<span class="badge-amber">بانتظار التفعيل</span>';
-                
+
                 const btnAction = isApproved
                   ? `<button onclick="approveTeacher(${t.id}, 0)" class="btn btn-xs btn-error rounded-lg">إلغاء التفعيل / حظر</button>`
                   : `<button onclick="approveTeacher(${t.id}, 1)" class="btn btn-xs btn-success rounded-lg">تفعيل الحساب</button>`;
@@ -378,29 +402,29 @@
 
     // Toggle teacher approval status
     function approveTeacher(teacherId, status) {
-      const msg = status === 1 
-        ? 'هل أنت متأكد من تفعيل حساب المعلم هذا ليتمكن من الدخول للمنصة؟' 
+      const msg = status === 1
+        ? 'هل أنت متأكد من تفعيل حساب المعلم هذا ليتمكن من الدخول للمنصة؟'
         : 'هل أنت متأكد من إلغاء تفعيل حساب هذا المعلم؟';
-        
+
       if (!confirm(msg)) return;
 
       fetch('api.php?action=approve_teacher', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + user.token
         },
         body: JSON.stringify({ teacher_id: teacherId, status: status })
       })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success') {
-          alert('تم تحديث حالة المعلم بنجاح!');
-          loadTeachers();
-        } else {
-          alert('فشل التحديث: ' + data.message);
-        }
-      });
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert('تم تحديث حالة المعلم بنجاح!');
+            loadTeachers();
+          } else {
+            alert('فشل التحديث: ' + data.message);
+          }
+        });
     }
 
     // Handle logout
@@ -569,4 +593,5 @@
   </script>
 
 </body>
+
 </html>

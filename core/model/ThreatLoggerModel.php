@@ -39,18 +39,6 @@ class ThreatLoggerModel {
         // 2. Log the threat
         $created_at = date('Y-m-d H:i:s');
         if (!$db_fallback && $conn) {
-            // Create table if it doesn't exist
-            $conn->query("CREATE TABLE IF NOT EXISTS threats (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                ip_address VARCHAR(45) NOT NULL,
-                user_id INT NULL,
-                official_name VARCHAR(150) NULL,
-                attack_type VARCHAR(50) NOT NULL,
-                payload TEXT NULL,
-                user_agent TEXT NULL,
-                created_at DATETIME NOT NULL
-            )");
-
             $stmt = $conn->prepare("INSERT INTO threats (ip_address, user_id, official_name, attack_type, payload, user_agent, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
             if ($stmt) {
                 $stmt->bind_param("sisssss", $ip_address, $user_id, $official_name, $attack_type, $payload, $user_agent, $created_at);

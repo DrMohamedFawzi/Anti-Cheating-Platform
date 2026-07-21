@@ -1,21 +1,40 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aegis-X | ورقة الامتحان الآمنة</title>
-    
+
     <!-- Tailwind CSS & DaisyUI CDN -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.0/dist/full.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Custom styling variables -->
     <script src="theme.js"></script>
     <link rel="stylesheet" href="styles.css">
-    
+
     <!-- Google Fonts Cairo -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
+
+    <!-- MediaPipe Face Detection & 3D Face Mesh -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"
+        crossorigin="anonymous"></script>
+
+    <!-- Vladmandic Face-API for local Face Recognition -->
+    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js" crossorigin="anonymous"></script>
+
+    <!-- ONNX Runtime & Silero VAD Web for AI Voice Activity Detection -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.14.0/dist/ort.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.7/dist/bundle.min.js" crossorigin="anonymous"></script>
+
     <style>
         body {
             font-family: 'Cairo', sans-serif;
@@ -24,92 +43,261 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-4 relative overflow-hidden select-none">
-    
+
+<body class="min-h-screen flex flex-col justify-between p-4 relative overflow-y-auto select-none">
+
     <!-- Audio beep for violations -->
     <audio id="alert-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-84.wav" preload="auto"></audio>
 
     <!-- Blur overlay when focus is lost -->
     <div id="exam-blur-overlay" class="blur-overlay flex flex-col items-center justify-center text-center p-6">
         <div class="scanlines"></div>
-        <div class="w-16 h-16 rounded-full bg-red-600/20 border border-red-500 flex items-center justify-center mb-4 animate-bounce">
+        <div
+            class="w-16 h-16 rounded-full bg-red-600/20 border border-red-500 flex items-center justify-center mb-4 animate-bounce">
             ⚠️
         </div>
         <h3 class="text-xl font-bold text-red-500 mb-2">تم مغادرة نافذة الاختبار!</h3>
-        <p class="text-slate-300 text-xs max-w-sm">تم تسجيل هذه المخالفة وإعلام خادم المراقبة تلقائياً. انقر للعودة وإكمال الاختبار.</p>
-        <button class="btn btn-outline border-red-500 hover:bg-red-600 text-red-500 hover:text-white mt-4 px-6 rounded-xl text-xs" onclick="resumeFocus()">العودة الآن</button>
+        <p class="text-slate-300 text-xs max-w-sm">تم تسجيل هذه المخالفة وإعلام خادم المراقبة تلقائياً. انقر للعودة
+            وإكمال الاختبار.</p>
+        <button
+            class="btn btn-outline border-red-500 hover:bg-red-600 text-red-500 hover:text-white mt-4 px-6 rounded-xl text-xs"
+            onclick="resumeFocus()">العودة الآن</button>
     </div>
 
     <!-- Offline Warning banner -->
-    <div id="offline-banner" class="hidden max-w-xl mx-auto w-full alert alert-warning rounded-xl border border-yellow-800/40 p-3 text-xs mb-4">
-        <span>⚠️ تنبيه: انقطع الاتصال بالإنترنت! لا تقلق، يمكنك الاستمرار في حل الامتحان؛ سيقوم النظام بتشفير وحفظ إجاباتك محلياً ومزامنتها فور عودة الاتصال.</span>
+    <div id="offline-banner"
+        class="hidden max-w-xl mx-auto w-full alert alert-warning rounded-xl border border-yellow-800/40 p-3 text-xs mb-4">
+        <span>⚠️ تنبيه: انقطع الاتصال بالإنترنت! لا تقلق، يمكنك الاستمرار في حل الامتحان؛ سيقوم النظام بتشفير وحفظ
+            إجاباتك محلياً ومزامنتها فور عودة الاتصال.</span>
     </div>
 
     <!-- Pre-flight Check Overlay -->
-    <div id="pre-flight-check" class="max-w-xl mx-auto w-full glass-panel p-8 rounded-3xl border border-slate-800/80 shadow-2xl relative my-auto flex flex-col items-center text-center">
+    <div id="pre-flight-check"
+        class="max-w-xl mx-auto w-full glass-panel p-8 rounded-3xl border border-slate-800/80 shadow-2xl relative my-auto flex flex-col items-center text-center">
         <h2 class="text-2xl font-bold text-white mb-4">تجهيز بيئة الاختبار الآمنة</h2>
-        <p class="text-slate-400 text-sm mb-6 leading-relaxed">
-            للحفاظ على نزاهة الامتحان، يتطلب هذا النظام الدخول في وضع <strong>ملء الشاشة الكامل</strong>، والسماح للمتصفح بالوصول إلى <strong>الميكروفون</strong> لمراقبة المحيط. في حال الخروج من ملء الشاشة أو تغيير أجهزة الصوت، سيتم <strong>إنهاء الامتحان فوراً</strong>.
+        <p class="text-slate-400 text-xs mb-4 leading-relaxed">
+            للحفاظ على نزاهة الامتحان، يتطلب هذا النظام الدخول في وضع <strong>ملء الشاشة الكامل</strong>، والسماح للمتصفح بالوصول إلى <strong>الكاميرا والمايكروفون</strong> لمطابقة هويتك ومراقبة المحيط.
         </p>
+
+        <!-- Facial Match Visual Card -->
+        <div id="face-verification-card" class="w-full bg-slate-900/60 rounded-2xl p-4 border border-slate-800 mb-6 flex flex-col items-center">
+            <div class="text-xs font-bold text-slate-300 mb-3 flex items-center gap-1.5">
+                <span>🛡️ فحص مطابقة الهوية الرقمية للوجه</span>
+            </div>
+            <div class="flex items-center justify-around w-full gap-4 mb-3">
+                <div class="flex flex-col items-center">
+                    <img id="verify-profile-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'%3E%3Cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E" class="w-20 h-20 rounded-xl object-cover border-2 border-slate-700 bg-slate-950 shadow-md">
+                    <span class="text-[10px] text-slate-400 mt-1">الصورة الرسمية</span>
+                </div>
+                <div class="text-lg font-bold text-slate-500 animate-pulse">⟷</div>
+                <div class="flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-xl overflow-hidden border-2 border-slate-700 bg-slate-950 shadow-md flex items-center justify-center relative">
+                        <video id="verify-live-video-preview" autoplay playsinline class="w-full h-full object-cover hidden"></video>
+                        <span id="verify-live-placeholder" class="text-[10px] text-slate-500">البث الحي</span>
+                    </div>
+                    <span class="text-[10px] text-slate-400 mt-1">الكاميرا الحية</span>
+                </div>
+            </div>
+            <div id="face-match-status-badge" class="badge badge-warning text-[10px] font-bold py-2.5 px-4 rounded-lg">
+                بانتظار موافقتك لبدء الفحص والمطابقة... 🔍
+            </div>
+        </div>
+
         <button id="btn-start-preflight" class="btn btn-primary w-full max-w-xs rounded-xl font-bold">موافق وبدء الامتحان</button>
     </div>
 
     <!-- Exam Paper Body -->
-    <div id="exam-main-container" class="hidden max-w-2xl mx-auto w-full glass-panel p-6 md:p-8 rounded-3xl border border-slate-800/80 shadow-2xl relative my-auto flex flex-col">
-        
+    <div id="exam-main-container"
+        class="hidden max-w-2xl mx-auto w-full glass-panel p-6 md:p-8 rounded-3xl border border-slate-800/80 shadow-2xl relative my-auto flex flex-col">
+
         <!-- Header details -->
         <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
             <div>
                 <h2 id="exam-title" class="font-bold text-slate-200 text-md">تحميل بيانات الامتحان...</h2>
                 <p id="student-name-label" class="text-[10px] text-slate-500 mt-1">الطالب: ---</p>
             </div>
-            
-            <!-- Timer countdown -->
-            <div class="text-left">
-                <span class="text-[10px] text-slate-500 block">الوقت المتبقي:</span>
-                <span id="countdown-timer" class="font-mono text-purple-400 font-bold text-sm">45:00</span>
+
+            <div class="flex items-center gap-6">
+                <!-- Integrity Score -->
+                <div class="text-left flex items-center gap-2">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">نزاهة السلوك:</span>
+                        <span id="integrity-percent" class="text-xs font-bold text-emerald-400">100%</span>
+                    </div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse mt-3" id="proctoring-status-dot">
+                    </div>
+                </div>
+
+                <!-- Timer countdown -->
+                <div class="text-left">
+                    <span class="text-[10px] text-slate-500 block">الوقت المتبقي:</span>
+                    <span id="countdown-timer" class="font-mono text-purple-400 font-bold text-sm">45:00</span>
+                </div>
             </div>
         </div>
 
         <!-- Canvas displaying Question securely -->
-        <div id="question-container" class="relative w-full min-h-[200px] mb-6 rounded-2xl overflow-hidden bg-slate-950 border-2 border-blue-600/50 shadow-[0_0_20px_rgba(37,99,235,0.15)]">
+        <div id="question-container"
+            class="relative w-full min-h-[200px] mb-6 rounded-2xl overflow-hidden bg-slate-950 border-2 border-blue-600/50 shadow-[0_0_20px_rgba(37,99,235,0.15)]">
             <canvas id="question-canvas" class="w-full h-full min-h-[200px]"></canvas>
-            
+
             <!-- Hidden DOM text element for AI poisoning triggers -->
             <div id="hidden-dom-content" class="h-0 overflow-hidden opacity-0 select-none pointer-events-none"></div>
         </div>
 
         <!-- Math Answer Field -->
         <div id="math-answer-wrap" class="form-control mb-6">
-            <label class="label pt-0"><span class="label-text text-xs text-slate-400">اكتب إجابتك النهائية هنا:</span></label>
-            <input id="answer-input" type="text" class="input input-bordered bg-slate-950 border-slate-900 focus:border-purple-600 focus:ring-1 focus:ring-purple-600 rounded-xl text-center font-bold text-sm tracking-wide" placeholder="مثال: 25">
+            <label class="label pt-0"><span class="label-text text-xs text-slate-400">اكتب إجابتك النهائية
+                    هنا:</span></label>
+            <input id="answer-input" type="text"
+                class="input input-bordered bg-slate-950 border-slate-900 focus:border-purple-600 focus:ring-1 focus:ring-purple-600 rounded-xl text-center font-bold text-sm tracking-wide"
+                placeholder="مثال: 25">
         </div>
 
         <!-- MCQ Answer Field -->
         <div id="mcq-answer-wrap" class="form-control mb-6 hidden">
-            <label class="label pt-0"><span class="label-text text-xs text-slate-400">اختر الإجابة الصحيحة مما يلي:</span></label>
+            <label class="label pt-0"><span class="label-text text-xs text-slate-400">اختر الإجابة الصحيحة مما
+                    يلي:</span></label>
             <div class="grid grid-cols-2 gap-4">
-                <button type="button" id="btn-opt-0" onclick="selectMCQOption(0)" class="btn btn-outline border-slate-600 hover:border-blue-500 hover:bg-blue-900/30 text-slate-200 rounded-xl text-sm font-bold py-3 transition-all">أ</button>
-                <button type="button" id="btn-opt-1" onclick="selectMCQOption(1)" class="btn btn-outline border-slate-600 hover:border-blue-500 hover:bg-blue-900/30 text-slate-200 rounded-xl text-sm font-bold py-3 transition-all">ب</button>
-                <button type="button" id="btn-opt-2" onclick="selectMCQOption(2)" class="btn btn-outline border-slate-600 hover:border-blue-500 hover:bg-blue-900/30 text-slate-200 rounded-xl text-sm font-bold py-3 transition-all">ج</button>
-                <button type="button" id="btn-opt-3" onclick="selectMCQOption(3)" class="btn btn-outline border-slate-600 hover:border-blue-500 hover:bg-blue-900/30 text-slate-200 rounded-xl text-sm font-bold py-3 transition-all">د</button>
+                <button type="button" id="btn-opt-0" onclick="selectMCQOption(0)"
+                    class="btn btn-outline border-slate-600 hover:border-blue-500 hover:bg-blue-900/30 text-slate-200 rounded-xl text-sm font-bold py-3 transition-all">أ</button>
+                <button type="button" id="btn-opt-1" onclick="selectMCQOption(1)"
+                    class="btn btn-outline border-slate-600 hover:border-blue-500 hover:bg-blue-900/30 text-slate-200 rounded-xl text-sm font-bold py-3 transition-all">ب</button>
+                <button type="button" id="btn-opt-2" onclick="selectMCQOption(2)"
+                    class="btn btn-outline border-slate-600 hover:border-blue-500 hover:bg-blue-900/30 text-slate-200 rounded-xl text-sm font-bold py-3 transition-all">ج</button>
+                <button type="button" id="btn-opt-3" onclick="selectMCQOption(3)"
+                    class="btn btn-outline border-slate-600 hover:border-blue-500 hover:bg-blue-900/30 text-slate-200 rounded-xl text-sm font-bold py-3 transition-all">د</button>
             </div>
             <input id="mcq-selected-val" type="hidden" value="">
         </div>
 
         <!-- Submit & Navigation -->
-        <div class="flex gap-3">
-            <button id="submit-btn" class="btn btn-primary flex-1 rounded-xl text-xs" onclick="submitAnswer()">إرسال الإجابة وحفظ النتيجة</button>
+        <div class="flex gap-3 items-center mb-6">
+            <button id="prev-btn" class="btn btn-outline border-slate-700 text-slate-300 rounded-xl text-xs px-5 hidden"
+                onclick="prevQuestion()">&rarr; السابق</button>
+            
+            <!-- Bookmark Button -->
+            <button id="bookmark-btn" type="button" class="btn btn-outline border-slate-700 text-slate-400 hover:bg-slate-800 rounded-xl text-xs px-4 flex items-center gap-1"
+                onclick="toggleBookmark()">
+                <span id="bookmark-icon">🔖</span>
+                <span id="bookmark-text">وضع علامة</span>
+            </button>
+
+            <button id="submit-btn" class="btn btn-emerald flex-1 rounded-xl text-xs font-bold py-3"
+                onclick="nextQuestionOrSubmit()">التالي &larr;</button>
         </div>
+
+        <!-- Moodle-style Quiz Navigation Grid -->
+        <div id="quiz-navigation-grid" class="border-t border-slate-800/80 pt-4 mt-2">
+            <span class="text-[10px] text-slate-500 font-bold block mb-2">خريطة الأسئلة (Quiz Navigation):</span>
+            <div id="nav-buttons-container" class="flex flex-wrap gap-2">
+                <!-- Rendered dynamically by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Visual Deterrent UI (Picture-in-Picture Camera) -->
+    <div id="aegis-vision-deterrent"
+        class="fixed bottom-20 left-6 w-32 h-32 rounded-full overflow-hidden shadow-[0_0_20px_rgba(16,185,129,0.3)] border-4 border-emerald-500 z-50 transition-colors duration-300 hidden">
+        <video id="aegis-vision-video" class="w-full h-full object-cover transform scale-x-[-1]"></video>
+        <canvas id="aegis-vision-canvas" class="absolute top-0 left-0 w-full h-full transform scale-x-[-1]"></canvas>
     </div>
 
     <!-- Info Footer status -->
     <div class="text-center text-[10px] text-slate-600 max-w-md mx-auto w-full mt-4">
         نظام Aegis-X Zero-Trust. يراقب نبض الاتصال وسلوك الإجابة في الخلفية.
     </div>
+    <script src="core/security/AuthGuard.js?v=13"></script>
+    <script>
+        window.resumeFocus = function() {
+            var overlay = document.getElementById('exam-blur-overlay');
+            if (overlay) overlay.style.display = 'none';
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(function(){});
+            }
+        };
+        (async function() {
+            if (window.location.search.includes('mock_confirm=true')) {
+                window.confirm = () => true;
+            }
+            const examAuth = AuthGuard.protectExamRoute();
+            if (!examAuth) return;
+            
+            let securityLevel = 'strict';
+            try {
+                if (examAuth.examCode !== 'AI_PRACTICE') {
+                    const response = await fetch(`api.php?action=get_exam&code=${examAuth.examCode}`, {
+                        headers: { 'Authorization': 'Bearer ' + examAuth.user.token }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success' && data.exam) {
+                        securityLevel = data.exam.security_level || 'strict';
+                        window.__PRELOADED_EXAM_DATA = data;
+                    } else if (data.status === 'error') {
+                        alert(data.message);
+                        window.location.href = "student_dashboard.html";
+                        return;
+                    }
+                } else {
+                    securityLevel = 'off'; // AI Practice is usually off
+                }
+            } catch(e) {}
 
-    <script src="security.js?v=8"></script>
-    <script src="core/security/AuthGuard.js?v=8"></script>
-    <script src="features/Exam/presenter/ExamPresenter.js?v=8"></script>
+            window.__SECURITY_LEVEL = securityLevel;
+            const cacheBuster = "?v=" + Date.now();
+
+            function loadScript(src) {
+                return new Promise((resolve) => {
+                    const s = document.createElement('script');
+                    s.src = src;
+                    s.onload = resolve;
+                    s.onerror = resolve; // Continue even if fails
+                    document.body.appendChild(s);
+                });
+            }
+
+            if (securityLevel !== 'off') {
+                await loadScript("security.js" + cacheBuster);
+                if (securityLevel === 'strict') {
+                    await loadScript("core/security/VisionMonitorPlugin.js" + cacheBuster);
+                }
+            } else {
+                // Mock AegisSecurityEngine to prevent crashes in ExamPresenter
+                window.AegisSecurityEngine = {
+                    getCurrentSeed: () => 1000,
+                    setSeed: () => {},
+                    mutateQuestion: (q) => q, // Return as-is
+                    drawOnCanvas: (canvasId, text, optsOrFormula, label, isMCQ) => {
+                        const canvas = document.getElementById(canvasId);
+                        if (!canvas) return;
+                        const ctx = canvas.getContext('2d');
+                        ctx.fillStyle = '#0f172a';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.fillStyle = '#fff';
+                        ctx.font = '16px Cairo';
+                        ctx.textAlign = 'right';
+                        ctx.fillText(text, canvas.width - 20, 30);
+                        if (isMCQ && Array.isArray(optsOrFormula)) {
+                            optsOrFormula.forEach((opt, i) => {
+                                ctx.fillText((i+1) + "- " + opt, canvas.width - 20, 70 + (i*30));
+                            });
+                        } else if (optsOrFormula) {
+                            ctx.fillText(optsOrFormula, canvas.width - 20, 70);
+                        }
+                    },
+                    generatePoisonedText: (txt) => txt,
+                    startHeartbeat: (a,b,cb) => {
+                        setInterval(() => cb(navigator.onLine ? 'online' : 'offline', 0), 5000);
+                    },
+                    getFingerprint: () => ({}),
+                    initSecurityTraps: () => {}
+                };
+            }
+            
+            // Load presenter last
+            await loadScript("features/Exam/presenter/ExamPresenter.js" + cacheBuster);
+        })();
+    </script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,8 +11,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Google Fonts Cairo -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
   <!-- Custom Styling -->
   <script src="theme.js"></script>
   <link rel="stylesheet" href="styles.css" />
@@ -20,6 +22,7 @@
     body {
       font-family: 'Cairo', sans-serif;
     }
+
     .creator-container {
       max-width: 720px;
     }
@@ -37,9 +40,11 @@
 <body class="glow-grid min-h-screen flex flex-col justify-between p-4">
 
   <!-- Top Navbar -->
-  <header class="aegis-navbar rounded-2xl border border-slate-800/60 backdrop-blur-xl max-w-6xl mx-auto w-full px-6 py-4 mb-6 flex items-center justify-between">
+  <header
+    class="aegis-navbar rounded-2xl border border-slate-800/60 backdrop-blur-xl max-w-6xl mx-auto w-full px-6 py-4 mb-6 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-white font-black text-lg">
+      <div
+        class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-white font-black text-lg">
         Æ
       </div>
       <div>
@@ -54,20 +59,22 @@
 
   <!-- Creator Core Split Layout -->
   <main class="max-w-6xl mx-auto w-full flex-1 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start py-2">
-    
+
     <!-- Right side: Editor Form -->
     <div class="card glass-panel rounded-3xl border border-slate-800 p-6 shadow-2xl space-y-6">
-      
+
       <div class="mb-4 pb-4 border-b border-slate-800/60 flex items-center justify-between">
         <div>
           <h2 class="text-base font-bold text-slate-200">تصميم وتأليف أسئلة الامتحان</h2>
-          <p class="text-[10px] text-slate-400 mt-1">اختر الفصل الدراسي، وحدد نوع كل سؤال، واستخدم القوالب الجاهزة لتسريع العمل.</p>
+          <p class="text-[10px] text-slate-400 mt-1">اختر الفصل الدراسي، وحدد نوع كل سؤال، واستخدم القوالب الجاهزة
+            لتسريع العمل.</p>
         </div>
-        <button type="button" onclick="generateRandomCode()" class="btn btn-outline border-teal-500/20 text-teal-400 btn-xs rounded-lg">توليد رمز عشوائي</button>
+        <button type="button" onclick="generateRandomCode()"
+          class="btn btn-outline border-teal-500/20 text-teal-400 btn-xs rounded-lg">توليد رمز عشوائي</button>
       </div>
 
       <form id="exam-form" onsubmit="handleCreateExam(event)" class="space-y-6">
-        
+
         <!-- Metadata -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="form-control">
@@ -76,23 +83,59 @@
               <option value="">-- تحميل الفصول الدراسية --</option>
             </select>
           </div>
-          
+
           <div class="form-control">
-            <label class="label pt-0"><span class="label-text text-xs text-slate-400">رمز الاختبار الفريد:</span></label>
-            <input type="text" id="exam_code" required class="input input-bordered input-academic rounded-xl text-xs py-3 font-mono text-center text-teal-400 font-bold" placeholder="EXAM_MATH101">
+            <label class="label pt-0"><span class="label-text text-xs text-slate-400">رمز الاختبار
+                الفريد:</span></label>
+            <input type="text" id="exam_code" required
+              class="input input-bordered input-academic rounded-xl text-xs py-3 font-mono text-center text-teal-400 font-bold"
+              placeholder="EXAM_MATH101">
           </div>
         </div>
 
         <div class="form-control">
           <label class="label"><span class="label-text text-xs text-slate-400">عنوان الاختبار:</span></label>
-          <input type="text" id="exam_title" required class="input input-bordered input-academic rounded-xl text-xs py-3" placeholder="مثال: اختبار المواد العامة والرياضيات التجريبي">
+          <input type="text" id="exam_title" required
+            class="input input-bordered input-academic rounded-xl text-xs py-3"
+            placeholder="مثال: اختبار المواد العامة والرياضيات التجريبي">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="form-control">
+            <label class="label pt-0"><span class="label-text text-xs text-slate-400">المدة بالدقائق:</span></label>
+            <input type="number" id="duration_minutes" required min="1" value="60"
+              class="input input-bordered input-academic rounded-xl text-xs py-3 text-center font-bold">
+          </div>
+          <div class="form-control">
+            <label class="label pt-0"><span class="label-text text-xs text-slate-400">عدد الأسئلة (فارغ = الكل):</span></label>
+            <input type="number" id="question_count" min="1"
+              class="input input-bordered input-academic rounded-xl text-xs py-3 text-center font-bold"
+              placeholder="الكل">
+          </div>
+          <div class="form-control">
+            <label class="label pt-0"><span class="label-text text-xs text-slate-400">مستوى الحماية:</span></label>
+            <select id="security_level" class="select select-bordered input-academic rounded-xl text-xs">
+              <option value="strict" selected>صارم (كاميرا، شاشة كاملة)</option>
+              <option value="moderate">متوسط (تتبع فقط)</option>
+              <option value="off">مغلق (بدون حماية)</option>
+            </select>
+          </div>
+          <div class="form-control">
+            <label class="label pt-0"><span class="label-text text-xs text-slate-400">نمط الامتحان:</span></label>
+            <select id="exam_mode" class="select select-bordered input-academic rounded-xl text-xs">
+              <option value="official" selected>رسمي (يؤثر على الدرجات)</option>
+              <option value="mock_teacher">تجريبي عام (تدريب للطلاب)</option>
+            </select>
+          </div>
         </div>
 
         <!-- Time Preservation Setting -->
-        <div class="form-control bg-slate-950/40 border border-slate-900 rounded-2xl p-4 flex flex-row items-center justify-between gap-4">
+        <div
+          class="form-control bg-slate-950/40 border border-slate-900 rounded-2xl p-4 flex flex-row items-center justify-between gap-4">
           <div>
             <span class="text-xs font-bold text-slate-200 block">🛡️ الحفاظ على وقت الامتحان عند انقطاع الإنترنت</span>
-            <p class="text-[10px] text-slate-500 mt-0.5">في حال انقطاع اتصال الطالب بالشبكة، هل يتم إيقاف المؤقت مؤقتاً لحين استقرار الاتصال أم يستمر العداد بالعد التنازلي؟</p>
+            <p class="text-[10px] text-slate-500 mt-0.5">في حال انقطاع اتصال الطالب بالشبكة، هل يتم إيقاف المؤقت مؤقتاً
+              لحين استقرار الاتصال أم يستمر العداد بالعد التنازلي؟</p>
           </div>
           <input type="checkbox" id="time_preservation_offline" class="toggle toggle-success toggle-sm" checked />
         </div>
@@ -101,11 +144,18 @@
         <div class="card bg-slate-950/40 border border-slate-900 rounded-2xl p-4 space-y-3">
           <span class="text-xs text-slate-300 font-bold">✨ مكتبة القوالب الجاهزة (اضغط للإضافة الفورية):</span>
           <div class="flex flex-wrap gap-2">
-            <button type="button" onclick="addPresetQuestion(1)" class="btn btn-xs btn-academic-secondary rounded-lg">📈 رياضيات: دالة تربيعية</button>
-            <button type="button" onclick="addPresetQuestion(2)" class="btn btn-xs btn-academic-secondary rounded-lg">➖ رياضيات: دالة خطية</button>
-            <button type="button" onclick="addPresetQuestion(5)" class="btn btn-xs btn-academic-secondary rounded-lg">🧪 كيمياء: اختيار عاصمة</button>
-            <button type="button" onclick="addPresetQuestion(6)" class="btn btn-xs btn-academic-secondary rounded-lg">📚 تاريخ: الحرب العالمية</button>
-            <button type="button" onclick="document.getElementById('ai_modal').showModal()" class="btn btn-xs btn-academic rounded-lg px-3">🪄 توليد بالذكاء الاصطناعي (Gemini)</button>
+            <button type="button" onclick="addPresetQuestion(1)" class="btn btn-xs btn-academic-secondary rounded-lg">📈
+              رياضيات: دالة تربيعية</button>
+            <button type="button" onclick="addPresetQuestion(2)" class="btn btn-xs btn-academic-secondary rounded-lg">➖
+              رياضيات: دالة خطية</button>
+            <button type="button" onclick="addPresetQuestion(5)" class="btn btn-xs btn-academic-secondary rounded-lg">🧪
+              كيمياء: اختيار عاصمة</button>
+            <button type="button" onclick="addPresetQuestion(6)" class="btn btn-xs btn-academic-secondary rounded-lg">📚
+              تاريخ: الحرب العالمية</button>
+            <button type="button" onclick="document.getElementById('ai_modal').showModal()"
+              class="btn btn-xs btn-academic rounded-lg px-3">🪄 توليد بالذكاء الاصطناعي (Gemini)</button>
+            <button type="button" onclick="document.getElementById('notebooklm_modal').showModal()"
+              class="btn btn-xs btn-outline border-purple-500/30 text-purple-400 rounded-lg px-3">📥 استيراد من NotebookLM</button>
           </div>
         </div>
 
@@ -118,15 +168,19 @@
 
         <div class="flex justify-between items-center pt-2">
           <div class="flex gap-2">
-            <button type="button" onclick="addQuestionItem('math')" class="btn btn-academic-secondary btn-sm px-4 rounded-xl">+ سؤال رياضيات</button>
-            <button type="button" onclick="addQuestionItem('mcq')" class="btn btn-academic-secondary btn-sm px-4 rounded-xl">+ سؤال اختيار من متعدد</button>
+            <button type="button" onclick="addQuestionItem('math')"
+              class="btn btn-academic-secondary btn-sm px-4 rounded-xl">+ سؤال رياضيات</button>
+            <button type="button" onclick="addQuestionItem('mcq')"
+              class="btn btn-academic-secondary btn-sm px-4 rounded-xl">+ سؤال اختيار من متعدد</button>
           </div>
           <span class="text-[10px] text-slate-500">* سيتم حماية وعرض الأسئلة والخيارات على لوحة الطالب بشكل آمن.</span>
         </div>
 
         <div class="pt-4 border-t border-slate-800/60 flex gap-3">
-          <button type="submit" id="submit-btn" class="btn btn-academic flex-1 rounded-xl text-xs font-bold py-3">حفظ ونشر الاختبار</button>
-          <a href="teacher_dashboard.html" class="btn btn-academic-secondary rounded-xl text-xs font-bold px-6 py-3">إلغاء</a>
+          <button type="submit" id="submit-btn" class="btn btn-academic flex-1 rounded-xl text-xs font-bold py-3">حفظ
+            ونشر الاختبار</button>
+          <a href="teacher_dashboard.html"
+            class="btn btn-academic-secondary rounded-xl text-xs font-bold px-6 py-3">إلغاء</a>
         </div>
 
       </form>
@@ -137,12 +191,14 @@
     <div class="sticky top-4 space-y-4 w-full">
       <div class="card glass-panel rounded-3xl border border-slate-800 p-5 shadow-xl space-y-4">
         <div class="flex items-center justify-between border-b border-slate-800/60 pb-2">
-          <h3 class="font-bold text-slate-200 text-xs flex items-center gap-2">👁️ معاينة الطالب الحية (Live Preview)</h3>
+          <h3 class="font-bold text-slate-200 text-xs flex items-center gap-2">👁️ معاينة الطالب الحية (Live Preview)
+          </h3>
           <span class="badge badge-info badge-xs text-[9px] px-2 py-1">تحديث تلقائي</span>
         </div>
 
         <!-- Mock Blackboard Canvas -->
-        <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-950 border border-slate-900 shadow-inner">
+        <div
+          class="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-950 border border-slate-900 shadow-inner">
           <canvas id="preview-canvas" class="w-full h-full"></canvas>
         </div>
 
@@ -165,7 +221,8 @@
         </div>
 
         <p class="text-[10px] text-slate-500 leading-relaxed">
-          * يتم تشفير خيارات الأسئلة ورسمها داخل الـ Canvas لضمان عدم إمكانية نسخها برمجياً من قبل الطلاب أو حلها بالذكاء الاصطناعي الخارجي.
+          * يتم تشفير خيارات الأسئلة ورسمها داخل الـ Canvas لضمان عدم إمكانية نسخها برمجياً من قبل الطلاب أو حلها
+          بالذكاء الاصطناعي الخارجي.
         </p>
       </div>
     </div>
@@ -186,11 +243,16 @@
     // Load classes managed by this teacher
     function loadTeacherClasses() {
       const select = document.getElementById('class_id');
-      
+
       fetch('api.php?action=get_classes&teacher_id=' + user.id, {
         headers: { 'Authorization': 'Bearer ' + user.token }
       })
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) {
+            return res.text().then(text => { throw new Error(`HTTP ${res.status}: ${text}`); });
+          }
+          return res.json();
+        })
         .then(data => {
           if (data.status === 'success') {
             const classes = data.classes || [];
@@ -201,11 +263,11 @@
                 classes.map(c => `<option value="${c.id}">${escapeHtml(c.class_name)} (${c.class_code})</option>`).join('');
             }
           } else {
-            select.innerHTML = '<option value="">فشل تحميل الفصول الدراسية</option>';
+            select.innerHTML = `<option value="">فشل التحميل: ${data.message || 'حالة غير معروفة'}</option>`;
           }
         })
-        .catch(() => {
-          select.innerHTML = '<option value="">خطأ في الاتصال بالخادم</option>';
+        .catch(err => {
+          select.innerHTML = `<option value="">خطأ: ${err.message || err}</option>`;
         });
     }
 
@@ -272,11 +334,11 @@
       const start = input.selectionStart || 0;
       const end = input.selectionEnd || 0;
       const text = input.value;
-      
+
       input.value = text.substring(0, start) + tag + text.substring(end);
       input.focus();
       input.setSelectionRange(start + tag.length, start + tag.length);
-      
+
       updatePreview(qId);
     }
 
@@ -300,7 +362,7 @@
     function addQuestionItem(type = 'math', text = '', formula = '', options = ['', '', '', ''], correct_option = 0) {
       questionCounter++;
       const container = document.getElementById('questions-list');
-      
+
       const qBlock = document.createElement('div');
       qBlock.className = 'card bg-slate-950/50 border border-slate-900 rounded-2xl p-4 space-y-3 relative transition';
       qBlock.id = `q-block-${questionCounter}`;
@@ -377,7 +439,7 @@
       if (event) event.stopPropagation();
       const qBlock = document.getElementById(`q-block-${id}`);
       if (qBlock) qBlock.remove();
-      
+
       // Reset preview to another question if active was deleted
       if (activeQuestionId === id) {
         activeQuestionId = null;
@@ -394,18 +456,72 @@
     // Highlight focused question block and sync preview
     function setActiveQuestion(id) {
       activeQuestionId = id;
-      
+
       const container = document.getElementById('questions-list');
       for (let i = 0; i < container.children.length; i++) {
         container.children[i].classList.remove('border-teal-500/30', 'bg-slate-900/30');
       }
-      
+
       const activeBlock = document.getElementById(`q-block-${id}`);
       if (activeBlock) {
         activeBlock.classList.add('border-teal-500/30', 'bg-slate-900/30');
       }
-      
+
       updatePreview(id);
+    }
+
+    function safeEval(str) {
+      str = str.replace(/\s+/g, '');
+      if (!/^[0-9\+\-\*\/\(\)\.]+$/.test(str)) {
+        return NaN;
+      }
+      let pos = 0;
+      function parseExpression() {
+        let values = [];
+        let operators = [];
+        while (pos < str.length) {
+          let ch = str[pos];
+          if (ch === '(') {
+            pos++;
+            values.push(parseExpression());
+          } else if (ch === ')') {
+            pos++;
+            break;
+          } else if (/[0-9\.]/.test(ch)) {
+            let valStr = '';
+            while (pos < str.length && /[0-9\.]/.test(str[pos])) {
+              valStr += str[pos];
+              pos++;
+            }
+            values.push(parseFloat(valStr));
+          } else if (/[\+\-\*\/]/.test(ch)) {
+            operators.push(ch);
+            pos++;
+          } else {
+            pos++;
+          }
+        }
+        for (let i = 0; i < operators.length; i++) {
+          if (operators[i] === '*' || operators[i] === '/') {
+            let op = operators[i];
+            let left = values[i];
+            let right = values[i + 1];
+            let res = op === '*' ? left * right : left / right;
+            values.splice(i, 2, res);
+            operators.splice(i, 1);
+            i--;
+          }
+        }
+        let res = values[0] || 0;
+        for (let i = 0; i < operators.length; i++) {
+          let op = operators[i];
+          let val = values[i + 1];
+          if (op === '+') res += val;
+          if (op === '-') res -= val;
+        }
+        return res;
+      }
+      return parseExpression();
     }
 
     // Dynamic Live Preview renderer
@@ -448,20 +564,21 @@
             .replace(/x²/g, '*4')
             .replace(/x/g, '*2')
             .replace(/y\s*=\s*/g, '')
-            .replace(/²/g, '*4'); 
-            
+            .replace(/²/g, '*4');
+
           if (/^[0-9\+\-\*\/\(\)\s\.]+$/.test(mathString)) {
-            expectedAns = Function(`"use strict"; return (${mathString})`)();
+            expectedAns = safeEval(mathString);
+            if (isNaN(expectedAns)) expectedAns = 'صيغة غير صحيحة';
           } else {
             expectedAns = 'صيغة معقدة للمحاكاة';
           }
-        } catch(e) {
+        } catch (e) {
           expectedAns = 'صيغة غير صحيحة';
         }
         expectedAnsLabel.textContent = expectedAns;
 
         // Render Math Canvas
-        AegisX.initExamProtection = function(){}; // dummy
+        AegisX.initExamProtection = function () { }; // dummy
         AegisSecurityEngine.drawOnCanvas('preview-canvas', textVal, mockEquation, 'PREVIEW SHIELD', false);
 
       } else {
@@ -497,7 +614,7 @@
     // Submit form handler
     function handleCreateExam(e) {
       e.preventDefault();
-      
+
       const classId = document.getElementById('class_id').value;
       const examCode = document.getElementById('exam_code').value.trim().toUpperCase();
       const examTitle = document.getElementById('exam_title').value.trim();
@@ -506,7 +623,7 @@
       // Gather Questions
       const questionsList = document.getElementById('questions-list');
       const qBlocks = questionsList.children;
-      
+
       if (qBlocks.length === 0) {
         alert('يرجى إضافة سؤال واحد على الأقل للاختبار.');
         return;
@@ -517,7 +634,7 @@
         const id = parseInt(qBlocks[i].id.replace('q-block-', ''));
         const type = document.getElementById(`type-select-${id}`).value;
         const text = document.getElementById(`text-input-${id}`).value.trim();
-        
+
         if (type === 'math') {
           const formula = document.getElementById(`formula-input-${id}`).value.trim();
           questions.push({
@@ -545,36 +662,45 @@
       submitBtn.innerHTML = '<span class="loading loading-spinner loading-xs mr-2"></span> جاري النشر...';
 
       const timePreservation = document.getElementById('time_preservation_offline').checked ? 1 : 0;
+      const durationMinutes = document.getElementById('duration_minutes').value || 60;
+      const questionCount = document.getElementById('question_count').value || null;
+      const securityLevel = document.getElementById('security_level').value || 'strict';
+      const examMode = document.getElementById('exam_mode').value || 'official';
+
       const payload = {
         exam_code: examCode,
         exam_title: examTitle,
         class_id: parseInt(classId),
         questions: questions,
-        time_preservation_offline: timePreservation
+        time_preservation_offline: timePreservation,
+        duration_minutes: parseInt(durationMinutes),
+        question_count: questionCount ? parseInt(questionCount) : null,
+        security_level: securityLevel,
+        exam_mode: examMode
       };
 
       fetch('api.php?action=create_exam', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + user.token
         },
         body: JSON.stringify(payload)
       })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success') {
-          alert('تم إنشاء ونشر الاختبار بنجاح!');
-          window.location.href = 'teacher_dashboard.html';
-        } else {
-          alert('فشل حفظ الاختبار: ' + data.message);
-        }
-      })
-      .catch(() => alert('فشل الاتصال بالخادم، يرجى المحاولة لاحقاً.'))
-      .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'حفظ ونشر الاختبار';
-      });
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert('تم إنشاء ونشر الاختبار بنجاح!');
+            window.location.href = 'teacher_dashboard.html';
+          } else {
+            alert('فشل حفظ الاختبار: ' + data.message);
+          }
+        })
+        .catch(() => alert('فشل الاتصال بالخادم، يرجى المحاولة لاحقاً.'))
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'حفظ ونشر الاختبار';
+        });
     }
 
     // Generate questions using Gemini API
@@ -593,7 +719,7 @@
 
       fetch('api.php?action=generate_ai_exam', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + user.token
         },
@@ -602,56 +728,96 @@
           num_questions: parseInt(numQuestions)
         })
       })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success') {
-          const questions = data.questions || [];
-          if (questions.length === 0) {
-            alert('لم يتم استخراج أي أسئلة، يرجى تقديم نص أطول أو محاولة موضوع آخر.');
-            return;
-          }
-
-          // Set exam title
-          const titleInput = document.getElementById('exam_title');
-          if (titleInput) {
-            titleInput.value = data.exam_title || titleInput.value || 'اختبار مولد بالذكاء الاصطناعي';
-          }
-
-          // Clear default questions list if empty or only template question exists
-          const list = document.getElementById('questions-list');
-          if (list.children.length === 1) {
-            const firstId = list.children[0].id.replace('q-block-', '');
-            const txtArea = document.getElementById(`text-input-${firstId}`);
-            if (txtArea && (txtArea.value.trim() === '' || txtArea.value.trim() === presets[1].text.trim())) {
-              list.innerHTML = '';
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            const questions = data.questions || [];
+            if (questions.length === 0) {
+              alert('لم يتم استخراج أي أسئلة، يرجى تقديم نص أطول أو محاولة موضوع آخر.');
+              return;
             }
-          }
 
-          // Add questions dynamically
-          questions.forEach(q => {
-            if (q.type === 'mcq') {
-              addQuestionItem('mcq', q.text, '', q.options, q.correct_option);
-            } else {
-              addQuestionItem('math', q.text, q.formula || '');
+            // Set exam title
+            const titleInput = document.getElementById('exam_title');
+            if (titleInput) {
+              titleInput.value = data.exam_title || titleInput.value || 'اختبار مولد بالذكاء الاصطناعي';
             }
-          });
 
-          alert('تم توليد الأسئلة وإضافتها بنجاح! يمكنك الآن مراجعتها وتعديلها وحفظ الاختبار.');
-          document.getElementById('ai_modal').close();
-        } else {
-          alert('فشل توليد الاختبار: ' + data.message);
+            // Clear default questions list if empty or only template question exists
+            const list = document.getElementById('questions-list');
+            if (list.children.length === 1) {
+              const firstId = list.children[0].id.replace('q-block-', '');
+              const txtArea = document.getElementById(`text-input-${firstId}`);
+              if (txtArea && (txtArea.value.trim() === '' || txtArea.value.trim() === presets[1].text.trim())) {
+                list.innerHTML = '';
+              }
+            }
+
+            // Add questions dynamically
+            questions.forEach(q => {
+              if (q.type === 'mcq') {
+                addQuestionItem('mcq', q.text, '', q.options, q.correct_option);
+              } else {
+                addQuestionItem('math', q.text, q.formula || '');
+              }
+            });
+
+            alert('تم توليد الأسئلة وإضافتها بنجاح! يمكنك الآن مراجعتها وتعديلها وحفظ الاختبار.');
+            document.getElementById('ai_modal').close();
+          } else {
+            alert('فشل توليد الاختبار: ' + data.message);
+          }
+        })
+        .catch(() => alert('حدث خطأ في الاتصال بالخادم أثناء التوليد.'))
+        .finally(() => {
+          btn.disabled = false;
+          btn.innerHTML = 'ابدأ التوليد الحين';
+        });
+    }
+
+    // Parse NotebookLM JSON
+    function parseNotebookLM() {
+      const input = document.getElementById('notebooklm-input').value.trim();
+      const btn = document.getElementById('notebooklm-generate-btn');
+      
+      if (!input) {
+        alert('الرجاء إدخال الكود المولد من NotebookLM أولاً!');
+        return;
+      }
+
+      try {
+        // Find JSON part in case there's markdown wrapping
+        let rawJson = input.replace(/```json/i, '').replace(/```/g, '').trim();
+        const parsed = JSON.parse(rawJson);
+        const questions = parsed.questions || parsed;
+
+        if (!Array.isArray(questions) || questions.length === 0) {
+          throw new Error('لم يتم العثور على مصفوفة أسئلة (questions array).');
         }
-      })
-      .catch(() => alert('حدث خطأ في الاتصال بالخادم أثناء التوليد.'))
-      .finally(() => {
-        btn.disabled = false;
-        btn.innerHTML = 'ابدأ التوليد الحين';
-      });
+
+        // Add to UI
+        questions.forEach(q => {
+          if (q.type === 'math' || (q.formula && !q.options)) {
+            addQuestionItem('math', q.text || 'بدون نص', q.formula || '');
+          } else {
+            let opts = q.options || ['', '', '', ''];
+            while(opts.length < 4) opts.push(''); // Ensure 4 options
+            let correctOpt = q.correct_answer_index ?? q.correct_option ?? 0;
+            addQuestionItem('mcq', q.text || 'بدون نص', '', opts, correctOpt);
+          }
+        });
+
+        alert('تم الاستيراد بنجاح! تم إضافة ' + questions.length + ' سؤال/أسئلة.');
+        document.getElementById('notebooklm_modal').close();
+        document.getElementById('notebooklm-input').value = '';
+      } catch (err) {
+        alert('فشل تحليل الكود: ' + err.message + '\\nتأكد من أنه بصيغة JSON صالحة ومطابقة للبرومبت المعياري.');
+      }
     }
 
     // Redraw preview hook on theme switch
     window.__aegisCharts = {
-      redraw: function() {
+      redraw: function () {
         if (activeQuestionId) updatePreview(activeQuestionId);
       }
     };
@@ -660,7 +826,7 @@
     window.addEventListener('load', () => {
       loadTeacherClasses();
       generateRandomCode();
-      
+
       // Inject one default question preset
       addPresetQuestion(1);
     });
@@ -669,16 +835,21 @@
   <!-- AI Generator Modal -->
   <dialog id="ai_modal" class="modal">
     <div class="modal-box bg-slate-950 border border-slate-800 text-right rounded-3xl p-6">
-      <h3 class="font-bold text-sm text-slate-200 mb-2 flex items-center gap-2">🪄 توليد اختبار ذكي بالذكاء الاصطناعي (Gemini)</h3>
-      <p class="text-[10px] text-slate-400 mb-4">انسخ فقرة من كتابك الدراسي، أو اكتب موضوعاً عاماً، وسيقوم الذكاء الاصطناعي بصياغة الأسئلة والخيارات والحلول وإضافتها فوراً!</p>
-      
+      <h3 class="font-bold text-sm text-slate-200 mb-2 flex items-center gap-2">🪄 توليد اختبار ذكي بالذكاء الاصطناعي
+        (Gemini)</h3>
+      <p class="text-[10px] text-slate-400 mb-4">انسخ فقرة من كتابك الدراسي، أو اكتب موضوعاً عاماً، وسيقوم الذكاء
+        الاصطناعي بصياغة الأسئلة والخيارات والحلول وإضافتها فوراً!</p>
+
       <div class="form-control mb-4">
-        <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">موضوع الاختبار أو النص الدراسي:</span></label>
-        <textarea id="ai-passage" class="textarea textarea-bordered input-academic rounded-xl text-xs h-28 w-full" placeholder="مثال: علم الكيمياء يدرس المادة والتفاعلات الكيميائية..."></textarea>
+        <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">موضوع الاختبار أو النص
+            الدراسي:</span></label>
+        <textarea id="ai-passage" class="textarea textarea-bordered input-academic rounded-xl text-xs h-28 w-full"
+          placeholder="مثال: علم الكيمياء يدرس المادة والتفاعلات الكيميائية..."></textarea>
       </div>
 
       <div class="form-control mb-6">
-        <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">عدد الأسئلة المطلوبة:</span></label>
+        <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">عدد الأسئلة
+            المطلوبة:</span></label>
         <select id="ai-num-questions" class="select select-bordered input-academic rounded-xl text-xs">
           <option value="3">3 أسئلة</option>
           <option value="5" selected>5 أسئلة</option>
@@ -687,11 +858,39 @@
       </div>
 
       <div class="modal-action flex gap-2 justify-end">
-        <button type="button" id="ai-generate-btn" onclick="generateAIExam()" class="btn btn-academic rounded-xl text-xs px-6">ابدأ التوليد الحين</button>
-        <button type="button" onclick="document.getElementById('ai_modal').close()" class="btn btn-academic-secondary rounded-xl text-xs">إلغاء</button>
+        <button type="button" id="ai-generate-btn" onclick="generateAIExam()"
+          class="btn btn-academic rounded-xl text-xs px-6">ابدأ التوليد الحين</button>
+        <button type="button" onclick="document.getElementById('ai_modal').close()"
+          class="btn btn-academic-secondary rounded-xl text-xs">إلغاء</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- NotebookLM Generator Modal -->
+  <dialog id="notebooklm_modal" class="modal">
+    <div class="modal-box bg-slate-950 border border-purple-900/50 text-right rounded-3xl p-6">
+      <h3 class="font-bold text-sm text-slate-200 mb-2 flex items-center gap-2">📥 استيراد الأسئلة من NotebookLM</h3>
+      
+      <div class="bg-purple-500/10 border border-purple-500/30 rounded-xl p-3 mb-4">
+        <p class="text-[10px] text-purple-300 font-bold mb-1">البرومبت المعياري (انسخه والصقه في NotebookLM):</p>
+        <code class="text-[9px] text-slate-300 block select-all">قم بتوليد 10 أسئلة خيارات متعددة من هذا المستند. أخرج النتيجة حصرياً ككود JSON يحتوي على مصفوفة questions، كل سؤال يحتوي على text، options (مصفوفة من 4 خيارات)، و correct_answer_index (رقم يبدأ من 0).</code>
+      </div>
+
+      <div class="form-control mb-6">
+        <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">الصق كود JSON المولد هنا:</span></label>
+        <textarea id="notebooklm-input" class="textarea textarea-bordered input-academic rounded-xl text-xs h-32 w-full font-mono text-left"
+          placeholder='{ "questions": [ { "text": "...", "options": [...], "correct_answer_index": 0 } ] }' dir="ltr"></textarea>
+      </div>
+
+      <div class="modal-action flex gap-2 justify-end">
+        <button type="button" id="notebooklm-generate-btn" onclick="parseNotebookLM()"
+          class="btn btn-outline border-purple-500/30 text-purple-400 rounded-xl text-xs px-6 hover:bg-purple-500 hover:text-white">استيراد الأسئلة</button>
+        <button type="button" onclick="document.getElementById('notebooklm_modal').close()"
+          class="btn btn-academic-secondary rounded-xl text-xs">إلغاء</button>
       </div>
     </div>
   </dialog>
 
 </body>
+
 </html>

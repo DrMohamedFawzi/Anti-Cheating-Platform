@@ -50,7 +50,8 @@ class SecurityMiddleware {
         }
         
         // 4. Payload Inspection (SQLi & XSS)
-        if (self::hasMaliciousPayload($_GET) || self::hasMaliciousPayload($_POST) || self::hasMaliciousPayload(getallheaders())) {
+        $headers = function_exists('getallheaders') ? getallheaders() : [];
+        if (self::hasMaliciousPayload($_GET) || self::hasMaliciousPayload($_POST) || self::hasMaliciousPayload($headers)) {
             self::banIp($ip, 'Malicious Payload (SQLi/XSS)', 'Detected malicious keywords in request', $user_agent, $conn, $db_fallback);
             http_response_code(403);
             exit;
@@ -59,10 +60,6 @@ class SecurityMiddleware {
     
     private static function isBanned($ip, $conn, $db_fallback) {
         if (!$db_fallback && $conn) {
-            $conn->query("CREATE TABLE IF NOT EXISTS banned_ips (
-                ip_address VARCHAR(45) PRIMARY KEY,
-                banned_until DATETIME NOT NULL
-            )");
             $stmt = $conn->prepare("SELECT banned_until FROM banned_ips WHERE ip_address = ? AND banned_until > NOW()");
             if ($stmt) {
                 $stmt->bind_param("s", $ip);
@@ -117,16 +114,49 @@ class SecurityMiddleware {
         $now = time();
         $limit_window = $now - self::$RATE_WINDOW;
         
-        if (class_exists('Redis') && isset(Api::$redis)) {
-            // Using Redis if available (from Api class)
-            // But we don't have direct access here easily, let's use flat/db
+        // 1. Try to use Redis first (if AntigravityRedis is initialized)
+        if (class_exists('AntigravityRedis')) {
+            try {
+                $minute_bucket = floor($now / 60);
+                $redis_key = "rate_limit:" . md5($ip) . ":" . $minute_bucket;
+                
+                $current_count = (int)AntigravityRedis::get($redis_key);
+                if ($current_count === 0) {
+                    AntigravityRedis::set($redis_key, 1, 65);
+                    $current_count = 1;
+                } else {
+                    $current_count++;
+                    AntigravityRedis::set($redis_key, $current_count, 65);
+                }
+                
+                if ($current_count > self::$RATE_LIMIT) {
+                    return true;
+                }
+                return false;
+            } catch (Exception $e) {
+                // Fail silently and fall back to file
+            }
         }
         
-        // Simple File-based Rate Limiter for now (could be Redis)
-        // Note: For 100,000 req/min this MUST be Redis in production.
+        // 2. Fallback: File-based Rate Limiter
         $cache_file = __DIR__ . '/../../logs/rate_limit_' . md5($ip) . '.json';
         if (!file_exists(dirname($cache_file))) {
             @mkdir(dirname($cache_file), 0777, true);
+        }
+        
+        // Garbage Collection: 1% chance to clean up expired files
+        if (mt_rand(1, 100) === 1) {
+            $log_dir = dirname($cache_file);
+            if (is_dir($log_dir)) {
+                $files = glob($log_dir . '/rate_limit_*.json');
+                if ($files) {
+                    foreach ($files as $f) {
+                        if (file_exists($f) && filemtime($f) < (time() - 70)) {
+                            @unlink($f);
+                        }
+                    }
+                }
+            }
         }
         
         $requests = [];

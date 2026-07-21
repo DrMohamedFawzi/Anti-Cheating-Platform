@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,16 +19,18 @@
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        * { font-family: 'Cairo', sans-serif; }
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
 
         body {
             background-color: var(--bg-main);
             color: var(--text-color);
             background-image:
-                radial-gradient(ellipse 80% 50% at 20% 10%, rgba(16,185,129,0.07) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(6,182,212,0.06) 0%, transparent 60%),
-                linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+                radial-gradient(ellipse 80% 50% at 20% 10%, rgba(16, 185, 129, 0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 60%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
             background-size: auto, auto, 40px 40px, 40px 40px;
             min-height: 100vh;
         }
@@ -37,34 +40,55 @@
             background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.07);
+            border: 1px solid rgba(255, 255, 255, 0.07);
         }
 
         .glass-card-emerald {
             background: rgba(6, 78, 59, 0.15);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(16,185,129,0.2);
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         /* Entrance animation */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .fade-in-up { animation: fadeInUp 0.5s ease both; }
-        .delay-1 { animation-delay: 0.08s; }
-        .delay-2 { animation-delay: 0.16s; }
-        .delay-3 { animation-delay: 0.24s; }
-        .delay-4 { animation-delay: 0.32s; }
+        .fade-in-up {
+            animation: fadeInUp 0.5s ease both;
+        }
+
+        .delay-1 {
+            animation-delay: 0.08s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.16s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.24s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.32s;
+        }
 
         /* Navbar */
         .navbar-glass {
             background: rgba(8, 13, 26, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         /* Hero gradient text */
@@ -77,33 +101,46 @@
 
         /* Stat card */
         .stat-card {
-            background: rgba(15,23,42,0.6);
-            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             transition: all 0.2s ease;
         }
-        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(16,185,129,0.12); }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.12);
+        }
 
         /* Class card */
         .class-card {
-            background: rgba(15,23,42,0.75);
-            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.07);
             transition: all 0.2s ease;
         }
-        .class-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(6,182,212,0.1); border-color: rgba(16,185,129,0.25); }
+
+        .class-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(6, 182, 212, 0.1);
+            border-color: rgba(16, 185, 129, 0.25);
+        }
 
         /* Exam item */
         .exam-item {
-            background: rgba(6,78,59,0.12);
-            border: 1px solid rgba(16,185,129,0.15);
+            background: rgba(6, 78, 59, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.15);
             transition: all 0.2s ease;
         }
-        .exam-item:hover { background: rgba(6,78,59,0.2); border-color: rgba(16,185,129,0.3); }
+
+        .exam-item:hover {
+            background: rgba(6, 78, 59, 0.2);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
 
         /* QR display */
         .qr-hash-display {
             font-family: 'Courier New', monospace;
-            background: rgba(6,182,212,0.08);
-            border: 1px solid rgba(6,182,212,0.2);
+            background: rgba(6, 182, 212, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.2);
             letter-spacing: 0.12em;
             word-break: break-all;
         }
@@ -114,6 +151,7 @@
             grid-template-columns: repeat(8, 1fr);
             gap: 2px;
         }
+
         .qr-cell {
             width: 10px;
             height: 10px;
@@ -133,6 +171,7 @@
             align-items: center;
             pointer-events: none;
         }
+
         .toast-item {
             pointer-events: auto;
             padding: 0.6rem 1.4rem;
@@ -142,45 +181,69 @@
             color: #f1f5f9;
             backdrop-filter: blur(12px);
             animation: fadeInUp 0.3s ease both;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
         }
-        .toast-success { background: rgba(16,185,129,0.85); border: 1px solid rgba(16,185,129,0.4); }
-        .toast-error   { background: rgba(239, 68, 68,0.85);  border: 1px solid rgba(239,68,68,0.4); }
-        .toast-info    { background: rgba(6,182,212,0.85);    border: 1px solid rgba(6,182,212,0.4); }
-        .toast-warning { background: rgba(245,158,11,0.85);   border: 1px solid rgba(245,158,11,0.4); }
+
+        .toast-success {
+            background: rgba(16, 185, 129, 0.85);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .toast-error {
+            background: rgba(239, 68, 68, 0.85);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .toast-info {
+            background: rgba(6, 182, 212, 0.85);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+        }
+
+        .toast-warning {
+            background: rgba(245, 158, 11, 0.85);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
 
         /* Results table */
         .results-table th {
-            background: rgba(15,23,42,0.9);
+            background: rgba(15, 23, 42, 0.9);
             color: #64748b;
             font-size: 0.72rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             padding: 0.75rem 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .results-table td {
             padding: 0.85rem 1rem;
             font-size: 0.83rem;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             color: #cbd5e1;
         }
-        .results-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .results-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
 
         /* Input focus */
         .input-aegis {
-            background: rgba(15,23,42,0.8) !important;
-            border: 1px solid rgba(255,255,255,0.08) !important;
+            background: rgba(15, 23, 42, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
             color: #e2e8f0 !important;
             border-radius: 0.75rem !important;
             transition: all 0.2s;
         }
+
         .input-aegis:focus {
             outline: none !important;
-            border-color: rgba(16,185,129,0.5) !important;
-            box-shadow: 0 0 0 3px rgba(16,185,129,0.12) !important;
+            border-color: rgba(16, 185, 129, 0.5) !important;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12) !important;
         }
-        .input-aegis::placeholder { color: #475569; }
+
+        .input-aegis::placeholder {
+            color: #475569;
+        }
 
         /* Btn emerald */
         .btn-emerald {
@@ -192,43 +255,124 @@
             transition: all 0.2s;
             cursor: pointer;
         }
-        .btn-emerald:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(16,185,129,0.3); }
+
+        .btn-emerald:hover {
+            opacity: 0.88;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+        }
 
         /* Skeleton loader */
         .skeleton-line {
             height: 12px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 100%);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.09) 50%, rgba(255, 255, 255, 0.04) 100%);
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
             border-radius: 6px;
         }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
 
         /* Badge */
-        .badge-emerald { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.25); font-size: 0.7rem; padding: 0.15rem 0.55rem; border-radius: 9999px; }
-        .badge-amber   { background: rgba(245,158,11,0.15);  color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); font-size: 0.7rem; padding: 0.15rem 0.55rem; border-radius: 9999px; }
-        .badge-cyan    { background: rgba(6,182,212,0.15);   color: #22d3ee; border: 1px solid rgba(6,182,212,0.25);  font-size: 0.7rem; padding: 0.15rem 0.55rem; border-radius: 9999px; }
-        .badge-slate   { background: rgba(100,116,139,0.15); color: #94a3b8; border: 1px solid rgba(100,116,139,0.2); font-size: 0.7rem; padding: 0.15rem 0.55rem; border-radius: 9999px; }
+        .badge-emerald {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            font-size: 0.7rem;
+            padding: 0.15rem 0.55rem;
+            border-radius: 9999px;
+        }
+
+        .badge-amber {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            font-size: 0.7rem;
+            padding: 0.15rem 0.55rem;
+            border-radius: 9999px;
+        }
+
+        .badge-cyan {
+            background: rgba(6, 182, 212, 0.15);
+            color: #22d3ee;
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            font-size: 0.7rem;
+            padding: 0.15rem 0.55rem;
+            border-radius: 9999px;
+        }
+
+        .badge-slate {
+            background: rgba(100, 116, 139, 0.15);
+            color: #94a3b8;
+            border: 1px solid rgba(100, 116, 139, 0.2);
+            font-size: 0.7rem;
+            padding: 0.15rem 0.55rem;
+            border-radius: 9999px;
+        }
 
         /* Integrity dots */
-        .dot-green  { color: #10b981; }
-        .dot-yellow { color: #f59e0b; }
-        .dot-red    { color: #ef4444; }
+        .dot-green {
+            color: #10b981;
+        }
+
+        .dot-yellow {
+            color: #f59e0b;
+        }
+
+        .dot-red {
+            color: #ef4444;
+        }
 
         /* Notification bell animate */
         @keyframes bellShake {
-            0%,100% { transform: rotate(0deg); }
-            20%      { transform: rotate(-15deg); }
-            40%      { transform: rotate(15deg); }
-            60%      { transform: rotate(-8deg); }
-            80%      { transform: rotate(8deg); }
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            20% {
+                transform: rotate(-15deg);
+            }
+
+            40% {
+                transform: rotate(15deg);
+            }
+
+            60% {
+                transform: rotate(-8deg);
+            }
+
+            80% {
+                transform: rotate(8deg);
+            }
         }
-        .bell-shake { animation: bellShake 0.6s ease; }
+
+        .bell-shake {
+            animation: bellShake 0.6s ease;
+        }
 
         /* Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #080d1a; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #080d1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
+        }
 
         /* Section divider */
         .section-header {
@@ -237,768 +381,1238 @@
             gap: 0.75rem;
             margin-bottom: 1.25rem;
         }
+
         .section-header::after {
             content: '';
             flex: 1;
             height: 1px;
-            background: linear-gradient(to left, transparent, rgba(255,255,255,0.07));
+            background: linear-gradient(to left, transparent, rgba(255, 255, 255, 0.07));
         }
     </style>
 </head>
+
 <body class="min-h-screen">
 
-<!-- Toast Container -->
-<div id="toast-container"></div>
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
 
-<!-- ═══════════════════════
+    <!-- ═══════════════════════
      TOP NAVBAR
 ════════════════════════ -->
-<nav class="navbar-glass sticky top-0 z-50 px-4 py-0 h-16 flex items-center justify-between">
+    <nav class="navbar-glass sticky top-0 z-50 px-4 py-0 h-16 flex items-center justify-between">
 
-    <!-- RIGHT: Logo -->
-    <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-black text-lg" style="background: linear-gradient(135deg,#059669,#0891b2);">Æ</div>
-        <div class="hidden sm:block">
-            <p class="text-slate-100 font-bold text-sm leading-tight">Aegis-X</p>
-            <p class="text-slate-500 text-[10px] leading-tight">بوابة الطالب</p>
+        <!-- RIGHT: Logo -->
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-black text-lg"
+                style="background: linear-gradient(135deg,#059669,#0891b2);">Æ</div>
+            <div class="hidden sm:block">
+                <p class="text-slate-100 font-bold text-sm leading-tight">Aegis-X</p>
+                <p class="text-slate-500 text-[10px] leading-tight">بوابة الطالب</p>
+            </div>
         </div>
-    </div>
 
-    <!-- CENTER: Student Name -->
-    <div class="flex items-center gap-2">
-        <div class="w-7 h-7 rounded-full flex items-center justify-center text-cyan-400" style="background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.25);">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-            </svg>
+        <!-- CENTER: Student Name -->
+        <div class="flex items-center gap-2">
+            <div id="nav-student-icon" class="w-7 h-7 rounded-full flex items-center justify-center text-cyan-400"
+                style="background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.25);">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            </div>
+            <img id="nav-student-avatar" onclick="openProfilePhotoModal()" title="صورتك الرسمية المعتمدة" class="w-8 h-8 rounded-full object-cover border-2 border-emerald-500/80 shadow-md shadow-emerald-500/20 cursor-pointer hover:scale-110 transition-transform hidden" src="">
+            <span id="nav-student-name" class="text-slate-200 font-semibold text-sm hidden md:block">—</span>
+            <span class="badge-cyan hidden sm:inline-flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                طالب
+            </span>
         </div>
-        <span id="nav-student-name" class="text-slate-200 font-semibold text-sm hidden md:block">—</span>
-        <span class="badge-cyan hidden sm:inline-flex items-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-            </svg>
-            طالب
-        </span>
-    </div>
 
-    <!-- LEFT: Actions -->
-    <div class="flex items-center gap-2">
-        <button id="bell-btn" onclick="toggleNotifications()" class="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-cyan-400 transition-all duration-200 relative" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-            </svg>
-            <span id="notif-dot" class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-400 hidden"></span>
-        </button>
-        <button onclick="logOut()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-red-400 transition-all duration-200" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-            </svg>
-            <span class="hidden sm:inline">خروج</span>
-        </button>
-    </div>
-</nav>
+        <!-- LEFT: Actions -->
+        <div class="flex items-center gap-2">
+            <button id="bell-btn" onclick="toggleNotifications()"
+                class="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-cyan-400 transition-all duration-200 relative"
+                style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <span id="notif-dot"
+                    class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-400 hidden"></span>
+            </button>
+            <button onclick="logOut()"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-red-400 transition-all duration-200"
+                style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                <span class="hidden sm:inline">خروج</span>
+            </button>
+        </div>
+    </nav>
 
-<!-- ═══════════════════════
+    <!-- ═══════════════════════
      MAIN CONTENT
 ════════════════════════ -->
-<main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
 
-    <!-- ── WELCOME HERO ── -->
-    <section class="fade-in-up">
-        <div class="glass-card rounded-2xl p-6 md:p-8 relative overflow-hidden">
-            <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 80% at 85% 50%, rgba(16,185,129,0.06) 0%, transparent 70%);"></div>
-            <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <!-- Greeting -->
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-black text-slate-100 leading-snug">
-                        مرحباً، <span class="gradient-text-emerald" id="hero-name">...</span>! 👋
-                    </h1>
-                    <p class="text-slate-400 text-sm mt-1">إليك ملخص نشاطك الأكاديمي اليوم</p>
-                    <div class="flex items-center gap-2 mt-3 flex-wrap">
-                        <span class="inline-flex items-center gap-1.5 text-[11px] text-emerald-400" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:0.25rem 0.65rem;border-radius:9999px;">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
-                            متصل الآن
-                        </span>
-                        <span class="text-[11px] text-slate-500" id="hero-date"></span>
+        <!-- Profile Picture Warning Alert -->
+        <div id="profile-warning-alert" class="hidden alert alert-warning bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-2xl p-4 text-xs mb-4 flex items-center justify-between leading-relaxed text-right">
+            <span>⚠️ <strong>تنبيه أمني هام:</strong> لم تقم بالتقاط صورتك الشخصية المعتمدة بعد. يرجى التقاطها الآن لكي تتمكن من خوض الاختبارات المحمية.</span>
+            <button onclick="openProfilePhotoModal()" class="btn btn-xs btn-warning rounded-lg font-bold">التقاط الآن 📸</button>
+        </div>
+
+        <!-- ── WELCOME HERO ── -->
+        <section class="fade-in-up">
+            <div class="glass-card rounded-2xl p-6 md:p-8 relative overflow-hidden">
+                <div class="absolute inset-0 pointer-events-none"
+                    style="background: radial-gradient(ellipse 60% 80% at 85% 50%, rgba(16,185,129,0.06) 0%, transparent 70%);">
+                </div>
+                <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                    <!-- Greeting with Profile Avatar -->
+                    <div class="flex items-center gap-4">
+                        <div class="relative group cursor-pointer flex-shrink-0" onclick="openProfilePhotoModal()">
+                            <img id="hero-student-avatar" src="" class="w-16 h-16 md:w-20 md:h-20 rounded-2xl object-cover border-2 border-emerald-500/80 shadow-xl shadow-emerald-500/20 group-hover:scale-105 transition-all hidden">
+                            <div id="hero-student-avatar-placeholder" class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-500 text-2xl font-bold">
+                                👤
+                            </div>
+                            <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-slate-950 p-1 rounded-lg text-[10px] shadow-md group-hover:scale-110 transition-transform" title="التقاط أو عرض صورتك الرسمية">📷</span>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl md:text-3xl font-black text-slate-100 leading-snug">
+                                مرحباً، <span class="gradient-text-emerald" id="hero-name">...</span>! 👋
+                            </h1>
+                            <p class="text-slate-400 text-sm mt-1">إليك ملخص نشاطك الأكاديمي اليوم</p>
+                            <div class="flex items-center gap-2 mt-3 flex-wrap">
+                                <span class="inline-flex items-center gap-1.5 text-[11px] text-emerald-400"
+                                    style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:0.25rem 0.65rem;border-radius:9999px;">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
+                                    متصل الآن
+                                </span>
+                                <span class="text-[11px] text-slate-500" id="hero-date"></span>
+                            </div>
+                            <div class="flex items-center gap-2 mt-4 flex-wrap">
+                                <button onclick="openProfilePhotoModal()" class="btn btn-xs btn-outline btn-success rounded-lg font-bold flex items-center gap-1">
+                                    📷 صورتي الرسمية
+                                </button>
+                                <button onclick="openDeviceManagementModal()" class="btn btn-xs btn-outline btn-info rounded-lg font-bold flex items-center gap-1">
+                                    📱 إدارة أجهزتي
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mini Stats -->
+                    <div class="grid grid-cols-3 gap-3 md:min-w-[360px]">
+                        <div class="stat-card rounded-xl p-3 text-center">
+                            <p class="text-2xl font-black gradient-text-emerald" id="stat-classes">—</p>
+                            <p class="text-slate-500 text-[11px] mt-0.5 leading-tight">المواد<br>المعتمدة</p>
+                        </div>
+                        <div class="stat-card rounded-xl p-3 text-center">
+                            <p class="text-2xl font-black text-cyan-400" id="stat-exams">—</p>
+                            <p class="text-slate-500 text-[11px] mt-0.5 leading-tight">الاختبارات<br>المكتملة</p>
+                        </div>
+                        <div class="stat-card rounded-xl p-3 text-center">
+                            <p class="text-2xl font-black text-amber-400" id="stat-avg">—</p>
+                            <p class="text-slate-500 text-[11px] mt-0.5 leading-tight">متوسط<br>الدرجات</p>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Mini Stats -->
-                <div class="grid grid-cols-3 gap-3 md:min-w-[360px]">
-                    <div class="stat-card rounded-xl p-3 text-center">
-                        <p class="text-2xl font-black gradient-text-emerald" id="stat-classes">—</p>
-                        <p class="text-slate-500 text-[11px] mt-0.5 leading-tight">المواد<br>المعتمدة</p>
+        <!-- ── SMART STUDY CORNER (AI Practice) ── -->
+        <section class="fade-in-up delay-1">
+            <div class="glass-card rounded-2xl p-6 border border-teal-500/20 relative overflow-hidden"
+                style="background: radial-gradient(ellipse 60% 80% at 5% 50%, rgba(20, 184, 166, 0.08) 0%, transparent 60%);">
+                <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 flex-shrink-0"
+                            style="background:rgba(20, 184, 166, 0.12);border:1px solid rgba(20, 184, 166, 0.25);">
+                            <span>🪄</span>
+                        </div>
+                        <div>
+                            <h2 class="text-slate-100 font-bold text-base">ركن المذاكرة الذكية (اختبارات تجريبية بـ
+                                Gemini AI)</h2>
+                            <p class="text-slate-500 text-xs">ولد لنفسك اختباراً مخصصاً في أي مادة للتدرب والمذاكرة
+                                الفعالة بمساعدة الذكاء الاصطناعي</p>
+                        </div>
                     </div>
-                    <div class="stat-card rounded-xl p-3 text-center">
-                        <p class="text-2xl font-black text-cyan-400" id="stat-exams">—</p>
-                        <p class="text-slate-500 text-[11px] mt-0.5 leading-tight">الاختبارات<br>المكتملة</p>
+                    <button onclick="document.getElementById('student_ai_modal').showModal()"
+                        class="btn btn-academic rounded-xl btn-sm text-xs px-6 font-bold">توليد اختبار تجريبي
+                        الحين</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── STUDENT MOCK EXAMS ── -->
+        <section class="fade-in-up delay-1">
+            <div class="section-header">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-teal-400"
+                    style="background:rgba(20, 184, 166, 0.1);border:1px solid rgba(20, 184, 166, 0.2);">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>
+                <h2 class="text-slate-200 font-bold text-base">اختباراتي التجريبية (AI)</h2>
+                <span id="mock-exams-count-badge" class="badge-cyan hidden">0</span>
+            </div>
+            <div id="mock-exams-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div class="col-span-full text-center py-6 text-slate-500 text-sm">جارٍ تحميل الاختبارات التجريبية...</div>
+            </div>
+        </section>
+
+        <!-- ── JOIN CLASS ── -->
+        <section class="fade-in-up delay-1">
+            <div class="glass-card-emerald rounded-2xl p-6 relative overflow-hidden">
+                <div class="absolute inset-0 pointer-events-none"
+                    style="background: radial-gradient(ellipse 50% 70% at 5% 50%, rgba(16,185,129,0.07) 0%, transparent 70%);">
+                </div>
+                <div class="relative">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-emerald-400 flex-shrink-0"
+                            style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-slate-100 font-bold text-base">الانضمام إلى فصل جديد</h2>
+                            <p class="text-slate-500 text-xs">أدخل كود الفصل للانضمام وانتظر موافقة المعلم</p>
+                        </div>
                     </div>
-                    <div class="stat-card rounded-xl p-3 text-center">
-                        <p class="text-2xl font-black text-amber-400" id="stat-avg">—</p>
-                        <p class="text-slate-500 text-[11px] mt-0.5 leading-tight">متوسط<br>الدرجات</p>
+                    <div class="flex gap-3 flex-col sm:flex-row">
+                        <div class="flex-1">
+                            <input id="join-code-input" type="text" maxlength="20"
+                                placeholder="أدخل كود الفصل (مثال: ENG-2025-A)"
+                                class="input-aegis w-full h-11 px-4 text-sm font-semibold tracking-wider"
+                                onkeydown="if(event.key==='Enter') joinClass()">
+                        </div>
+                        <button onclick="joinClass()" id="join-btn"
+                            class="btn-emerald h-11 px-6 text-sm flex items-center justify-center gap-2 whitespace-nowrap">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            طلب انضمام
+                        </button>
+                    </div>
+                    <div id="join-result" class="mt-3 hidden"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── MY CLASSES ── -->
+        <section class="fade-in-up delay-2">
+            <div class="section-header">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-cyan-400"
+                    style="background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                </div>
+                <h2 class="text-slate-200 font-bold text-base">فصولي الدراسية</h2>
+                <span id="classes-count-badge" class="badge-cyan hidden">0</span>
+            </div>
+            <div id="classes-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <!-- Skeleton -->
+                <div class="class-card rounded-2xl p-5 space-y-3">
+                    <div class="skeleton-line w-3/4" style="height:18px;"></div>
+                    <div class="skeleton-line w-1/2"></div>
+                    <div class="skeleton-line w-full"></div>
+                </div>
+                <div class="class-card rounded-2xl p-5 space-y-3">
+                    <div class="skeleton-line w-2/3" style="height:18px;"></div>
+                    <div class="skeleton-line w-1/2"></div>
+                    <div class="skeleton-line w-full"></div>
+                </div>
+                <div class="class-card rounded-2xl p-5 space-y-3">
+                    <div class="skeleton-line w-3/5" style="height:18px;"></div>
+                    <div class="skeleton-line w-2/5"></div>
+                    <div class="skeleton-line w-full"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── RECENT RESULTS ── -->
+        <section class="fade-in-up delay-3">
+            <div class="section-header">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-amber-400"
+                    style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                </div>
+                <h2 class="text-slate-200 font-bold text-base">نتائج الاختبارات الأخيرة</h2>
+            </div>
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full results-table">
+                        <thead>
+                            <tr>
+                                <th class="text-right">الاختبار</th>
+                                <th class="text-right">الفصل</th>
+                                <th class="text-right">التاريخ</th>
+                                <th class="text-center">الدرجة</th>
+                                <th class="text-center">مؤشر النزاهة</th>
+                                <th class="text-center">الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-tbody">
+                            <tr>
+                                <td colspan="6" class="text-center py-10">
+                                    <div class="flex flex-col items-center gap-3 text-slate-600">
+                                        <div
+                                            class="w-6 h-6 rounded-full border-2 border-slate-700 border-t-cyan-500 animate-spin">
+                                        </div>
+                                        <span class="text-xs">جارٍ تحميل النتائج...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── QR IDENTITY CARD ── -->
+        <section class="fade-in-up delay-4">
+            <div class="section-header">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-violet-400"
+                    style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                    </svg>
+                </div>
+                <h2 class="text-slate-200 font-bold text-base">بطاقة الهوية الرقمية</h2>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="flex flex-col lg:flex-row gap-6 items-center lg:items-start">
+                    <!-- QR Visual -->
+                    <div class="flex-shrink-0 flex flex-col items-center gap-4">
+                        <div class="p-4 rounded-2xl"
+                            style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);">
+                            <div id="qr-visual" class="qr-block"></div>
+                        </div>
+                        <p class="text-slate-500 text-xs text-center max-w-[160px] leading-relaxed">احتفظ بهذه البطاقة
+                            للدخول السريع إلى الاختبارات</p>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="flex-1 w-full">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                            <div>
+                                <p class="text-slate-500 text-xs mb-1">الاسم الكامل</p>
+                                <p id="qr-name" class="text-slate-100 font-bold text-sm">—</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-500 text-xs mb-1">رقم الطالب</p>
+                                <p id="qr-id" class="text-slate-100 font-bold text-sm font-mono">—</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-500 text-xs mb-1">البريد الإلكتروني</p>
+                                <p id="qr-email" class="text-slate-100 text-sm">—</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-500 text-xs mb-1">المؤسسة</p>
+                                <p id="qr-institution" class="text-slate-100 text-sm">—</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-slate-500 text-xs mb-2">رمز QR المشفر (Hash)</p>
+                            <div id="qr-hash" class="qr-hash-display rounded-xl px-4 py-3 text-cyan-400 text-xs">—</div>
+                        </div>
+                        <div class="flex gap-3 mt-5 flex-wrap">
+                            <button onclick="saveCard()"
+                                class="btn-emerald flex items-center gap-2 px-5 py-2.5 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                                حفظ البطاقة
+                            </button>
+                            <button onclick="copyHash()"
+                                class="flex items-center gap-2 px-4 py-2.5 text-sm rounded-xl text-slate-400 hover:text-cyan-400 transition-all duration-200"
+                                style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);cursor:pointer;">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                نسخ الكود
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ── SMART STUDY CORNER (AI Practice) ── -->
-    <section class="fade-in-up delay-1">
-        <div class="glass-card rounded-2xl p-6 border border-teal-500/20 relative overflow-hidden" style="background: radial-gradient(ellipse 60% 80% at 5% 50%, rgba(20, 184, 166, 0.08) 0%, transparent 60%);">
-            <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 flex-shrink-0" style="background:rgba(20, 184, 166, 0.12);border:1px solid rgba(20, 184, 166, 0.25);">
-                        <span>🪄</span>
-                    </div>
-                    <div>
-                        <h2 class="text-slate-100 font-bold text-base">ركن المذاكرة الذكية (اختبارات تجريبية بـ Gemini AI)</h2>
-                        <p class="text-slate-500 text-xs">ولد لنفسك اختباراً مخصصاً في أي مادة للتدرب والمذاكرة الفعالة بمساعدة الذكاء الاصطناعي</p>
-                    </div>
-                </div>
-                <button onclick="document.getElementById('student_ai_modal').showModal()" class="btn btn-academic rounded-xl btn-sm text-xs px-6 font-bold">توليد اختبار تجريبي الحين</button>
-            </div>
-        </div>
-    </section>
+    </main>
 
-    <!-- ── JOIN CLASS ── -->
-    <section class="fade-in-up delay-1">
-        <div class="glass-card-emerald rounded-2xl p-6 relative overflow-hidden">
-            <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 50% 70% at 5% 50%, rgba(16,185,129,0.07) 0%, transparent 70%);"></div>
-            <div class="relative">
-                <div class="flex items-center gap-3 mb-5">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center text-emerald-400 flex-shrink-0" style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-slate-100 font-bold text-base">الانضمام إلى فصل جديد</h2>
-                        <p class="text-slate-500 text-xs">أدخل كود الفصل للانضمام وانتظر موافقة المعلم</p>
-                    </div>
-                </div>
-                <div class="flex gap-3 flex-col sm:flex-row">
-                    <div class="flex-1">
-                        <input
-                            id="join-code-input"
-                            type="text"
-                            maxlength="20"
-                            placeholder="أدخل كود الفصل (مثال: ENG-2025-A)"
-                            class="input-aegis w-full h-11 px-4 text-sm font-semibold tracking-wider"
-                            onkeydown="if(event.key==='Enter') joinClass()"
-                        >
-                    </div>
-                    <button onclick="joinClass()" id="join-btn" class="btn-emerald h-11 px-6 text-sm flex items-center justify-center gap-2 whitespace-nowrap">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        طلب انضمام
-                    </button>
-                </div>
-                <div id="join-result" class="mt-3 hidden"></div>
-            </div>
-        </div>
-    </section>
+    <footer class="text-center py-6 text-slate-700 text-[11px]">
+        Aegis-X LMS &nbsp;·&nbsp; نظام الأمان المدرسي الذكي &nbsp;·&nbsp; Zero-Trust Architecture
+    </footer>
 
-    <!-- ── MY CLASSES ── -->
-    <section class="fade-in-up delay-2">
-        <div class="section-header">
-            <div class="w-8 h-8 rounded-lg flex items-center justify-center text-cyan-400" style="background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                </svg>
-            </div>
-            <h2 class="text-slate-200 font-bold text-base">فصولي الدراسية</h2>
-            <span id="classes-count-badge" class="badge-cyan hidden">0</span>
-        </div>
-        <div id="classes-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            <!-- Skeleton -->
-            <div class="class-card rounded-2xl p-5 space-y-3">
-                <div class="skeleton-line w-3/4" style="height:18px;"></div>
-                <div class="skeleton-line w-1/2"></div>
-                <div class="skeleton-line w-full"></div>
-            </div>
-            <div class="class-card rounded-2xl p-5 space-y-3">
-                <div class="skeleton-line w-2/3" style="height:18px;"></div>
-                <div class="skeleton-line w-1/2"></div>
-                <div class="skeleton-line w-full"></div>
-            </div>
-            <div class="class-card rounded-2xl p-5 space-y-3">
-                <div class="skeleton-line w-3/5" style="height:18px;"></div>
-                <div class="skeleton-line w-2/5"></div>
-                <div class="skeleton-line w-full"></div>
-            </div>
-        </div>
-    </section>
+    <!-- ═══════════════════════
+     JAVASCRIPT
+════════════════════════ -->
+    <script>
 
-    <!-- ── RECENT RESULTS ── -->
-    <section class="fade-in-up delay-3">
-        <div class="section-header">
-            <div class="w-8 h-8 rounded-lg flex items-center justify-center text-amber-400" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                </svg>
+        /* ── PAGE PROTECTION ── */
+        const user = JSON.parse(sessionStorage.getItem('aegis_user') || 'null');
+        if (!user || user.role !== 'student') {
+            window.location.href = 'login.html';
+        }
+
+        /* ── TOAST ── */
+        function showToast(msg, type) {
+            type = type || 'info';
+            var container = document.getElementById('toast-container');
+            var el = document.createElement('div');
+            el.className = 'toast-item toast-' + type;
+            el.textContent = msg;
+            container.appendChild(el);
+            setTimeout(function () {
+                el.style.transition = 'opacity 0.4s';
+                el.style.opacity = '0';
+                setTimeout(function () { el.remove(); }, 400);
+            }, 3400);
+        }
+
+        /* ── UTILS ── */
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function generateFallbackHash(seed) {
+            var chars = '0123456789abcdef';
+            var hash = '';
+            var s = String(seed || 'student');
+            for (var i = 0; i < 64; i++) {
+                hash += chars[(s.charCodeAt(i % s.length) + i * 7) % 16];
+            }
+            return hash;
+        }
+
+        function buildQrVisual(hash) {
+            var container = document.getElementById('qr-visual');
+            container.innerHTML = '';
+            var str = String(hash || '');
+            var size = 8;
+            for (var i = 0; i < size * size; i++) {
+                var cell = document.createElement('div');
+                cell.className = 'qr-cell';
+                var charCode = (str.charCodeAt(i % str.length) + i) % 256;
+                if (charCode % 2 === 0) {
+                    cell.style.background = (charCode % 5 === 0)
+                        ? 'rgba(6,182,212,0.85)'
+                        : 'rgba(139,92,246,0.75)';
+                } else {
+                    cell.style.background = 'rgba(255,255,255,0.04)';
+                }
+                container.appendChild(cell);
+            }
+        }
+
+        /* ── POPULATE USER INFO ── */
+        function populateUserInfo() {
+            var name = user.official_name || user.name || 'الطالب';
+            document.getElementById('nav-student-name').textContent = name;
+            document.getElementById('hero-name').textContent = name;
+
+            var now = new Date();
+            document.getElementById('hero-date').textContent = now.toLocaleDateString('ar-SA', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            });
+
+            // Check profile photo and update avatars across dashboard
+            var navAvatar = document.getElementById('nav-student-avatar');
+            var navIcon = document.getElementById('nav-student-icon');
+            var heroAvatar = document.getElementById('hero-student-avatar');
+            var heroPlaceholder = document.getElementById('hero-student-avatar-placeholder');
+
+            if (user.profile_picture) {
+                document.getElementById('profile-warning-alert').classList.add('hidden');
+                var photoUrl = user.profile_picture + '?v=' + Date.now();
+                
+                if (navAvatar) {
+                    navAvatar.src = photoUrl;
+                    navAvatar.classList.remove('hidden');
+                }
+                if (navIcon) navIcon.classList.add('hidden');
+
+                if (heroAvatar) {
+                    heroAvatar.src = photoUrl;
+                    heroAvatar.classList.remove('hidden');
+                }
+                if (heroPlaceholder) heroPlaceholder.classList.add('hidden');
+            } else {
+                document.getElementById('profile-warning-alert').classList.remove('hidden');
+                if (navAvatar) navAvatar.classList.add('hidden');
+                if (navIcon) navIcon.classList.remove('hidden');
+                if (heroAvatar) heroAvatar.classList.add('hidden');
+                if (heroPlaceholder) heroPlaceholder.classList.remove('hidden');
+            }
+
+            document.getElementById('qr-name').textContent = name;
+            document.getElementById('qr-id').textContent = user.id || '—';
+            document.getElementById('qr-email').textContent = user.email || '—';
+            document.getElementById('qr-institution').textContent = user.institution || 'Aegis-X LMS';
+            var hash = user.qr_code_hash || generateFallbackHash(user.id);
+            document.getElementById('qr-hash').textContent = hash;
+            buildQrVisual(hash);
+        }
+
+        /* ── LOAD MY CLASSES ── */
+        function loadMyClasses() {
+            var grid = document.getElementById('classes-grid');
+            fetch('api.php?action=get_student_classes&student_id=' + encodeURIComponent(user.id), {
+                headers: { 'Authorization': 'Bearer ' + user.token }
+            })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.status !== 'success' || !data.classes || data.classes.length === 0) {
+                        grid.innerHTML = renderEmptyClasses();
+                        document.getElementById('stat-classes').textContent = '0';
+                        return;
+                    }
+
+                    var approvedCount = data.classes.filter(function (c) { return c.enrollment_status === 'approved'; }).length;
+                    document.getElementById('stat-classes').textContent = approvedCount;
+
+                    var badge = document.getElementById('classes-count-badge');
+                    badge.textContent = data.classes.length;
+                    badge.classList.remove('hidden');
+
+                    grid.innerHTML = data.classes.map(renderClassCard).join('');
+                })
+                .catch(function () {
+                    grid.innerHTML = '<div class="col-span-3 text-center py-10 text-red-400 text-xs">تعذّر تحميل الفصول الدراسية</div>';
+                });
+        }
+
+        function renderEmptyClasses() {
+            return '<div class="col-span-3 flex flex-col items-center justify-center py-16 gap-3 text-slate-600">' +
+                '<span class="text-5xl">🏫</span>' +
+                '<p class="font-bold text-slate-500 text-sm">لم تنضم إلى أي فصل بعد</p>' +
+                '<p class="text-xs text-center max-w-xs">أدخل كود الفصل في الحقل أعلاه للانضمام</p>' +
+                '</div>';
+        }
+
+        function renderClassCard(cls) {
+            var isApproved = cls.enrollment_status === 'approved';
+            var statusBadge = isApproved
+                ? '<span class="badge-emerald inline-flex items-center gap-1"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>مقبول</span>'
+                : '<span class="badge-amber inline-flex items-center gap-1"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;display:inline-block;animation:pulse 2s infinite;"></span>بانتظار القبول</span>';
+
+            var btnDisabled = !isApproved ? 'style="opacity:0.4;cursor:not-allowed;pointer-events:none;"' : '';
+
+            return '<div class="class-card rounded-2xl p-5 flex flex-col gap-4" id="class-card-' + cls.id + '">' +
+                '<div class="flex items-start justify-between gap-2">' +
+                '<div class="flex-1">' +
+                '<h3 class="text-slate-100 font-bold text-base leading-snug">' + escapeHtml(cls.class_name) + '</h3>' +
+                '<div class="flex items-center gap-2 mt-2 flex-wrap">' +
+                '<span class="badge-slate">' +
+                '<svg xmlns="http://www.w3.org/2000/svg" style="width:10px;height:10px;display:inline;margin-left:3px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>' +
+                escapeHtml(cls.teacher_name || 'المعلم') +
+                '</span>' +
+                '<span class="badge-cyan" style="font-family:monospace;">' + escapeHtml(cls.class_code || '') + '</span>' +
+                '</div>' +
+                '</div>' +
+                '<div>' + statusBadge + '</div>' +
+                '</div>' +
+                '<div>' +
+                '<button onclick="toggleExams(' + cls.id + ', this)" ' + btnDisabled + ' class="w-full flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-emerald-400 transition-all duration-200" style="background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.15);">' +
+                '<span>📋 الاختبارات المتاحة</span>' +
+                '<svg id="chevron-' + cls.id + '" class="w-4 h-4" style="transition:transform 0.2s;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
+                '</button>' +
+                '<div id="exams-container-' + cls.id + '" class="hidden mt-3 space-y-2"></div>' +
+                '</div>' +
+                '</div>';
+        }
+
+        /* ── LOAD MY MOCK EXAMS (AI) ── */
+        function loadMyMockExams() {
+            var grid = document.getElementById('mock-exams-grid');
+            fetch('api.php?action=get_student_mock_exams&student_id=' + encodeURIComponent(user.id), {
+                headers: { 'Authorization': 'Bearer ' + user.token }
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.status !== 'success' || !data.exams || data.exams.length === 0) {
+                    grid.innerHTML = '<div class="col-span-full text-center py-6 text-slate-500 text-sm">لا توجد اختبارات تجريبية سابقة. يمكنك توليد اختبار جديد باستخدام الزر أعلاه!</div>';
+                    return;
+                }
+
+                var badge = document.getElementById('mock-exams-count-badge');
+                badge.textContent = data.exams.length;
+                badge.classList.remove('hidden');
+
+                grid.innerHTML = data.exams.map(function(exam) {
+                    var code = escapeHtml(exam.exam_code);
+                    var title = escapeHtml(exam.exam_title);
+                    var duration = exam.duration_minutes || 60;
+                    
+                    return '<div class="exam-item rounded-xl p-4 flex items-center justify-between gap-3">' +
+                        '<div class="flex-1" style="min-width:0;">' +
+                            '<p class="text-slate-200 font-semibold text-sm" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + title + '</p>' +
+                            '<div class="flex items-center gap-2 mt-1 flex-wrap">' +
+                                '<span class="text-slate-500" style="font-size:11px;">⏱ ' + duration + ' دقيقة</span>' +
+                                '<span class="badge-cyan" style="font-family:monospace;">' + code + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                        '<button onclick="startExam(\'' + code + '\')" class="btn-emerald px-4 py-2 text-xs font-bold whitespace-nowrap">▶ تدرب</button>' +
+                    '</div>';
+                }).join('');
+            })
+            .catch(function() {
+                grid.innerHTML = '<div class="col-span-full text-center py-6 text-red-400 text-xs">تعذّر تحميل الاختبارات التجريبية</div>';
+            });
+        }
+
+        function toggleExams(classId, btn) {
+            var container = document.getElementById('exams-container-' + classId);
+            var chevron = document.getElementById('chevron-' + classId);
+            var isOpen = !container.classList.contains('hidden');
+            if (isOpen) {
+                container.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            } else {
+                container.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+                loadClassExams(classId, container);
+            }
+        }
+
+        function loadClassExams(classId, containerEl) {
+            containerEl.innerHTML = '<div class="flex items-center justify-center py-4"><div class="w-5 h-5 rounded-full" style="border:2px solid #1e293b;border-top-color:#10b981;animation:spin 0.8s linear infinite;"></div></div>';
+            fetch('api.php?action=get_class_exams&class_id=' + encodeURIComponent(classId) + '&student_id=' + encodeURIComponent(user.id), {
+                headers: { 'Authorization': 'Bearer ' + user.token }
+            })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.status !== 'success' || !data.exams || data.exams.length === 0) {
+                        containerEl.innerHTML = '<div class="text-center py-4 text-slate-600 text-xs"><span style="font-size:1.4rem;display:block;margin-bottom:4px;">📋</span>لا توجد اختبارات نشطة في هذا الفصل</div>';
+                        return;
+                    }
+                    containerEl.innerHTML = data.exams.map(function (exam) {
+                        var code = escapeHtml(exam.exam_code || exam.code || '');
+                        var title = escapeHtml(exam.exam_title || exam.title || 'اختبار');
+                        var duration = exam.duration_minutes || '45';
+                        var status = exam.session_status || 'not_started';
+
+                        var actionBtn = '';
+                        if (status === 'completed') {
+                            actionBtn = '<span class="text-slate-400 font-bold text-xs bg-slate-800/80 border border-slate-700/60 px-3 py-1.5 rounded-xl">✔️ تم التسليم (الدرجة: ' + (exam.score !== undefined ? exam.score : '--') + '%)</span>';
+                        } else {
+                            actionBtn = '<button onclick="startExam(\'' + code + '\')" class="btn-emerald px-3 py-1.5 text-xs whitespace-nowrap">▶ ابدأ الاختبار</button>';
+                        }
+
+                        return '<div class="exam-item rounded-xl p-3 flex items-center justify-between gap-3">' +
+                            '<div class="flex-1" style="min-width:0;">' +
+                            '<p class="text-slate-200 font-semibold text-sm" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + title + '</p>' +
+                            '<div class="flex items-center gap-2 mt-1 flex-wrap">' +
+                            '<span class="text-slate-500" style="font-size:11px;">⏱ ' + duration + ' دقيقة</span>' +
+                            (code ? '<span class="badge-cyan" style="font-family:monospace;">' + code + '</span>' : '') +
+                            '</div>' +
+                            '</div>' +
+                            actionBtn +
+                            '</div>';
+                    }).join('');
+                })
+                .catch(function () {
+                    containerEl.innerHTML = '<div class="text-center py-3 text-red-400 text-xs">تعذّر تحميل الاختبارات</div>';
+                });
+        }
+
+        function startExam(examCode) {
+            if (!examCode) { showToast('كود الاختبار غير صحيح', 'error'); return; }
+            window.location.href = 'student_exam.html?v=' + Date.now() + '&exam=' + encodeURIComponent(examCode);
+        }
+
+        /* ── JOIN CLASS ── */
+        function joinClass() {
+            var input = document.getElementById('join-code-input');
+            var btn = document.getElementById('join-btn');
+            var resultEl = document.getElementById('join-result');
+            var code = (input.value || '').trim().toUpperCase();
+
+            if (!code) { showToast('يرجى إدخال كود الفصل', 'warning'); input.focus(); return; }
+
+            btn.disabled = true;
+            btn.innerHTML = '<div style="width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;animation:spin 0.8s linear infinite;"></div> جارٍ الإرسال...';
+            resultEl.classList.add('hidden');
+
+            fetch('api.php?action=join_class', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + user.token
+                },
+                body: JSON.stringify({ student_id: user.id, class_code: code })
+            })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.status === 'success') {
+                        resultEl.removeAttribute('class');
+                        resultEl.style.cssText = 'margin-top:0.75rem;padding:0.75rem 1rem;border-radius:0.75rem;display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#6ee7b7;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);';
+                        resultEl.innerHTML = '✔ تم إرسال طلب الانضمام بنجاح! بانتظار موافقة المعلم على طلبك.';
+                        showToast('تم إرسال طلب الانضمام بنجاح!', 'success');
+                        input.value = '';
+                        setTimeout(loadMyClasses, 1200);
+                    } else {
+                        resultEl.removeAttribute('class');
+                        resultEl.style.cssText = 'margin-top:0.75rem;padding:0.75rem 1rem;border-radius:0.75rem;display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#fca5a5;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);';
+                        resultEl.innerHTML = '✖ ' + escapeHtml(data.message || 'كود الفصل غير صحيح أو منتهي الصلاحية');
+                        showToast(data.message || 'كود الفصل غير صحيح', 'error');
+                    }
+                })
+                .catch(function () {
+                    showToast('خطأ في الاتصال بالخادم، حاول مجدداً', 'error');
+                })
+                .finally(function () {
+                    btn.disabled = false;
+                    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> طلب انضمام';
+                });
+        }
+
+        /* ── LOAD RESULTS ── */
+        function loadResults() {
+            var tbody = document.getElementById('results-tbody');
+            fetch('api.php?action=get_student_results&student_id=' + encodeURIComponent(user.id), {
+                headers: { 'Authorization': 'Bearer ' + user.token }
+            })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.status !== 'success' || !data.results || data.results.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2.5rem 1rem;"><div style="display:flex;flex-direction:column;align-items:center;gap:8px;color:#475569;"><span style="font-size:2rem;">📊</span><span style="font-size:12px;">لا توجد نتائج سابقة بعد</span></div></td></tr>';
+                        document.getElementById('stat-exams').textContent = '0';
+                        document.getElementById('stat-avg').textContent = '—';
+                        return;
+                    }
+
+                    var count = data.results.length;
+                    var total = data.results.reduce(function (s, r) { return s + (parseFloat(r.score) || 0); }, 0);
+                    var avg = Math.round(total / count);
+                    document.getElementById('stat-exams').textContent = count;
+                    document.getElementById('stat-avg').textContent = avg + '%';
+
+                    tbody.innerHTML = data.results.map(function (r) {
+                        var score = parseFloat(r.score) || 0;
+                        var integrity = (r.integrity_index !== undefined && r.integrity_index !== null) ? parseFloat(r.integrity_index) : (r.integrity !== undefined ? parseFloat(r.integrity) : 100);
+
+                        var scoreColor = score >= 75 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
+                        var integrityColor = integrity >= 80 ? '#10b981' : integrity >= 50 ? '#f59e0b' : '#ef4444';
+                        var integrityLabel = integrity >= 80 ? 'عالية' : integrity >= 50 ? 'متوسطة' : 'منخفضة';
+
+                        var status = r.status || 'مكتمل';
+                        var statusBadge = (status === 'مكتمل' || status === 'completed')
+                            ? '<span class="badge-emerald">مكتمل</span>'
+                            : '<span class="badge-amber">' + escapeHtml(status) + '</span>';
+
+                        var dateStr = r.submitted_at || r.created_at || r.date || '';
+                        var dateDisplay = dateStr ? new Date(dateStr).toLocaleDateString('ar-SA') : '—';
+
+                        return '<tr>' +
+                            '<td><span class="font-semibold text-slate-200">' + escapeHtml(r.exam_title || r.title || 'اختبار') + '</span></td>' +
+                            '<td><span class="text-slate-400">' + escapeHtml(r.class_name || r.class || '—') + '</span></td>' +
+                            '<td><span class="text-slate-500" style="font-size:11px;">' + dateDisplay + '</span></td>' +
+                            '<td style="text-align:center;"><span style="font-size:1.1rem;font-weight:900;color:' + scoreColor + ';">' + score + '%</span></td>' +
+                            '<td style="text-align:center;">' +
+                            '<span style="color:' + integrityColor + ';font-weight:600;font-size:0.82rem;">● ' + integrity + '% <span style="font-size:10px;opacity:0.7;">(' + integrityLabel + ')</span></span>' +
+                            '</td>' +
+                            '<td style="text-align:center;">' + statusBadge + '</td>' +
+                            '</tr>';
+                    }).join('');
+                })
+                .catch(function () {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#f87171;font-size:12px;">تعذّر تحميل النتائج</td></tr>';
+                });
+        }
+
+        /* ── NOTIFICATIONS ── */
+        function toggleNotifications() {
+            var btn = document.getElementById('bell-btn');
+            btn.classList.add('bell-shake');
+            btn.addEventListener('animationend', function () { btn.classList.remove('bell-shake'); }, { once: true });
+            showToast('لا توجد إشعارات جديدة حالياً', 'info');
+        }
+
+        /* ── QR ACTIONS ── */
+        function copyHash() {
+            var hash = document.getElementById('qr-hash').textContent;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(hash).then(function () {
+                    showToast('تم نسخ الكود بنجاح ✓', 'success');
+                });
+            } else {
+                showToast('لا يمكن النسخ في هذا المتصفح', 'warning');
+            }
+        }
+
+        function saveCard() {
+            showToast('جارٍ تجهيز البطاقة للحفظ...', 'info');
+            var name = document.getElementById('qr-name').textContent;
+            var id = document.getElementById('qr-id').textContent;
+            var hash = document.getElementById('qr-hash').textContent;
+            var email = document.getElementById('qr-email').textContent;
+            var institution = document.getElementById('qr-institution').textContent;
+
+            var win = window.open('', '_blank', 'width=500,height=360');
+            if (!win) { showToast('يرجى السماح بالنوافذ المنبثقة', 'warning'); return; }
+            win.document.write('<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="UTF-8">' +
+                '<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">' +
+                '<title>بطاقة الطالب</title>' +
+                '<style>body{margin:0;padding:24px;font-family:Cairo,sans-serif;background:#080d1a;color:#e2e8f0;display:flex;justify-content:center;align-items:center;min-height:100vh;}' +
+                '.card{background:rgba(15,23,42,0.95);border:1px solid rgba(16,185,129,0.3);border-radius:20px;padding:28px 32px;max-width:380px;width:100%;box-shadow:0 0 40px rgba(16,185,129,0.15);}' +
+                '.logo{font-size:22px;font-weight:900;background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}' +
+                '.sub{color:#475569;font-size:11px;margin-bottom:20px;}.fl{color:#475569;font-size:10px;margin-bottom:3px;}.fv{color:#e2e8f0;font-size:13px;font-weight:700;margin-bottom:14px;}' +
+                '.hash{background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.25);border-radius:10px;padding:10px 14px;font-family:monospace;font-size:10px;color:#22d3ee;word-break:break-all;margin-top:14px;}' +
+                '.badge{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.25);border-radius:999px;font-size:10px;padding:3px 10px;display:inline-block;margin-bottom:16px;}' +
+                '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}' +
+                '</style></head><body><div class="card">' +
+                '<div class="logo">Æ Aegis-X LMS</div>' +
+                '<div class="sub">بطاقة الهوية الرقمية للطالب</div>' +
+                '<span class="badge">✓ بطاقة مُعتمدة</span>' +
+                '<div class="fl">الاسم الكامل</div><div class="fv">' + escapeHtml(name) + '</div>' +
+                '<div class="fl">رقم الطالب</div><div class="fv" style="font-family:monospace">' + escapeHtml(id) + '</div>' +
+                '<div class="fl">البريد الإلكتروني</div><div class="fv">' + escapeHtml(email) + '</div>' +
+                '<div class="fl">المؤسسة</div><div class="fv">' + escapeHtml(institution) + '</div>' +
+                '<div class="fl">رمز QR المشفر</div><div class="hash">' + escapeHtml(hash) + '</div>' +
+                '</div><script>setTimeout(function(){window.print();},400);<\/script></body></html>');
+            win.document.close();
+            setTimeout(function () { showToast('تم فتح نافذة الحفظ/طباعة البطاقة', 'success'); }, 700);
+        }
+
+        /* ── STUDENT AI PRACTICE GENERATION ── */
+        function generateStudentAIExam() {
+            const passage = document.getElementById('student-ai-passage').value.trim();
+            const numQuestions = document.getElementById('student-ai-num-questions').value;
+            const btn = document.getElementById('student-ai-generate-btn');
+
+            if (!passage) {
+                alert('الرجاء إدخال النص أو موضوع التدريب أولاً!');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading loading-spinner loading-xs mr-2"></span> جاري التوليد...';
+
+            fetch('api.php?action=generate_ai_exam', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + user.token
+                },
+                body: JSON.stringify({
+                    passage: passage,
+                    num_questions: parseInt(numQuestions)
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const questions = data.questions || [];
+                        if (questions.length === 0) {
+                            alert('لم يتم استخراج أي أسئلة، يرجى كتابة تفاصيل إضافية.');
+                            return;
+                        }
+
+                        // Save to sessionStorage as a local AI Practice Exam
+                        sessionStorage.setItem('ai_practice_questions', JSON.stringify(questions));
+                        sessionStorage.setItem('ai_practice_title', data.exam_title || 'اختبار تجريبي مخصص');
+
+                        // Close modal and redirect
+                        document.getElementById('student_ai_modal').close();
+                        window.location.href = 'student_exam.html?v=' + Date.now() + '&exam=AI_PRACTICE';
+                    } else {
+                        alert('فشل التوليد: ' + data.message);
+                    }
+                })
+                .catch(() => {
+                    alert('فشل الاتصال بالخادم أثناء توليد الأسئلة.');
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = 'ابدأ الاختبار التجريبي';
+                });
+        }
+
+        /* ── DEVICE MANAGEMENT ── */
+        function openDeviceManagementModal() {
+            const modal = document.getElementById('student_devices_modal');
+            const container = document.getElementById('devices-list-container');
+            container.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-slate-500">جاري تحميل الأجهزة...</td></tr>';
+            modal.showModal();
+
+            fetch('api.php?action=get_student_devices', {
+                headers: { 'Authorization': 'Bearer ' + user.token }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const devices = data.devices || [];
+                    if (devices.length === 0) {
+                        container.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-slate-500">لا توجد أجهزة مسجلة حالياً.</td></tr>';
+                        return;
+                    }
+
+                    const currentDeviceId = localStorage.getItem('aegis_device_id');
+                    let html = '';
+                    devices.forEach((dev, index) => {
+                        const isCurrent = (dev.device_id === currentDeviceId);
+                        const statusBadge = dev.status === 'active' 
+                            ? '<span class="badge badge-success text-[10px] py-1 px-2">نشط</span>' 
+                            : '<span class="badge badge-error text-[10px] py-1 px-2">ملغى</span>';
+                        const lastUsedStr = new Date(dev.last_used.replace(/-/g, '/')).toLocaleString('ar-SA');
+                        
+                        let actionsHtml = '';
+                        if (dev.status === 'active') {
+                            if (isCurrent) {
+                                actionsHtml = '<span class="text-[10px] text-emerald-400 font-bold">هذا الجهاز الحالي</span>';
+                            } else {
+                                actionsHtml = `<button onclick="revokeDevice('${dev.device_id}')" class="btn btn-xs btn-error btn-outline rounded-lg font-bold">إلغاء التنشيط</button>`;
+                            }
+                        } else {
+                            actionsHtml = '<span class="text-[10px] text-slate-500">—</span>';
+                        }
+
+                        html += `
+                            <tr class="border-b border-slate-800/40 text-xs">
+                                <td class="py-3 px-2 font-bold text-slate-300 text-right">${dev.device_label}</td>
+                                <td class="py-3 px-2 text-slate-400 text-right" dir="ltr">${lastUsedStr}</td>
+                                <td class="py-3 px-2 text-right">${statusBadge}</td>
+                                <td class="py-3 px-2 text-left">${actionsHtml}</td>
+                            </tr>
+                        `;
+                    });
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-red-400">فشل تحميل الأجهزة: ${data.message}</td></tr>`;
+                }
+            })
+            .catch(() => {
+                container.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-red-400">فشل الاتصال بالخادم.</td></tr>';
+            });
+        }
+
+        function revokeDevice(deviceId) {
+            if (!confirm('هل أنت متأكد من رغبتك في إلغاء تنشيط هذا الجهاز؟ لن تتمكن من استخدامه للدخول إلا بعد تحرير مقعد.')) {
+                return;
+            }
+
+            fetch('api.php?action=remove_student_device', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + user.token
+                },
+                body: JSON.stringify({ device_id: deviceId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('تم إلغاء تنشيط الجهاز بنجاح.');
+                    openDeviceManagementModal(); // Reload list
+                } else {
+                    alert('خطأ: ' + data.message);
+                }
+            })
+            .catch(() => {
+                alert('فشل الاتصال بالخادم لإلغاء تنشيط الجهاز.');
+            });
+        }
+
+        /* ── PROFILE PHOTO CAPTURE ── */
+        let webcamStream = null;
+        let capturedDataUrl = '';
+
+        function openProfilePhotoModal() {
+            const modal = document.getElementById('student_profile_photo_modal');
+            const viewCont = document.getElementById('profile-photo-view-container');
+            const capCont = document.getElementById('profile-photo-capture-container');
+            const currentImg = document.getElementById('profile-photo-current-img');
+
+            if (user.profile_picture) {
+                // Show view mode first
+                currentImg.src = user.profile_picture + '?v=' + Date.now();
+                viewCont.classList.remove('hidden');
+                capCont.classList.add('hidden');
+                modal.showModal();
+            } else {
+                // Directly start webcam capture
+                startWebcamCapture();
+            }
+        }
+
+        function startWebcamCapture() {
+            capturedDataUrl = '';
+            const modal = document.getElementById('student_profile_photo_modal');
+            const viewCont = document.getElementById('profile-photo-view-container');
+            const capCont = document.getElementById('profile-photo-capture-container');
+            
+            const video = document.getElementById('profile-webcam-preview');
+            const preview = document.getElementById('profile-photo-preview');
+            const btnSnap = document.getElementById('profile-photo-snap-btn');
+            const btnRetake = document.getElementById('profile-photo-retake-btn');
+            const btnSave = document.getElementById('profile-photo-save-btn');
+
+            viewCont.classList.add('hidden');
+            capCont.classList.remove('hidden');
+
+            video.classList.remove('hidden');
+            preview.classList.add('hidden');
+            btnSnap.classList.remove('hidden');
+            btnRetake.classList.add('hidden');
+            btnSave.classList.add('hidden');
+
+            if (!modal.open) {
+                modal.showModal();
+            }
+
+            navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } })
+                .then(stream => {
+                    webcamStream = stream;
+                    video.srcObject = stream;
+                })
+                .catch(err => {
+                    console.error("Webcam error:", err);
+                    alert("لا يمكن فتح كاميرا الويب. يرجى التحقق من الأذونات وتوصيل الكاميرا.");
+                    closeProfilePhotoModal();
+                });
+        }
+
+        function closeProfilePhotoModal() {
+            if (webcamStream) {
+                webcamStream.getTracks().forEach(track => track.stop());
+                webcamStream = null;
+            }
+            document.getElementById('student_profile_photo_modal').close();
+        }
+
+        function captureProfilePhoto() {
+            const video = document.getElementById('profile-webcam-preview');
+            const canvas = document.getElementById('profile-photo-canvas');
+            const preview = document.getElementById('profile-photo-preview');
+            const btnSnap = document.getElementById('profile-photo-snap-btn');
+            const btnRetake = document.getElementById('profile-photo-retake-btn');
+            const btnSave = document.getElementById('profile-photo-save-btn');
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            capturedDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            preview.src = capturedDataUrl;
+
+            if (webcamStream) {
+                webcamStream.getTracks().forEach(track => track.stop());
+                webcamStream = null;
+            }
+
+            video.classList.add('hidden');
+            preview.classList.remove('hidden');
+            btnSnap.classList.add('hidden');
+            btnRetake.classList.remove('hidden');
+            btnSave.classList.remove('hidden');
+        }
+
+        function saveProfilePhoto() {
+            if (!capturedDataUrl) {
+                const canvas = document.getElementById('profile-photo-canvas');
+                capturedDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            }
+            const btnSave = document.getElementById('profile-photo-save-btn');
+
+            btnSave.disabled = true;
+            btnSave.innerHTML = '<span class="loading loading-spinner loading-xs mr-2"></span> جاري الحفظ...';
+
+            fetch('api.php?action=upload_profile_photo', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + user.token
+                },
+                body: JSON.stringify({ image: capturedDataUrl })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    user.profile_picture = data.profile_picture;
+                    sessionStorage.setItem('aegis_user', JSON.stringify(user));
+                    alert('تم حفظ صورتك الرسمية بنجاح!');
+                    closeProfilePhotoModal();
+                    populateUserInfo();
+                } else {
+                    alert('فشل حفظ الصورة: ' + data.message);
+                    btnSave.disabled = false;
+                    btnSave.innerHTML = 'حفظ الصورة الرسمية';
+                }
+            })
+            .catch(() => {
+                alert('حدث خطأ في الاتصال بالخادم.');
+                btnSave.disabled = false;
+                btnSave.innerHTML = 'حفظ الصورة الرسمية';
+            });
+        }
+
+        /* ── LOGOUT ── */
+        function logOut() {
+            sessionStorage.removeItem('aegis_user');
+            showToast('تم تسجيل الخروج بنجاح', 'info');
+            setTimeout(function () { window.location.href = 'index.html'; }, 800);
+        }
+
+        /* ── SPIN KEYFRAME (inline for exams loader) ── */
+        var styleSheet = document.createElement('style');
+        styleSheet.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+        document.head.appendChild(styleSheet);
+
+        /* ── MAIN LOAD ── */
+        function loadDashboard() {
+            populateUserInfo();
+            loadMyClasses();
+            loadMyMockExams();
+            loadResults();
+            document.getElementById('notif-dot').classList.remove('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+
+    <!-- Student AI Practice Generator Modal -->
+    <dialog id="student_ai_modal" class="modal">
+        <div class="modal-box bg-slate-950 border border-slate-800 text-right rounded-3xl p-6">
+            <h3 class="font-bold text-sm text-slate-200 mb-2 flex items-center gap-2">🪄 توليد اختبار تجريبي للمذاكرة
+                (Gemini AI)</h3>
+            <p class="text-[10px] text-slate-400 mb-4">انسخ فقرة من كتابك الدراسي، أو اكتب المادة التي تود التدرب عليها،
+                وسيقوم الذكاء الاصطناعي ببناء اختبار محمي تفاعلي مخصص لك فقط!</p>
+
+            <div class="form-control mb-4">
+                <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">النص الدراسي أو موضوع
+                        التدريب:</span></label>
+                <textarea id="student-ai-passage"
+                    class="textarea textarea-bordered input-academic rounded-xl text-xs h-28 w-full"
+                    placeholder="مثال: تاريخ الدولة العباسية وأهم الخلفاء فيها..."></textarea>
             </div>
-            <h2 class="text-slate-200 font-bold text-base">نتائج الاختبارات الأخيرة</h2>
+
+            <div class="form-control mb-6">
+                <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">عدد الأسئلة
+                        للتدريب:</span></label>
+                <select id="student-ai-num-questions" class="select select-bordered input-academic rounded-xl text-xs">
+                    <option value="3" selected>3 أسئلة</option>
+                    <option value="5">5 أسئلة</option>
+                    <option value="10">10 أسئلة</option>
+                </select>
+            </div>
+
+            <div class="modal-action flex gap-2 justify-end">
+                <button type="button" id="student-ai-generate-btn" onclick="generateStudentAIExam()"
+                    class="btn btn-academic rounded-xl text-xs px-6">ابدأ الاختبار التجريبي</button>
+                <button type="button" onclick="document.getElementById('student_ai_modal').close()"
+                    class="btn btn-academic-secondary rounded-xl text-xs">إلغاء</button>
+            </div>
         </div>
-        <div class="glass-card rounded-2xl overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full results-table">
+    </dialog>
+
+    <!-- Student Devices Management Modal -->
+    <dialog id="student_devices_modal" class="modal">
+        <div class="modal-box bg-slate-950 border border-slate-800 text-right rounded-3xl p-6 max-w-lg w-full">
+            <h3 class="font-bold text-sm text-slate-200 mb-2 flex items-center gap-2">📱 إدارة أجهزتي المعتمدة (الحد الأقصى: 3 أجهزة)</h3>
+            <p class="text-[10px] text-slate-400 mb-4">هنا يمكنك رؤية قائمة بأجهزتك النشطة وإلغاء تنشيط أي منها لتحرير مقعد لجهاز جديد.</p>
+
+            <div class="overflow-x-auto w-full">
+                <table class="table w-full text-right bg-slate-900/40 rounded-xl overflow-hidden">
                     <thead>
-                        <tr>
-                            <th class="text-right">الاختبار</th>
-                            <th class="text-right">الفصل</th>
-                            <th class="text-right">التاريخ</th>
-                            <th class="text-center">الدرجة</th>
-                            <th class="text-center">مؤشر النزاهة</th>
-                            <th class="text-center">الحالة</th>
+                        <tr class="border-b border-slate-800/60 text-slate-400 text-[10px]">
+                            <th class="py-2 px-2 text-right">الجهاز (المتصفح / النظام)</th>
+                            <th class="py-2 px-2 text-right">آخر استخدام</th>
+                            <th class="py-2 px-2 text-right">الحالة</th>
+                            <th class="py-2 px-2 text-left">الإجراء</th>
                         </tr>
                     </thead>
-                    <tbody id="results-tbody">
-                        <tr>
-                            <td colspan="6" class="text-center py-10">
-                                <div class="flex flex-col items-center gap-3 text-slate-600">
-                                    <div class="w-6 h-6 rounded-full border-2 border-slate-700 border-t-cyan-500 animate-spin"></div>
-                                    <span class="text-xs">جارٍ تحميل النتائج...</span>
-                                </div>
-                            </td>
-                        </tr>
+                    <tbody id="devices-list-container">
+                        <!-- Populated via JS -->
                     </tbody>
                 </table>
             </div>
-        </div>
-    </section>
 
-    <!-- ── QR IDENTITY CARD ── -->
-    <section class="fade-in-up delay-4">
-        <div class="section-header">
-            <div class="w-8 h-8 rounded-lg flex items-center justify-center text-violet-400" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/>
-                </svg>
-            </div>
-            <h2 class="text-slate-200 font-bold text-base">بطاقة الهوية الرقمية</h2>
-        </div>
-        <div class="glass-card rounded-2xl p-6">
-            <div class="flex flex-col lg:flex-row gap-6 items-center lg:items-start">
-                <!-- QR Visual -->
-                <div class="flex-shrink-0 flex flex-col items-center gap-4">
-                    <div class="p-4 rounded-2xl" style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);">
-                        <div id="qr-visual" class="qr-block"></div>
-                    </div>
-                    <p class="text-slate-500 text-xs text-center max-w-[160px] leading-relaxed">احتفظ بهذه البطاقة للدخول السريع إلى الاختبارات</p>
-                </div>
-
-                <!-- Info -->
-                <div class="flex-1 w-full">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-                        <div>
-                            <p class="text-slate-500 text-xs mb-1">الاسم الكامل</p>
-                            <p id="qr-name" class="text-slate-100 font-bold text-sm">—</p>
-                        </div>
-                        <div>
-                            <p class="text-slate-500 text-xs mb-1">رقم الطالب</p>
-                            <p id="qr-id" class="text-slate-100 font-bold text-sm font-mono">—</p>
-                        </div>
-                        <div>
-                            <p class="text-slate-500 text-xs mb-1">البريد الإلكتروني</p>
-                            <p id="qr-email" class="text-slate-100 text-sm">—</p>
-                        </div>
-                        <div>
-                            <p class="text-slate-500 text-xs mb-1">المؤسسة</p>
-                            <p id="qr-institution" class="text-slate-100 text-sm">—</p>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="text-slate-500 text-xs mb-2">رمز QR المشفر (Hash)</p>
-                        <div id="qr-hash" class="qr-hash-display rounded-xl px-4 py-3 text-cyan-400 text-xs">—</div>
-                    </div>
-                    <div class="flex gap-3 mt-5 flex-wrap">
-                        <button onclick="saveCard()" class="btn-emerald flex items-center gap-2 px-5 py-2.5 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                            </svg>
-                            حفظ البطاقة
-                        </button>
-                        <button onclick="copyHash()" class="flex items-center gap-2 px-4 py-2.5 text-sm rounded-xl text-slate-400 hover:text-cyan-400 transition-all duration-200" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);cursor:pointer;">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                            </svg>
-                            نسخ الكود
-                        </button>
-                    </div>
-                </div>
+            <div class="modal-action flex justify-end mt-4">
+                <button type="button" onclick="document.getElementById('student_devices_modal').close()"
+                    class="btn btn-academic-secondary rounded-xl text-xs">إغلاق</button>
             </div>
         </div>
-    </section>
+    </dialog>
 
-</main>
+    <!-- Student Profile Photo Capture Modal -->
+    <dialog id="student_profile_photo_modal" class="modal">
+        <div class="modal-box bg-slate-950 border border-slate-800 text-right rounded-3xl p-6 max-w-md w-full flex flex-col items-center">
+            
+            <!-- View Mode (Shown if photo exists) -->
+            <div id="profile-photo-view-container" class="w-full flex flex-col items-center hidden">
+                <h3 class="font-bold text-sm text-slate-200 mb-2 w-full text-right flex items-center gap-2 justify-end">📷 صورتك الرسمية المسجلة حالياً</h3>
+                <p class="text-[10px] text-slate-400 mb-4 w-full text-right">صورتك الرسمية نشطة وتستخدم للمطابقة أثناء الامتحانات المحمية.</p>
+                <img id="profile-photo-current-img" class="w-48 h-48 rounded-2xl object-cover border-2 border-emerald-500 shadow-xl shadow-emerald-500/10 mb-6" src="">
+                <div class="flex gap-2 justify-center w-full">
+                    <button type="button" onclick="startWebcamCapture()" class="btn btn-emerald rounded-xl text-xs px-6">التقاط صورة جديدة 🔄</button>
+                    <button type="button" onclick="document.getElementById('student_profile_photo_modal').close()" class="btn btn-academic-secondary rounded-xl text-xs">إغلاق</button>
+                </div>
+            </div>
 
-<footer class="text-center py-6 text-slate-700 text-[11px]">
-    Aegis-X LMS &nbsp;·&nbsp; نظام الأمان المدرسي الذكي &nbsp;·&nbsp; Zero-Trust Architecture
-</footer>
+            <!-- Capture Mode (Webcam live stream) -->
+            <div id="profile-photo-capture-container" class="w-full flex flex-col items-center">
+                <h3 class="font-bold text-sm text-slate-200 mb-2 w-full text-right flex items-center gap-2 justify-end">📷 التقاط صورتك الرسمية للمطابقة الحية</h3>
+                <p class="text-[10px] text-slate-400 mb-4 w-full text-right">يرجى توجيه وجهك للكاميرا في إضاءة مناسبة والتقاط صورة واضحة ومباشرة.</p>
 
-<!-- ═══════════════════════
-     JAVASCRIPT
-════════════════════════ -->
-<script>
+                <div class="relative w-full aspect-video rounded-2xl border border-slate-800 overflow-hidden bg-slate-900 mb-4 flex items-center justify-center">
+                    <video id="profile-webcam-preview" autoplay playsinline class="w-full h-full object-cover"></video>
+                    <img id="profile-photo-preview" class="hidden w-full h-full object-cover" />
+                    <canvas id="profile-photo-canvas" class="hidden"></canvas>
+                </div>
 
-/* ── PAGE PROTECTION ── */
-const user = JSON.parse(sessionStorage.getItem('aegis_user') || 'null');
-if (!user || user.role !== 'student') {
-    window.location.href = 'login.html';
-}
+                <div class="flex gap-2 justify-center w-full">
+                    <button type="button" id="profile-photo-snap-btn" onclick="captureProfilePhoto()"
+                        class="btn btn-emerald rounded-xl text-xs px-6">التقاط الصورة 📸</button>
+                    <button type="button" id="profile-photo-retake-btn" onclick="startWebcamCapture()"
+                        class="btn btn-outline rounded-xl text-xs px-6 hidden">إعادة التقاط 🔄</button>
+                    <button type="button" id="profile-photo-save-btn" onclick="saveProfilePhoto()"
+                        class="btn btn-success rounded-xl text-xs px-6 hidden">حفظ الصورة الرسمية ✅</button>
+                    <button type="button" onclick="closeProfilePhotoModal()"
+                        class="btn btn-academic-secondary rounded-xl text-xs">إلغاء</button>
+                </div>
+            </div>
 
-/* ── TOAST ── */
-function showToast(msg, type) {
-    type = type || 'info';
-    var container = document.getElementById('toast-container');
-    var el = document.createElement('div');
-    el.className = 'toast-item toast-' + type;
-    el.textContent = msg;
-    container.appendChild(el);
-    setTimeout(function() {
-        el.style.transition = 'opacity 0.4s';
-        el.style.opacity = '0';
-        setTimeout(function() { el.remove(); }, 400);
-    }, 3400);
-}
-
-/* ── UTILS ── */
-function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
-function generateFallbackHash(seed) {
-    var chars = '0123456789abcdef';
-    var hash = '';
-    var s = String(seed || 'student');
-    for (var i = 0; i < 64; i++) {
-        hash += chars[(s.charCodeAt(i % s.length) + i * 7) % 16];
-    }
-    return hash;
-}
-
-function buildQrVisual(hash) {
-    var container = document.getElementById('qr-visual');
-    container.innerHTML = '';
-    var str = String(hash || '');
-    var size = 8;
-    for (var i = 0; i < size * size; i++) {
-        var cell = document.createElement('div');
-        cell.className = 'qr-cell';
-        var charCode = (str.charCodeAt(i % str.length) + i) % 256;
-        if (charCode % 2 === 0) {
-            cell.style.background = (charCode % 5 === 0)
-                ? 'rgba(6,182,212,0.85)'
-                : 'rgba(139,92,246,0.75)';
-        } else {
-            cell.style.background = 'rgba(255,255,255,0.04)';
-        }
-        container.appendChild(cell);
-    }
-}
-
-/* ── POPULATE USER INFO ── */
-function populateUserInfo() {
-    var name = user.official_name || user.name || 'الطالب';
-    document.getElementById('nav-student-name').textContent = name;
-    document.getElementById('hero-name').textContent = name;
-
-    var now = new Date();
-    document.getElementById('hero-date').textContent = now.toLocaleDateString('ar-SA', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    });
-
-    document.getElementById('qr-name').textContent = name;
-    document.getElementById('qr-id').textContent = user.id || '—';
-    document.getElementById('qr-email').textContent = user.email || '—';
-    document.getElementById('qr-institution').textContent = user.institution || 'Aegis-X LMS';
-    var hash = user.qr_code_hash || generateFallbackHash(user.id);
-    document.getElementById('qr-hash').textContent = hash;
-    buildQrVisual(hash);
-}
-
-/* ── LOAD MY CLASSES ── */
-function loadMyClasses() {
-    var grid = document.getElementById('classes-grid');
-    fetch('api.php?action=get_student_classes&student_id=' + encodeURIComponent(user.id), {
-        headers: { 'Authorization': 'Bearer ' + user.token }
-    })
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-            if (data.status !== 'success' || !data.classes || data.classes.length === 0) {
-                grid.innerHTML = renderEmptyClasses();
-                document.getElementById('stat-classes').textContent = '0';
-                return;
-            }
-
-            var approvedCount = data.classes.filter(function(c) { return c.enrollment_status === 'approved'; }).length;
-            document.getElementById('stat-classes').textContent = approvedCount;
-
-            var badge = document.getElementById('classes-count-badge');
-            badge.textContent = data.classes.length;
-            badge.classList.remove('hidden');
-
-            grid.innerHTML = data.classes.map(renderClassCard).join('');
-        })
-        .catch(function() {
-            grid.innerHTML = '<div class="col-span-3 text-center py-10 text-red-400 text-xs">تعذّر تحميل الفصول الدراسية</div>';
-        });
-}
-
-function renderEmptyClasses() {
-    return '<div class="col-span-3 flex flex-col items-center justify-center py-16 gap-3 text-slate-600">' +
-        '<span class="text-5xl">🏫</span>' +
-        '<p class="font-bold text-slate-500 text-sm">لم تنضم إلى أي فصل بعد</p>' +
-        '<p class="text-xs text-center max-w-xs">أدخل كود الفصل في الحقل أعلاه للانضمام</p>' +
-        '</div>';
-}
-
-function renderClassCard(cls) {
-    var isApproved = cls.enrollment_status === 'approved';
-    var statusBadge = isApproved
-        ? '<span class="badge-emerald inline-flex items-center gap-1"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>مقبول</span>'
-        : '<span class="badge-amber inline-flex items-center gap-1"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;display:inline-block;animation:pulse 2s infinite;"></span>بانتظار القبول</span>';
-
-    var btnDisabled = !isApproved ? 'style="opacity:0.4;cursor:not-allowed;pointer-events:none;"' : '';
-
-    return '<div class="class-card rounded-2xl p-5 flex flex-col gap-4" id="class-card-' + cls.id + '">' +
-        '<div class="flex items-start justify-between gap-2">' +
-            '<div class="flex-1">' +
-                '<h3 class="text-slate-100 font-bold text-base leading-snug">' + escapeHtml(cls.class_name) + '</h3>' +
-                '<div class="flex items-center gap-2 mt-2 flex-wrap">' +
-                    '<span class="badge-slate">' +
-                        '<svg xmlns="http://www.w3.org/2000/svg" style="width:10px;height:10px;display:inline;margin-left:3px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>' +
-                        escapeHtml(cls.teacher_name || 'المعلم') +
-                    '</span>' +
-                    '<span class="badge-cyan" style="font-family:monospace;">' + escapeHtml(cls.class_code || '') + '</span>' +
-                '</div>' +
-            '</div>' +
-            '<div>' + statusBadge + '</div>' +
-        '</div>' +
-        '<div>' +
-            '<button onclick="toggleExams(' + cls.id + ', this)" ' + btnDisabled + ' class="w-full flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-emerald-400 transition-all duration-200" style="background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.15);">' +
-                '<span>📋 الاختبارات المتاحة</span>' +
-                '<svg id="chevron-' + cls.id + '" class="w-4 h-4" style="transition:transform 0.2s;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
-            '</button>' +
-            '<div id="exams-container-' + cls.id + '" class="hidden mt-3 space-y-2"></div>' +
-        '</div>' +
-    '</div>';
-}
-
-function toggleExams(classId, btn) {
-    var container = document.getElementById('exams-container-' + classId);
-    var chevron = document.getElementById('chevron-' + classId);
-    var isOpen = !container.classList.contains('hidden');
-    if (isOpen) {
-        container.classList.add('hidden');
-        chevron.style.transform = 'rotate(0deg)';
-    } else {
-        container.classList.remove('hidden');
-        chevron.style.transform = 'rotate(180deg)';
-        loadClassExams(classId, container);
-    }
-}
-
-function loadClassExams(classId, containerEl) {
-    containerEl.innerHTML = '<div class="flex items-center justify-center py-4"><div class="w-5 h-5 rounded-full" style="border:2px solid #1e293b;border-top-color:#10b981;animation:spin 0.8s linear infinite;"></div></div>';
-    fetch('api.php?action=get_class_exams&class_id=' + encodeURIComponent(classId) + '&student_id=' + encodeURIComponent(user.id), {
-        headers: { 'Authorization': 'Bearer ' + user.token }
-    })
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-            if (data.status !== 'success' || !data.exams || data.exams.length === 0) {
-                containerEl.innerHTML = '<div class="text-center py-4 text-slate-600 text-xs"><span style="font-size:1.4rem;display:block;margin-bottom:4px;">📋</span>لا توجد اختبارات نشطة في هذا الفصل</div>';
-                return;
-            }
-            containerEl.innerHTML = data.exams.map(function(exam) {
-                var code = escapeHtml(exam.exam_code || exam.code || '');
-                var title = escapeHtml(exam.exam_title || exam.title || 'اختبار');
-                var duration = exam.duration_minutes || '45';
-                return '<div class="exam-item rounded-xl p-3 flex items-center justify-between gap-3">' +
-                    '<div class="flex-1" style="min-width:0;">' +
-                        '<p class="text-slate-200 font-semibold text-sm" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + title + '</p>' +
-                        '<div class="flex items-center gap-2 mt-1 flex-wrap">' +
-                            '<span class="text-slate-500" style="font-size:11px;">⏱ ' + duration + ' دقيقة</span>' +
-                            (code ? '<span class="badge-cyan" style="font-family:monospace;">' + code + '</span>' : '') +
-                        '</div>' +
-                    '</div>' +
-                    '<button onclick="startExam(\'' + code + '\')" class="btn-emerald px-3 py-1.5 text-xs whitespace-nowrap">▶ ابدأ الاختبار</button>' +
-                '</div>';
-            }).join('');
-        })
-        .catch(function() {
-            containerEl.innerHTML = '<div class="text-center py-3 text-red-400 text-xs">تعذّر تحميل الاختبارات</div>';
-        });
-}
-
-function startExam(examCode) {
-    if (!examCode) { showToast('كود الاختبار غير صحيح', 'error'); return; }
-    window.location.href = 'student_exam.html?v=' + Date.now() + '&exam=' + encodeURIComponent(examCode);
-}
-
-/* ── JOIN CLASS ── */
-function joinClass() {
-    var input = document.getElementById('join-code-input');
-    var btn = document.getElementById('join-btn');
-    var resultEl = document.getElementById('join-result');
-    var code = (input.value || '').trim().toUpperCase();
-
-    if (!code) { showToast('يرجى إدخال كود الفصل', 'warning'); input.focus(); return; }
-
-    btn.disabled = true;
-    btn.innerHTML = '<div style="width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;animation:spin 0.8s linear infinite;"></div> جارٍ الإرسال...';
-    resultEl.classList.add('hidden');
-
-    fetch('api.php?action=join_class', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + user.token
-        },
-        body: JSON.stringify({ student_id: user.id, class_code: code })
-      })
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
-        if (data.status === 'success') {
-            resultEl.removeAttribute('class');
-            resultEl.style.cssText = 'margin-top:0.75rem;padding:0.75rem 1rem;border-radius:0.75rem;display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#6ee7b7;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);';
-            resultEl.innerHTML = '✔ تم إرسال طلب الانضمام بنجاح! بانتظار موافقة المعلم على طلبك.';
-            showToast('تم إرسال طلب الانضمام بنجاح!', 'success');
-            input.value = '';
-            setTimeout(loadMyClasses, 1200);
-        } else {
-            resultEl.removeAttribute('class');
-            resultEl.style.cssText = 'margin-top:0.75rem;padding:0.75rem 1rem;border-radius:0.75rem;display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#fca5a5;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);';
-            resultEl.innerHTML = '✖ ' + escapeHtml(data.message || 'كود الفصل غير صحيح أو منتهي الصلاحية');
-            showToast(data.message || 'كود الفصل غير صحيح', 'error');
-        }
-    })
-    .catch(function() {
-        showToast('خطأ في الاتصال بالخادم، حاول مجدداً', 'error');
-    })
-    .finally(function() {
-        btn.disabled = false;
-        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> طلب انضمام';
-    });
-}
-
-/* ── LOAD RESULTS ── */
-function loadResults() {
-    var tbody = document.getElementById('results-tbody');
-    fetch('api.php?action=get_student_results&student_id=' + encodeURIComponent(user.id), {
-        headers: { 'Authorization': 'Bearer ' + user.token }
-    })
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-            if (data.status !== 'success' || !data.results || data.results.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2.5rem 1rem;"><div style="display:flex;flex-direction:column;align-items:center;gap:8px;color:#475569;"><span style="font-size:2rem;">📊</span><span style="font-size:12px;">لا توجد نتائج سابقة بعد</span></div></td></tr>';
-                document.getElementById('stat-exams').textContent = '0';
-                document.getElementById('stat-avg').textContent = '—';
-                return;
-            }
-
-            var count = data.results.length;
-            var total = data.results.reduce(function(s, r) { return s + (parseFloat(r.score) || 0); }, 0);
-            var avg = Math.round(total / count);
-            document.getElementById('stat-exams').textContent = count;
-            document.getElementById('stat-avg').textContent = avg + '%';
-
-            tbody.innerHTML = data.results.map(function(r) {
-                var score = parseFloat(r.score) || 0;
-                var integrity = (r.integrity_index !== undefined && r.integrity_index !== null) ? parseFloat(r.integrity_index) : (r.integrity !== undefined ? parseFloat(r.integrity) : 100);
-
-                var scoreColor = score >= 75 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
-                var integrityColor = integrity >= 80 ? '#10b981' : integrity >= 50 ? '#f59e0b' : '#ef4444';
-                var integrityLabel = integrity >= 80 ? 'عالية' : integrity >= 50 ? 'متوسطة' : 'منخفضة';
-
-                var status = r.status || 'مكتمل';
-                var statusBadge = (status === 'مكتمل' || status === 'completed')
-                    ? '<span class="badge-emerald">مكتمل</span>'
-                    : '<span class="badge-amber">' + escapeHtml(status) + '</span>';
-
-                var dateStr = r.submitted_at || r.created_at || r.date || '';
-                var dateDisplay = dateStr ? new Date(dateStr).toLocaleDateString('ar-SA') : '—';
-
-                return '<tr>' +
-                    '<td><span class="font-semibold text-slate-200">' + escapeHtml(r.exam_title || r.title || 'اختبار') + '</span></td>' +
-                    '<td><span class="text-slate-400">' + escapeHtml(r.class_name || r.class || '—') + '</span></td>' +
-                    '<td><span class="text-slate-500" style="font-size:11px;">' + dateDisplay + '</span></td>' +
-                    '<td style="text-align:center;"><span style="font-size:1.1rem;font-weight:900;color:' + scoreColor + ';">' + score + '%</span></td>' +
-                    '<td style="text-align:center;">' +
-                        '<span style="color:' + integrityColor + ';font-weight:600;font-size:0.82rem;">● ' + integrity + '% <span style="font-size:10px;opacity:0.7;">(' + integrityLabel + ')</span></span>' +
-                    '</td>' +
-                    '<td style="text-align:center;">' + statusBadge + '</td>' +
-                '</tr>';
-            }).join('');
-        })
-        .catch(function() {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#f87171;font-size:12px;">تعذّر تحميل النتائج</td></tr>';
-        });
-}
-
-/* ── NOTIFICATIONS ── */
-function toggleNotifications() {
-    var btn = document.getElementById('bell-btn');
-    btn.classList.add('bell-shake');
-    btn.addEventListener('animationend', function() { btn.classList.remove('bell-shake'); }, { once: true });
-    showToast('لا توجد إشعارات جديدة حالياً', 'info');
-}
-
-/* ── QR ACTIONS ── */
-function copyHash() {
-    var hash = document.getElementById('qr-hash').textContent;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(hash).then(function() {
-            showToast('تم نسخ الكود بنجاح ✓', 'success');
-        });
-    } else {
-        showToast('لا يمكن النسخ في هذا المتصفح', 'warning');
-    }
-}
-
-function saveCard() {
-    showToast('جارٍ تجهيز البطاقة للحفظ...', 'info');
-    var name = document.getElementById('qr-name').textContent;
-    var id   = document.getElementById('qr-id').textContent;
-    var hash = document.getElementById('qr-hash').textContent;
-    var email = document.getElementById('qr-email').textContent;
-    var institution = document.getElementById('qr-institution').textContent;
-
-    var win = window.open('', '_blank', 'width=500,height=360');
-    if (!win) { showToast('يرجى السماح بالنوافذ المنبثقة', 'warning'); return; }
-    win.document.write('<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="UTF-8">' +
-        '<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">' +
-        '<title>بطاقة الطالب</title>' +
-        '<style>body{margin:0;padding:24px;font-family:Cairo,sans-serif;background:#080d1a;color:#e2e8f0;display:flex;justify-content:center;align-items:center;min-height:100vh;}' +
-        '.card{background:rgba(15,23,42,0.95);border:1px solid rgba(16,185,129,0.3);border-radius:20px;padding:28px 32px;max-width:380px;width:100%;box-shadow:0 0 40px rgba(16,185,129,0.15);}' +
-        '.logo{font-size:22px;font-weight:900;background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}' +
-        '.sub{color:#475569;font-size:11px;margin-bottom:20px;}.fl{color:#475569;font-size:10px;margin-bottom:3px;}.fv{color:#e2e8f0;font-size:13px;font-weight:700;margin-bottom:14px;}' +
-        '.hash{background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.25);border-radius:10px;padding:10px 14px;font-family:monospace;font-size:10px;color:#22d3ee;word-break:break-all;margin-top:14px;}' +
-        '.badge{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.25);border-radius:999px;font-size:10px;padding:3px 10px;display:inline-block;margin-bottom:16px;}' +
-        '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}' +
-        '</style></head><body><div class="card">' +
-        '<div class="logo">Æ Aegis-X LMS</div>' +
-        '<div class="sub">بطاقة الهوية الرقمية للطالب</div>' +
-        '<span class="badge">✓ بطاقة مُعتمدة</span>' +
-        '<div class="fl">الاسم الكامل</div><div class="fv">' + escapeHtml(name) + '</div>' +
-        '<div class="fl">رقم الطالب</div><div class="fv" style="font-family:monospace">' + escapeHtml(id) + '</div>' +
-        '<div class="fl">البريد الإلكتروني</div><div class="fv">' + escapeHtml(email) + '</div>' +
-        '<div class="fl">المؤسسة</div><div class="fv">' + escapeHtml(institution) + '</div>' +
-        '<div class="fl">رمز QR المشفر</div><div class="hash">' + escapeHtml(hash) + '</div>' +
-        '</div><script>setTimeout(function(){window.print();},400);<\/script></body></html>');
-    win.document.close();
-    setTimeout(function() { showToast('تم فتح نافذة الحفظ/طباعة البطاقة', 'success'); }, 700);
-}
-
-/* ── STUDENT AI PRACTICE GENERATION ── */
-function generateStudentAIExam() {
-    const passage = document.getElementById('student-ai-passage').value.trim();
-    const numQuestions = document.getElementById('student-ai-num-questions').value;
-    const btn = document.getElementById('student-ai-generate-btn');
-
-    if (!passage) {
-        alert('الرجاء إدخال النص أو موضوع التدريب أولاً!');
-        return;
-    }
-
-    btn.disabled = true;
-    btn.innerHTML = '<span class="loading loading-spinner loading-xs mr-2"></span> جاري التوليد...';
-
-    fetch('api.php?action=generate_ai_exam', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + user.token
-        },
-        body: JSON.stringify({
-            passage: passage,
-            num_questions: parseInt(numQuestions)
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            const questions = data.questions || [];
-            if (questions.length === 0) {
-                alert('لم يتم استخراج أي أسئلة، يرجى كتابة تفاصيل إضافية.');
-                return;
-            }
-
-            // Save to sessionStorage as a local AI Practice Exam
-            sessionStorage.setItem('ai_practice_questions', JSON.stringify(questions));
-            sessionStorage.setItem('ai_practice_title', data.exam_title || 'اختبار تجريبي مخصص');
-
-            // Close modal and redirect
-            document.getElementById('student_ai_modal').close();
-            window.location.href = 'student_exam.html?v=' + Date.now() + '&exam=AI_PRACTICE';
-        } else {
-            alert('فشل التوليد: ' + data.message);
-        }
-    })
-    .catch(() => {
-        alert('فشل الاتصال بالخادم أثناء توليد الأسئلة.');
-    })
-    .finally(() => {
-        btn.disabled = false;
-        btn.innerHTML = 'ابدأ الاختبار التجريبي';
-    });
-}
-
-/* ── LOGOUT ── */
-function logOut() {
-    sessionStorage.removeItem('aegis_user');
-    showToast('تم تسجيل الخروج بنجاح', 'info');
-    setTimeout(function() { window.location.href = 'index.html'; }, 800);
-}
-
-/* ── SPIN KEYFRAME (inline for exams loader) ── */
-var styleSheet = document.createElement('style');
-styleSheet.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
-document.head.appendChild(styleSheet);
-
-/* ── MAIN LOAD ── */
-function loadDashboard() {
-    populateUserInfo();
-    loadMyClasses();
-    loadResults();
-    document.getElementById('notif-dot').classList.remove('hidden');
-}
-
-document.addEventListener('DOMContentLoaded', loadDashboard);
-</script>
-
-  <!-- Student AI Practice Generator Modal -->
-  <dialog id="student_ai_modal" class="modal">
-    <div class="modal-box bg-slate-950 border border-slate-800 text-right rounded-3xl p-6">
-      <h3 class="font-bold text-sm text-slate-200 mb-2 flex items-center gap-2">🪄 توليد اختبار تجريبي للمذاكرة (Gemini AI)</h3>
-      <p class="text-[10px] text-slate-400 mb-4">انسخ فقرة من كتابك الدراسي، أو اكتب المادة التي تود التدرب عليها، وسيقوم الذكاء الاصطناعي ببناء اختبار محمي تفاعلي مخصص لك فقط!</p>
-      
-      <div class="form-control mb-4">
-        <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">النص الدراسي أو موضوع التدريب:</span></label>
-        <textarea id="student-ai-passage" class="textarea textarea-bordered input-academic rounded-xl text-xs h-28 w-full" placeholder="مثال: تاريخ الدولة العباسية وأهم الخلفاء فيها..."></textarea>
-      </div>
-
-      <div class="form-control mb-6">
-        <label class="label pt-0"><span class="label-text text-[10px] text-slate-500">عدد الأسئلة للتدريب:</span></label>
-        <select id="student-ai-num-questions" class="select select-bordered input-academic rounded-xl text-xs">
-          <option value="3" selected>3 أسئلة</option>
-          <option value="5">5 أسئلة</option>
-          <option value="10">10 أسئلة</option>
-        </select>
-      </div>
-
-      <div class="modal-action flex gap-2 justify-end">
-        <button type="button" id="student-ai-generate-btn" onclick="generateStudentAIExam()" class="btn btn-academic rounded-xl text-xs px-6">ابدأ الاختبار التجريبي</button>
-        <button type="button" onclick="document.getElementById('student_ai_modal').close()" class="btn btn-academic-secondary rounded-xl text-xs">إلغاء</button>
-      </div>
-    </div>
-  </dialog>
+        </div>
+    </dialog>
 
 </body>
+
 </html>

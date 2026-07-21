@@ -124,5 +124,529 @@
         "time_preservation_offline": 1,
         "id": 4,
         "detected_at": "2026-07-04 18:36:10"
+    },
+    {
+        "exam_code": "EXAM_HTTP_TEST",
+        "exam_title": "Test Http",
+        "class_id": 1,
+        "exam_mode": "standard",
+        "questions": [],
+        "time_preservation_offline": 0,
+        "randomize_questions": 0,
+        "randomize_options": 0,
+        "time_limit_minutes": 30,
+        "max_attempts": 1,
+        "allow_navigation": 1,
+        "strict_mode": 0,
+        "id": 5,
+        "detected_at": "2026-07-10 16:32:29"
+    },
+    {
+        "exam_code": "EXAM_36VT36",
+        "exam_title": "\u0627\u062e\u062a\u0628\u0627\u0631 \u0641\u064a \u0623\u0633\u0627\u0633\u064a\u0627\u062a \u0627\u0644\u062d\u0627\u0633\u0648\u06282",
+        "class_id": 3,
+        "exam_mode": "standard",
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "randomize_questions": 0,
+        "randomize_options": 0,
+        "time_limit_minutes": 0,
+        "max_attempts": 1,
+        "allow_navigation": 1,
+        "strict_mode": 0,
+        "id": 6,
+        "detected_at": "2026-07-10 16:53:38"
+    },
+    {
+        "exam_code": "EXAM_V2ZHA9",
+        "exam_title": "5",
+        "class_id": 3,
+        "exam_mode": "standard",
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "randomize_questions": 0,
+        "randomize_options": 0,
+        "time_limit_minutes": 0,
+        "max_attempts": 1,
+        "allow_navigation": 1,
+        "strict_mode": 0,
+        "id": 7,
+        "detected_at": "2026-07-10 16:56:35"
+    },
+    {
+        "exam_code": "EXAM_88B7HS",
+        "exam_title": "44",
+        "class_id": 3,
+        "exam_mode": "oral",
+        "questions": [
+            {
+                "id": 1,
+                "type": "audio",
+                "question": "\u064a\u0631\u062c\u0649 \u062a\u0633\u062c\u064a\u0644 \u0625\u062c\u0627\u0628\u062a\u0643 \u0627\u0644\u0634\u0641\u0648\u064a\u0629 \u0644\u0647\u0630\u0627 \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631 \u0628\u0623\u0643\u0645\u0644\u0647 \u0647\u0646\u0627. \u062e\u0630 \u0648\u0642\u062a\u0643 \u0648\u062a\u062d\u062f\u062b \u0628\u0648\u0636\u0648\u062d."
+            }
+        ],
+        "time_preservation_offline": 1,
+        "randomize_questions": 0,
+        "randomize_options": 0,
+        "time_limit_minutes": 0,
+        "max_attempts": 1,
+        "allow_navigation": 1,
+        "strict_mode": 0,
+        "id": 8,
+        "detected_at": "2026-07-10 16:57:53"
+    },
+    {
+        "exam_code": "EXAM_YGKX9Y",
+        "exam_title": "8",
+        "class_id": 3,
+        "exam_mode": "oral",
+        "questions": [
+            {
+                "id": 1,
+                "type": "audio",
+                "question": "\u064a\u0631\u062c\u0649 \u062a\u0633\u062c\u064a\u0644 \u0625\u062c\u0627\u0628\u062a\u0643 \u0627\u0644\u0634\u0641\u0648\u064a\u0629 \u0644\u0647\u0630\u0627 \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631 \u0628\u0623\u0643\u0645\u0644\u0647 \u0647\u0646\u0627. \u062e\u0630 \u0648\u0642\u062a\u0643 \u0648\u062a\u062d\u062f\u062b \u0628\u0648\u0636\u0648\u062d."
+            }
+        ],
+        "time_preservation_offline": 1,
+        "randomize_questions": 0,
+        "randomize_options": 0,
+        "time_limit_minutes": 0,
+        "max_attempts": 1,
+        "allow_navigation": 1,
+        "strict_mode": 0,
+        "id": 9,
+        "detected_at": "2026-07-10 17:01:07"
+    },
+    {
+        "exam_code": "EXAM_KXJBVV",
+        "exam_title": "\u062a\u064a\u0633\u062a \u0634\u0641\u0648\u064a",
+        "class_id": 3,
+        "questions": [
+            {
+                "id": 1,
+                "type": "audio",
+                "question": "\u064a\u0631\u062c\u0649 \u062a\u0633\u062c\u064a\u0644 \u0625\u062c\u0627\u0628\u062a\u0643 \u0627\u0644\u0634\u0641\u0648\u064a\u0629 \u0644\u0647\u0630\u0627 \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631 \u0628\u0623\u0643\u0645\u0644\u0647 \u0647\u0646\u0627. \u062e\u0630 \u0648\u0642\u062a\u0643 \u0648\u062a\u062d\u062f\u062b \u0628\u0648\u0636\u0648\u062d."
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 10,
+        "detected_at": "2026-07-10 17:33:06"
+    },
+    {
+        "exam_code": "EXAM_QKISWJ",
+        "exam_title": "\u0634\u0641\u0648\u064a",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 11,
+        "detected_at": "2026-07-10 17:43:00"
+    },
+    {
+        "exam_code": "EXAM_L91Y5X",
+        "exam_title": "\u062a\u064a\u0633\u062a \u0634\u0641\u0648\u064a",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 12,
+        "detected_at": "2026-07-10 17:52:19"
+    },
+    {
+        "exam_code": "EXAM_BEU9EY",
+        "exam_title": "\u062a\u064a\u0633\u062a \u0634\u0641\u0648\u064a2",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 13,
+        "detected_at": "2026-07-10 17:58:14"
+    },
+    {
+        "exam_code": "EXAM_AI5R49",
+        "exam_title": "\u062a\u064a\u0633\u062a \u0634\u0641\u0648\u064a",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 14,
+        "detected_at": "2026-07-10 18:02:54"
+    },
+    {
+        "exam_code": "EXAM_3J5DJN",
+        "exam_title": "\u062a\u064a\u0633\u062a \u0639\u0627\u062f\u064a",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 15,
+        "detected_at": "2026-07-10 18:04:49"
+    },
+    {
+        "exam_code": "EXAM_058A9Z",
+        "exam_title": "\u062a\u064a\u064a",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 16,
+        "detected_at": "2026-07-10 18:10:49"
+    },
+    {
+        "exam_code": "EXAM_PV84BA",
+        "exam_title": "\u0639\u0627\u062f\u064a",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 17,
+        "detected_at": "2026-07-10 18:23:19"
+    },
+    {
+        "exam_code": "EXAM_9UUB0A",
+        "exam_title": "\u0642\u0648\u064a",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 18,
+        "detected_at": "2026-07-10 18:25:25"
+    },
+    {
+        "exam_code": "EXAM_CEVIJT",
+        "exam_title": "\u0627\u062e\u062a\u0628\u0627\u0631 \u0641\u064a \u0623\u0633\u0627\u0633\u064a\u0627\u062a \u0627\u0644\u062d\u0627\u0633\u0648\u0628",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 19,
+        "detected_at": "2026-07-11 14:43:38"
+    },
+    {
+        "exam_code": "EXAM_WPBZ02",
+        "exam_title": "\u0627\u062e\u062a\u0628\u0627\u0631 \u0641\u064a \u0623\u0633\u0627\u0633\u064a\u0627\u062a \u0627\u0644\u062d\u0627\u0633\u0648\u0628",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 20,
+        "detected_at": "2026-07-11 14:48:39"
+    },
+    {
+        "exam_code": "EXAM_EAQI7C",
+        "exam_title": "\u0627\u062e\u062a\u0628\u0627\u0631 \u0641\u064a \u0623\u0633\u0627\u0633\u064a\u0627\u062a \u0627\u0644\u062d\u0627\u0633\u0648\u0628",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 21,
+        "detected_at": "2026-07-11 14:56:01"
+    },
+    {
+        "exam_code": "EXAM_H9FHJE",
+        "exam_title": "\u062a\u064a\u0633\u062a",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 22,
+        "detected_at": "2026-07-11 15:02:10"
+    },
+    {
+        "exam_code": "EXAM_MAG7YM",
+        "exam_title": "test2",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 23,
+        "detected_at": "2026-07-11 15:08:52"
+    },
+    {
+        "exam_code": "EXAM_ACXUYM",
+        "exam_title": "\u062a\u064a\u0633\u062a 4",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 24,
+        "detected_at": "2026-07-11 15:21:34"
+    },
+    {
+        "exam_code": "EXAM_JFJDYL",
+        "exam_title": "\u062a\u064a\u0633\u062a5",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 25,
+        "detected_at": "2026-07-11 15:25:40"
+    },
+    {
+        "exam_code": "EXAM_I03OIH",
+        "exam_title": "6",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 26,
+        "detected_at": "2026-07-11 15:32:03"
+    },
+    {
+        "exam_code": "EXAM_RH4X0J",
+        "exam_title": "7",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 27,
+        "detected_at": "2026-07-11 15:36:05"
+    },
+    {
+        "exam_code": "EXAM_L8Y2ZJ",
+        "exam_title": "8",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 28,
+        "detected_at": "2026-07-11 15:37:48"
+    },
+    {
+        "exam_code": "EXAM_3PY2AN",
+        "exam_title": "9",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 29,
+        "detected_at": "2026-07-11 15:40:10"
+    },
+    {
+        "exam_code": "EXAM_84B5O9",
+        "exam_title": "1",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 30,
+        "detected_at": "2026-07-11 16:09:37"
+    },
+    {
+        "exam_code": "EXAM_7C6N9R",
+        "exam_title": "2",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 31,
+        "detected_at": "2026-07-11 16:18:20"
+    },
+    {
+        "exam_code": "EXAM_JY6SCA",
+        "exam_title": "3",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 32,
+        "detected_at": "2026-07-11 16:22:32"
+    },
+    {
+        "exam_code": "EXAM_GSI8OT",
+        "exam_title": "4",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 33,
+        "detected_at": "2026-07-11 16:27:06"
+    },
+    {
+        "exam_code": "EXAM_EU4LI0",
+        "exam_title": "5",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 34,
+        "detected_at": "2026-07-11 16:31:09"
+    },
+    {
+        "exam_code": "EXAM_ZC88OC",
+        "exam_title": "test1",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 35,
+        "detected_at": "2026-07-12 09:39:11"
+    },
+    {
+        "exam_code": "EXAM_VL17HC",
+        "exam_title": "1",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 36,
+        "detected_at": "2026-07-12 10:15:24"
+    },
+    {
+        "exam_code": "EXAM_40PTL7",
+        "exam_title": "1",
+        "class_id": 3,
+        "questions": [
+            {
+                "type": "math",
+                "text": "\u0623\u0648\u062c\u062f \u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u062a\u063a\u064a\u0631 y \u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u062f\u0627\u0644\u0629 \u0627\u0644\u0645\u062f\u062e\u0644\u0627\u062a \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u0628\u0641\u0631\u0636 \u0623\u0646 \u0627\u0644\u0642\u064a\u0645\u0629 \u0627\u0644\u0645\u0639\u0637\u0627\u0629 \u0644\u0644\u0645\u062a\u063a\u064a\u0631 x \u0647\u064a 2:",
+                "formula": "y = {x_coeff}x\u00b2 + {x_linear}x + {const_val}"
+            }
+        ],
+        "time_preservation_offline": 1,
+        "id": 37,
+        "detected_at": "2026-07-12 18:03:48"
     }
 ]

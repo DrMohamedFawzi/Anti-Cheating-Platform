@@ -76,6 +76,11 @@
         <span id="error-message"></span>
       </div>
 
+      <!-- Incognito Warning Callout -->
+      <div class="alert alert-warning bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-xl p-3 text-[10px] mb-4 leading-relaxed text-right">
+        ⚠️ <strong>تنبيه هام للطلاب:</strong> يرجى عدم استخدام وضع التصفح المتخفي (Incognito Mode) لتسجيل الدخول، حيث يؤدي ذلك لاعتبار كل دخول جهازاً جديداً واستهلاك الحد الأقصى المسموح به (3 أجهزة).
+      </div>
+
       <!-- Tab 1: Username & Password Form -->
       <form id="pass-form" onsubmit="handlePasswordLogin(event)" class="space-y-4">
         <div class="form-control">
@@ -165,6 +170,46 @@
       }
     }
 
+    // Helper to get or set Cookie
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return '';
+    }
+
+    function setCookie(name, value, days = 365) {
+      const d = new Date();
+      d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+      document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/;SameSite=Strict`;
+    }
+
+    // Generate or retrieve persistent Device ID
+    function getDeviceID() {
+      let deviceId = localStorage.getItem('aegis_device_id') || getCookie('aegis_device_id');
+      return deviceId; // Backend generates if empty
+    }
+
+    // Build user-friendly device label
+    function getDeviceLabel() {
+      const ua = navigator.userAgent;
+      let os = "نظام غير معروف";
+      if (ua.indexOf("Win") !== -1) os = "Windows";
+      else if (ua.indexOf("Mac") !== -1) os = "macOS";
+      else if (ua.indexOf("Linux") !== -1) os = "Linux";
+      else if (ua.indexOf("Android") !== -1) os = "Android";
+      else if (ua.indexOf("like Mac") !== -1) os = "iOS";
+
+      let browser = "متصفح غير معروف";
+      if (ua.indexOf("Chrome") !== -1 && ua.indexOf("Edg") === -1) browser = "Chrome";
+      else if (ua.indexOf("Firefox") !== -1) browser = "Firefox";
+      else if (ua.indexOf("Safari") !== -1 && ua.indexOf("Chrome") === -1) browser = "Safari";
+      else if (ua.indexOf("Edg") !== -1) browser = "Edge";
+      else if (ua.indexOf("OPR") !== -1 || ua.indexOf("Opera") !== -1) browser = "Opera";
+
+      return `${browser} on ${os}`;
+    }
+
     // Handle standard Username & Password form submission
     function handlePasswordLogin(e) {
       e.preventDefault();
@@ -175,14 +220,26 @@
       errorAlert.classList.add('hidden');
       setLoading('pass-btn', true);
 
+      const deviceId = getDeviceID();
+      const deviceLabel = getDeviceLabel();
+
       fetch('api.php?action=login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: usernameInput, password: passwordInput })
+        body: JSON.stringify({ 
+          username: usernameInput, 
+          password: passwordInput,
+          device_id: deviceId,
+          device_label: deviceLabel
+        })
       })
       .then(res => res.json())
       .then(data => {
         if (data.status === 'success') {
+          if (data.user.device_id) {
+            localStorage.setItem('aegis_device_id', data.user.device_id);
+            setCookie('aegis_device_id', data.user.device_id);
+          }
           sessionStorage.setItem('aegis_user', JSON.stringify(data.user));
           redirectUser(data.user.role);
         } else {
@@ -206,14 +263,25 @@
       errorAlert.classList.add('hidden');
       setLoading('qr-btn', true);
 
+      const deviceId = getDeviceID();
+      const deviceLabel = getDeviceLabel();
+
       fetch('api.php?action=qr_login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ qr_code_hash: qrHashInput })
+        body: JSON.stringify({ 
+          qr_code_hash: qrHashInput,
+          device_id: deviceId,
+          device_label: deviceLabel
+        })
       })
       .then(res => res.json())
       .then(data => {
         if (data.status === 'success') {
+          if (data.user.device_id) {
+            localStorage.setItem('aegis_device_id', data.user.device_id);
+            setCookie('aegis_device_id', data.user.device_id);
+          }
           sessionStorage.setItem('aegis_user', JSON.stringify(data.user));
           redirectUser(data.user.role);
         } else {
