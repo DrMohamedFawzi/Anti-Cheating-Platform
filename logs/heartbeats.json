@@ -19811,5 +19811,167 @@
         "duration_seconds": 5,
         "detected_at": "2026-07-21 08:49:17",
         "id": 2202
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:26:57",
+        "id": 2203
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:27:02",
+        "id": 2204
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:27:07",
+        "id": 2205
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:28:08",
+        "id": 2206
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:28:13",
+        "id": 2207
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:28:18",
+        "id": 2208
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:28:23",
+        "id": 2209
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:28:29",
+        "id": 2210
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:50:59",
+        "id": 2211
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:51:04",
+        "id": 2212
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:51:09",
+        "id": 2213
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:51:15",
+        "id": 2214
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:51:42",
+        "id": 2215
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:52:42",
+        "id": 2216
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:53:53",
+        "id": 2217
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:53:58",
+        "id": 2218
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:54:03",
+        "id": 2219
+    },
+    {
+        "action": "log_heartbeat",
+        "student_id": 18,
+        "exam_code": "EXAM_VL17HC",
+        "status": "online",
+        "duration_seconds": 5,
+        "detected_at": "2026-07-21 09:54:08",
+        "id": 2220
     }
 ]
