@@ -236,7 +236,12 @@
 
       // 3. Request Microphone access and monitor audio
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        var audioConstraints = {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false
+        };
+        navigator.mediaDevices.getUserMedia({ audio: audioConstraints, video: false })
           .then(function (stream) {
             self.startAudioMonitoring(stream, violationCallback);
           })
@@ -329,8 +334,25 @@
       this.analyser.smoothingTimeConstant = 0.5;
 
       this.microphone = this.audioContext.createMediaStreamSource(stream);
-      // DIRECT CONNECTION: No Bandpass filter so we can hear high-frequency whispers!
-      this.microphone.connect(this.analyser);
+
+      // Create High-Pass Filter (cuts frequencies below 800Hz)
+      this.highPassFilter = this.audioContext.createBiquadFilter();
+      this.highPassFilter.type = 'highpass';
+      this.highPassFilter.frequency.value = 800;
+
+      // Create Low-Pass Filter (cuts frequencies above 4000Hz)
+      this.lowPassFilter = this.audioContext.createBiquadFilter();
+      this.lowPassFilter.type = 'lowpass';
+      this.lowPassFilter.frequency.value = 4000;
+
+      // Create MediaStreamDestination to route filtered stream to Silero VAD
+      this.destination = this.audioContext.createMediaStreamDestination();
+
+      // Connect: Microphone -> High-Pass -> Low-Pass -> Analyser & Destination
+      this.microphone.connect(this.highPassFilter);
+      this.highPassFilter.connect(this.lowPassFilter);
+      this.lowPassFilter.connect(this.analyser);
+      this.lowPassFilter.connect(this.destination);
 
       var bufferLength = this.analyser.frequencyBinCount; // 128 bins
       var dataArray = new Uint8Array(bufferLength);
@@ -381,7 +403,7 @@
         console.log("[Audio Engine] Initializing Silero VAD AI Voice Activity Detector...");
         try {
           vad.MicVAD.new({
-            stream: stream,
+            stream: self.destination.stream,
             modelURL: "https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.7/dist/silero_vad.onnx",
             workletURL: "https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.7/dist/vad.worklet.bundle.min.js",
             onSpeechStart: function () {
@@ -500,8 +522,13 @@
 
             if (self.speechAccumulator > 12) { // ~1.8 seconds continuous direct speech
               self.speechAccumulator = 0;
-              if (violationCallback) {
-                violationCallback('AUDIO_DETECTED', 'تم رصد كلام بشري مباشر وقريب بمحيط الطالب (Silero VAD)', 'high');
+              var now = Date.now();
+              self.lastAudioViolationTime = self.lastAudioViolationTime || 0;
+              if (now - self.lastAudioViolationTime >= 2000) {
+                self.lastAudioViolationTime = now;
+                if (violationCallback) {
+                  violationCallback('AUDIO_DETECTED', 'تم رصد كلام بشري مباشر وقريب بمحيط الطالب (Silero VAD)', 'high');
+                }
               }
             }
           } else if (isHumanSpeech && volumePct < 20) {
@@ -550,8 +577,13 @@
 
         if (self.noiseAccumulator > 10) { // ~1.5 seconds accumulated
           self.noiseAccumulator = 0;
-          if (violationCallback) {
-            violationCallback('AUDIO_DETECTED', 'تم رصد صوت أو ضجيج عالي في المحيط', 'high');
+          var now = Date.now();
+          self.lastAudioViolationTime = self.lastAudioViolationTime || 0;
+          if (now - self.lastAudioViolationTime >= 2000) {
+            self.lastAudioViolationTime = now;
+            if (violationCallback) {
+              violationCallback('AUDIO_DETECTED', 'تم رصد صوت أو ضجيج عالي في المحيط', 'high');
+            }
           }
         }
 
@@ -569,8 +601,13 @@
         // 10 frames = ~1.5 seconds of continuous whispering at 7fps
         if (self.whisperAccumulator > 10) {
           self.whisperAccumulator = 0;
-          if (violationCallback) {
-            violationCallback('AUDIO_DETECTED', 'تم رصد همس أو أصوات خافتة مشبوهة!', 'high');
+          var now = Date.now();
+          self.lastAudioViolationTime = self.lastAudioViolationTime || 0;
+          if (now - self.lastAudioViolationTime >= 2000) {
+            self.lastAudioViolationTime = now;
+            if (violationCallback) {
+              violationCallback('AUDIO_DETECTED', 'تم رصد همس أو أصوات خافتة مشبوهة!', 'high');
+            }
           }
         }
       }

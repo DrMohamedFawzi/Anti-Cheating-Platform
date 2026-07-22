@@ -2415,5 +2415,82 @@
         "is_headless": 0,
         "id": 220,
         "detected_at": "2026-07-21 09:53:48"
+    },
+    {
+        "student_id": 18,
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/150.0.0.0 Safari\/537.36",
+        "resolution": "1536x864",
+        "canvas_hash": "CAEI9BD4PwAAAP\/\/Z6t69wAAAAZJREFUAwCPNZBpZNe5ngAAAABJRU5ErkJggg==",
+        "webgl_vendor": "unknown_vendor",
+        "webgl_renderer": "unknown_renderer",
+        "is_headless": 0,
+        "id": 221,
+        "detected_at": "2026-07-21 10:53:54"
+    },
+    {
+        "student_id": 18,
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/150.0.0.0 Safari\/537.36",
+        "resolution": "1536x864",
+        "canvas_hash": "CAEI9BD4PwAAAP\/\/Z6t69wAAAAZJREFUAwCPNZBpZNe5ngAAAABJRU5ErkJggg==",
+        "webgl_vendor": "unknown_vendor",
+        "webgl_renderer": "unknown_renderer",
+        "is_headless": 0,
+        "id": 222,
+        "detected_at": "2026-07-21 11:05:11"
+    },
+    {
+        "student_id": 18,
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/150.0.0.0 Safari\/537.36",
+        "resolution": "1536x864",
+        "canvas_hash": "CAEI9BD4PwAAAP\/\/Z6t69wAAAAZJREFUAwCPNZBpZNe5ngAAAABJRU5ErkJggg==",
+        "webgl_vendor": "unknown_vendor",
+        "webgl_renderer": "unknown_renderer",
+        "is_headless": 0,
+        "id": 223,
+        "detected_at": "2026-07-21 11:08:11"
+    },
+    {
+        "student_id": 18,
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/150.0.0.0 Safari\/537.36",
+        "resolution": "1536x864",
+        "canvas_hash": "CAEI9BD4PwAAAP\/\/Z6t69wAAAAZJREFUAwCPNZBpZNe5ngAAAABJRU5ErkJggg==",
+        "webgl_vendor": "unknown_vendor",
+        "webgl_renderer": "unknown_renderer",
+        "is_headless": 0,
+        "id": 224,
+        "detected_at": "2026-07-22 16:38:18"
+    },
+    {
+        "student_id": 18,
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/150.0.0.0 Safari\/537.36",
+        "resolution": "1536x864",
+        "canvas_hash": "CAEI9BD4PwAAAP\/\/Z6t69wAAAAZJREFUAwCPNZBpZNe5ngAAAABJRU5ErkJggg==",
+        "webgl_vendor": "unknown_vendor",
+        "webgl_renderer": "unknown_renderer",
+        "is_headless": 0,
+        "id": 225,
+        "detected_at": "2026-07-22 17:12:05"
+    },
+    {
+        "student_id": 18,
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/150.0.0.0 Safari\/537.36",
+        "resolution": "1536x864",
+        "canvas_hash": "CAEI9BD4PwAAAP\/\/Z6t69wAAAAZJREFUAwCPNZBpZNe5ngAAAABJRU5ErkJggg==",
+        "webgl_vendor": "unknown_vendor",
+        "webgl_renderer": "unknown_renderer",
+        "is_headless": 0,
+        "id": 226,
+        "detected_at": "2026-07-22 17:19:55"
+    },
+    {
+        "student_id": 18,
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/150.0.0.0 Safari\/537.36",
+        "resolution": "1536x864",
+        "canvas_hash": "CAEI9BD4PwAAAP\/\/Z6t69wAAAAZJREFUAwCPNZBpZNe5ngAAAABJRU5ErkJggg==",
+        "webgl_vendor": "unknown_vendor",
+        "webgl_renderer": "unknown_renderer",
+        "is_headless": 0,
+        "id": 227,
+        "detected_at": "2026-07-22 17:21:00"
     }
 ]
