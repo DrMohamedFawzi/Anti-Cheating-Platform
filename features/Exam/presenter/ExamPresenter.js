@@ -736,16 +736,18 @@ if (window.__SECURITY_LEVEL === 'strict') {
                 localStorage.removeItem(storageKey);
                 sessionStorage.removeItem(storageKey);
                 let msgScore = (data.final_score !== undefined) ? `\nالدرجة النهائية: ${data.final_score}%` : '';
-                alert(`تم حفظ النتيجة ومزامنتها بنجاح!${msgScore}\nمؤشر النزاهة السلوكي: ${integrityIndex}%`);
-                window.location.href = "student_dashboard.html";
+                alert(`تم حفظ النتيجة ومزامنتها بنجاح!${msgScore}\nمؤشر النزاهة السلوكي: ${integrityIndex}%`).then(() => {
+                    window.location.href = "student_dashboard.html";
+                });
             } catch (e) {
                 await OfflineStore.queueAnswer(payload);
                 isExamFinished = true;
                 const storageKey = `exam_state_${currentExamCode}_${currentUser.id}`;
                 localStorage.removeItem(storageKey);
                 sessionStorage.removeItem(storageKey);
-                alert("تنبيه: تم حفظ إجاباتك محلياً بشكل مشفر بسبب انقطاع الشبكة. سيتم المزامنة والتصحيح تلقائياً عند استعادة الاتصال.");
-                window.location.href = "student_dashboard.html";
+                alert("تنبيه: تم حفظ إجاباتك محلياً بشكل مشفر بسبب انقطاع الشبكة. سيتم المزامنة والتصحيح تلقائياً عند استعادة الاتصال.").then(() => {
+                    window.location.href = "student_dashboard.html";
+                });
             }
         }
 
@@ -757,8 +759,9 @@ if (window.__SECURITY_LEVEL === 'strict') {
             if (window.__SECURITY_LEVEL === 'strict' || window.__SECURITY_LEVEL === 'moderate') {
                 document.addEventListener('fullscreenchange', () => {
                     if (!document.fullscreenElement && !isExamFinished) {
-                        alert("تم الخروج من وضع ملء الشاشة. سيتم إنهاء الامتحان فوراً لحماية النزاهة.");
-                        if (typeof submitAnswerFlow === 'function') submitAnswerFlow(true);
+                        alert("تم الخروج من وضع ملء الشاشة. سيتم إنهاء الامتحان فوراً لحماية النزاهة.").then(() => {
+                            if (typeof submitAnswerFlow === 'function') submitAnswerFlow(true);
+                        });
                     }
                 });
             }
@@ -892,8 +895,9 @@ if (window.__SECURITY_LEVEL === 'strict') {
                     }
 
                     if (audioViolationsCount >= 5) {
-                        alert('تم اكتشاف صوت غير مسموح به للمرة الخامسة. سيتم إنهاء الامتحان فوراً لحماية النزاهة.');
-                        submitAnswer(true); // Force finish exam
+                        alert('تم اكتشاف صوت غير مسموح به للمرة الخامسة. سيتم إنهاء الامتحان فوراً لحماية النزاهة.').then(() => {
+                            if (typeof submitAnswerFlow === 'function') submitAnswerFlow(true);
+                        });
                     } else {
                         // Use a custom DOM warning instead of alert() to prevent browser from exiting Fullscreen
                         let warnDiv = document.createElement('div');
@@ -963,8 +967,9 @@ if (window.__SECURITY_LEVEL === 'strict') {
                     violationCount++;
                     const reasonDesc = e.detail.reason || "الحد الأقصى للمخالفات البصرية";
                     logViolation("Vision Fatal Violation", `إنهاء الامتحان قسرياً لتخطي الحد الأقصى بسبب: ${reasonDesc}.`, "high");
-                    alert('تم اكتشاف مخالفة بصرية قاتلة (الحد الأقصى). سيتم إنهاء الامتحان فوراً.');
-                    if (typeof submitAnswerFlow === 'function') submitAnswerFlow(true);
+                    alert('تم اكتشاف مخالفة بصرية قاتلة (الحد الأقصى). سيتم إنهاء الامتحان فوراً.').then(() => {
+                        if (typeof submitAnswerFlow === 'function') submitAnswerFlow(true);
+                    });
                 });
 
                 // --- NEW LUMINANCE (PHONE REFLECTION) SEPARATE EVENTS ---
@@ -992,8 +997,9 @@ if (window.__SECURITY_LEVEL === 'strict') {
                     violationCount++;
                     const reasonDesc = e.detail.reason || "الحد الأقصى لمخالفات الشاشات الإضافية";
                     logViolation("Luminance Fatal Violation", `إنهاء الامتحان قسرياً لاستخدام هاتف: ${reasonDesc}.`, "high");
-                    alert('📱 تم التأكد من استخدام شاشة خارجية/هاتف بشكل متكرر. سيتم إنهاء الامتحان فوراً.');
-                    if (typeof submitAnswerFlow === 'function') submitAnswerFlow(true);
+                    alert('📱 تم التأكد من استخدام شاشة خارجية/هاتف بشكل متكرر. سيتم إنهاء الامتحان فوراً.').then(() => {
+                        if (typeof submitAnswerFlow === 'function') submitAnswerFlow(true);
+                    });
                 });
             }
             

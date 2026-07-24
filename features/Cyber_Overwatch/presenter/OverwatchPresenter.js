@@ -5,8 +5,9 @@ const OverwatchPresenter = {
         // Authenticate (Secret route requires admin logic, but for MVP we just check auth)
         const user = AuthGuard.checkAuth();
         if (!user || user.role === 'student') {
-            alert('SECURITY CLEARANCE REQUIRED. ACCESS DENIED.');
-            window.location.href = '../../index.html';
+            alert('SECURITY CLEARANCE REQUIRED. ACCESS DENIED.').then(() => {
+                window.location.href = '../../index.html';
+            });
             return;
         }
 

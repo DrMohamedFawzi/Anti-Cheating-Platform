@@ -690,8 +690,9 @@
         .then(res => res.json())
         .then(data => {
           if (data.status === 'success') {
-            alert('تم إنشاء ونشر الاختبار بنجاح!');
-            window.location.href = 'teacher_dashboard.html';
+            alert('تم إنشاء ونشر الاختبار بنجاح!').then(() => {
+              window.location.href = 'teacher_dashboard.html';
+            });
           } else {
             alert('فشل حفظ الاختبار: ' + data.message);
           }

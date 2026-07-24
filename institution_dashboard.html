@@ -430,8 +430,9 @@
     // Handle logout
     function handleLogout() {
       sessionStorage.removeItem('aegis_user');
-      alert('تم تسجيل الخروج بنجاح.');
-      window.location.href = 'index.html';
+      alert('تم تسجيل الخروج بنجاح.').then(() => {
+        window.location.href = 'index.html';
+      });
     }
 
     // Initialize Chart.js analytics charts

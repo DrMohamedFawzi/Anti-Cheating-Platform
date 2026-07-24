@@ -18,8 +18,9 @@ window.AuthGuard = {
             userJson = JSON.stringify(mockUser);
         }
         if (!userJson) {
-            alert('الوصول مرفوض. يرجى تسجيل الدخول أولاً.');
-            window.location.href = 'login.html';
+            alert('الوصول مرفوض. يرجى تسجيل الدخول أولاً.').then(() => {
+                window.location.href = 'login.html';
+            });
             return null;
         }
         
@@ -32,8 +33,9 @@ window.AuthGuard = {
         } catch (e) {
             sessionStorage.removeItem('aegis_user');
             localStorage.removeItem('aegis_user');
-            alert('انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً.');
-            window.location.href = 'login.html';
+            alert('انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً.').then(() => {
+                window.location.href = 'login.html';
+            });
             return null;
         }
     },
@@ -44,8 +46,9 @@ window.AuthGuard = {
         if (!user) return null;
 
         if (user.role !== 'student') {
-            alert('هذه الصفحة مخصصة للطلاب فقط.');
-            window.location.href = 'index.html';
+            alert('هذه الصفحة مخصصة للطلاب فقط.').then(() => {
+                window.location.href = 'index.html';
+            });
             return null;
         }
 
@@ -53,8 +56,9 @@ window.AuthGuard = {
         const examCode = urlParams.get('exam');
 
         if (!examCode) {
-            alert('الوصول مرفوض. لم يتم توفير رمز الاختبار.');
-            window.location.href = 'student_dashboard.html';
+            alert('الوصول مرفوض. لم يتم توفير رمز الاختبار.').then(() => {
+                window.location.href = 'student_dashboard.html';
+            });
             return null;
         }
         

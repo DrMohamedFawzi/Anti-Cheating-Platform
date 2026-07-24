@@ -234,8 +234,9 @@
                         securityLevel = data.exam.security_level || 'strict';
                         window.__PRELOADED_EXAM_DATA = data;
                     } else if (data.status === 'error') {
-                        alert(data.message);
-                        window.location.href = "student_dashboard.html";
+                        alert(data.message).then(() => {
+                            window.location.href = "student_dashboard.html";
+                        });
                         return;
                     }
                 } else {

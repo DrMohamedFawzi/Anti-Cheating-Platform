@@ -731,13 +731,23 @@ SecurityMiddleware::run($conn, $db_fallback);
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
+// Resolve action aliases early to ensure correct auth mapping
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($action === 'join_class') { $action = 'submit_enrollment'; }
+    if ($action === 'fingerprint') { $action = 'register_fingerprint'; }
+    if ($action === 'heartbeat') { $action = 'log_heartbeat'; }
+    if ($action === 'exam_ended') { $action = 'finish_exam'; }
+}
+
 // Protected actions requiring valid stateless JWT token
 $protected_actions = [
     'create_class', 'submit_enrollment', 'create_exam', 'log_heartbeat', 'log_violation',
     'update_seed', 'finish_exam', 'get_classes', 'get_enrollments', 'get_student_dashboard',
     'get_teacher_exams', 'get_dashboard_data', 'get_student_classes', 'get_class_exams',
     'get_student_results', 'get_threats', 'unban_ip', 'get_exam', 'register_fingerprint',
-    'get_student_devices', 'remove_student_device', 'upload_profile_photo'
+    'get_student_devices', 'remove_student_device', 'upload_profile_photo',
+    'approve_enrollment', 'approve_teacher', 'get_teachers_pending', 'generate_ai_exam', 
+    'get_student_mock_exams'
 ];
 
 if (in_array($action, $protected_actions)) {
@@ -745,17 +755,9 @@ if (in_array($action, $protected_actions)) {
     $user = $current_user; // Alias for backward compatibility
 }
 
-
-
 $input = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    // Aliases to align client calling names
-    if ($action === 'join_class') { $action = 'submit_enrollment'; }
-    if ($action === 'fingerprint') { $action = 'register_fingerprint'; }
-    if ($action === 'heartbeat') { $action = 'log_heartbeat'; }
-    if ($action === 'exam_ended') { $action = 'finish_exam'; }
 
     // REMOVE STUDENT DEVICE
     if ($action === 'remove_student_device') {
@@ -1368,6 +1370,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        // Check if student is already enrolled or has a pending/rejected request
+        $already_exists = false;
+        $existing_status = '';
+        if (!$db_fallback) {
+            $stmt = $conn->prepare("SELECT status FROM enrollment_requests WHERE student_id = ? AND class_id = ?");
+            if ($stmt) {
+                $stmt->bind_param("ii", $student_id, $class_id);
+                $stmt->execute();
+                $res = $stmt->get_result();
+                if ($row = $res->fetch_assoc()) {
+                    $already_exists = true;
+                    $existing_status = $row['status'];
+                }
+                $stmt->close();
+            }
+        } else {
+            $reqs = read_from_file('enrollment_requests');
+            foreach ($reqs as $r) {
+                if ((int)$r['student_id'] === $student_id && (int)$r['class_id'] === $class_id) {
+                    $already_exists = true;
+                    $existing_status = $r['status'];
+                    break;
+                }
+            }
+        }
+
+        if ($already_exists) {
+            $msg = 'لقد قمت بالفعل بتقديم طلب انضمام لهذا الفصل الدراسي.';
+            if ($existing_status === 'approved') {
+                $msg = 'أنت بالفعل منضم ومقبول في هذا الفصل الدراسي!';
+            } else if ($existing_status === 'pending') {
+                $msg = 'لديك طلب انضمام معلق قيد المراجعة لهذا الفصل.';
+            } else if ($existing_status === 'rejected') {
+                $msg = 'تم رفض طلب انضمامك لهذا الفصل سابقاً. يرجى التواصل مع المعلم.';
+            }
+            echo json_encode(['status' => 'error', 'message' => $msg]);
+            exit;
+        }
+
         // Save request
         if (!$db_fallback) {
             $stmt = $conn->prepare("INSERT INTO enrollment_requests (student_id, class_id, status) VALUES (?, ?, 'pending')");
@@ -1392,9 +1433,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $request_id = (int)($input['request_id'] ?? 0);
         $status = $input['status'] ?? 'approved'; // 'approved', 'rejected'
 
+        $target_student_id = 0;
+        $target_class_id = 0;
+
         if (!$db_fallback) {
-            // Anti-IDOR: Check class owner
-            $check_stmt = $conn->prepare("SELECT c.teacher_id FROM enrollment_requests r JOIN classes c ON r.class_id = c.id WHERE r.id = ?");
+            // Anti-IDOR: Check class owner & get student/class info
+            $check_stmt = $conn->prepare("SELECT c.teacher_id, r.student_id, r.class_id FROM enrollment_requests r JOIN classes c ON r.class_id = c.id WHERE r.id = ?");
             if ($check_stmt) {
                 $check_stmt->bind_param("i", $request_id);
                 $check_stmt->execute();
@@ -1405,6 +1449,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         echo json_encode(['status' => 'error', 'message' => 'Forbidden: This class belongs to another teacher']);
                         exit;
                     }
+                    $target_student_id = (int)$row['student_id'];
+                    $target_class_id = (int)$row['class_id'];
                 } else {
                     http_response_code(404);
                     echo json_encode(['status' => 'error', 'message' => 'Enrollment request not found']);
@@ -1413,20 +1459,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $check_stmt->close();
             }
 
-            $stmt = $conn->prepare("UPDATE enrollment_requests SET status = ? WHERE id = ?");
-            $stmt->bind_param("si", $status, $request_id);
+            // Update all duplicate enrollment requests for this student and class in DB
+            $stmt = $conn->prepare("UPDATE enrollment_requests SET status = ? WHERE student_id = ? AND class_id = ?");
+            $stmt->bind_param("sii", $status, $target_student_id, $target_class_id);
             $stmt->execute();
             $stmt->close();
-        }
-        
-        $reqs = read_from_file('enrollment_requests');
-        foreach ($reqs as &$r) {
-            if ((int)$r['id'] === $request_id) {
-                $r['status'] = $status;
-                break;
+        } else {
+            // File fallback: find request details
+            $reqs = read_from_file('enrollment_requests');
+            foreach ($reqs as $r) {
+                if ((int)$r['id'] === $request_id) {
+                    $target_student_id = (int)$r['student_id'];
+                    $target_class_id = (int)$r['class_id'];
+                    break;
+                }
             }
         }
-        update_file_logs('enrollment_requests', $reqs);
+        
+        // Update all duplicates in the JSON file
+        if ($target_student_id > 0 && $target_class_id > 0) {
+            $reqs = read_from_file('enrollment_requests');
+            foreach ($reqs as &$r) {
+                if ((int)$r['student_id'] === $target_student_id && (int)$r['class_id'] === $target_class_id) {
+                    $r['status'] = $status;
+                }
+            }
+            update_file_logs('enrollment_requests', $reqs);
+        }
 
         echo json_encode(['status' => 'success', 'message' => 'Student enrollment status updated']);
         exit;
